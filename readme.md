@@ -13,9 +13,9 @@ ESTRUTURA DO PROJETO
 - Verifique com: `node -v` e `npm -v`
 
 - Gerenciador de pacotes (um dos seguintes):
-  • npm (já vem com o Node)
-  • yarn: `npm install -g yarn`
-  • pnpm: `npm install -g pnpm`
+  - npm (já vem com o Node) #Recomendado
+  - yarn: `npm install -g yarn`
+  - pnpm: `npm install -g pnpm`
 -------------------
 2. CLONAR O PROJETO
 
