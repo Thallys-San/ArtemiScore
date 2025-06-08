@@ -1,14 +1,14 @@
 CONFIGURAÇÃO DO PROJETO - GUIA COMPLETO
 =======================================
-
-ESTRUTURA DO PROJETO
 ---------------------
+ESTRUTURA DO PROJETO
+
 - /backend     - API e servidor Node.js (Express, etc)
 - /frontend    - Aplicação React
 - /electron    - Aplicação desktop (opcional)
-
-1. PRÉ-REQUISITOS GLOBAIS
 -------------------------
+1. PRÉ-REQUISITOS GLOBAIS
+
 - Node.js (v18.x ou superior): https://nodejs.org/
 - Verifique com: `node -v` e `npm -v`
 
@@ -16,40 +16,40 @@ ESTRUTURA DO PROJETO
   • npm (já vem com o Node)
   • yarn: `npm install -g yarn`
   • pnpm: `npm install -g pnpm`
-
-2. CLONAR O PROJETO
 -------------------
+2. CLONAR O PROJETO
+
 - git clone https://github.com/Thallys-San/ArtemiScore.git
 - mcd ArtemiScore
-
-3. CONFIGURAÇÃO POR MÓDULO
 --------------------------
+3. CONFIGURAÇÃO POR MÓDULO
 
-BACKEND (/backend)
 ------------------
+BACKEND (/backend)
+
 - cd backend
 - npm install
 - cp .env.example .env  # Configure as variáveis de ambiente
 # Inicie o servidor em modo de desenvolvimento:
 - npm run dev
-
-FRONTEND (/frontend)
 --------------------
+FRONTEND (/frontend)
+
 - cd ../frontend
 - npm install
 - cp .env.example .env  # Configure a URL da API e outras variáveis
 # Inicie o app React em modo de desenvolvimento:
 - npm run dev
-
-ELECTRON (/electron - opcional)
 -------------------------------
+ELECTRON (/electron - opcional)
+
 - cd ../electron
 - npm install
 # Inicie a versão desktop do app (se aplicável):
 - npm start
-
-4. COMANDOS ÚTEIS
 ------------------
+4. COMANDOS ÚTEIS
+
 
 BACKEND
 - Iniciar em dev:        npm run dev
@@ -64,16 +64,16 @@ FRONTEND
 ELECTRON
 - Iniciar em dev:        npm start
 - Gerar pacote desktop:  npm run make
-
-5. REINSTALAÇÃO COMPLETA (opcional)
 -----------------------------------
+5. REINSTALAÇÃO COMPLETA (opcional)
+
 # Executar na raiz do projeto:
 - rm -rf backend/node_modules frontend/node_modules electron/node_modules
 - rm -f backend/package-lock.json frontend/package-lock.json electron/package-lock.json
 - npm install
-
-6. SOLUÇÃO DE PROBLEMAS
 ------------------------
+6. SOLUÇÃO DE PROBLEMAS
+
 
 BACKEND
 - Verifique a configuração do `.env` se houver erro de conexão
@@ -84,9 +84,9 @@ FRONTEND
 
 ELECTRON
 - Erros nativos: delete `node_modules` e reinstale com `npm install --force`
-
-7. BOAS PRÁTICAS
 -----------------
+7. BOAS PRÁTICAS
+
 - Nunca suba `node_modules`, `build`, `dist` ou `target`
 - Sempre configure seu `.env` localmente (não subir para o repositório)
 - Comite somente arquivos relevantes do código-fonte
