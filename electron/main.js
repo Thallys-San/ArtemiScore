@@ -13,7 +13,7 @@ function createWindow() {
   });
 
   if (isDev) {
-    win.loadURL('http://localhost:3000'); // se você estiver rodando `npm start` no React
+    win.loadURL('http://localhost:3000'); // se estiver rodando `npm start` no React
   } else {
     win.loadFile(path.join(__dirname, 'frontend/build/index.html')); // ✅ AQUI
   }
