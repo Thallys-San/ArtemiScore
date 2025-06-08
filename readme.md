@@ -29,17 +29,16 @@ BACKEND (/backend)
 
 - cd backend
 - npm install
-- cp .env.example .env  # Configure as variáveis de ambiente
-# Inicie o servidor em modo de desenvolvimento:
-- npm run dev
+# Inicie o servidor:
+- npm start
 --------------------
 FRONTEND (/frontend)
 
 - cd ../frontend
 - npm install
-- cp .env.example .env  # Configure a URL da API e outras variáveis
+- npm run build
 # Inicie o app React em modo de desenvolvimento:
-- npm run dev
+- npm start
 -------------------------------
 ELECTRON (/electron - opcional)
 
