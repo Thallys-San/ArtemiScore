@@ -20,7 +20,7 @@ ESTRUTURA DO PROJETO
 2. CLONAR O PROJETO
 
 - git clone https://github.com/Thallys-San/ArtemiScore.git
-- mcd ArtemiScore
+- cd ArtemiScore
 --------------------------
 3. CONFIGURAÇÃO POR MÓDULO
 
