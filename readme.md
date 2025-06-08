@@ -3,14 +3,14 @@ CONFIGURAÇÃO DO PROJETO - GUIA COMPLETO
 
 ESTRUTURA DO PROJETO
 ---------------------
-/backend     - API e servidor Node.js (Express, etc)
-/frontend    - Aplicação React
-/electron    - Aplicação desktop (opcional)
+- /backend     - API e servidor Node.js (Express, etc)
+- /frontend    - Aplicação React
+- /electron    - Aplicação desktop (opcional)
 
 1. PRÉ-REQUISITOS GLOBAIS
 -------------------------
 - Node.js (v18.x ou superior): https://nodejs.org/
-  Verifique com: `node -v` e `npm -v`
+- Verifique com: `node -v` e `npm -v`
 
 - Gerenciador de pacotes (um dos seguintes):
   • npm (já vem com o Node)
@@ -19,34 +19,34 @@ ESTRUTURA DO PROJETO
 
 2. CLONAR O PROJETO
 -------------------
-git clone https://github.com/Thallys-San/ArtemiScore.git
-cd ArtemiScore
+- git clone https://github.com/Thallys-San/ArtemiScore.git
+- mcd ArtemiScore
 
 3. CONFIGURAÇÃO POR MÓDULO
 --------------------------
 
 BACKEND (/backend)
 ------------------
-cd backend
-npm install
-cp .env.example .env  # Configure as variáveis de ambiente
+- cd backend
+- npm install
+- cp .env.example .env  # Configure as variáveis de ambiente
 # Inicie o servidor em modo de desenvolvimento:
-npm run dev
+- npm run dev
 
 FRONTEND (/frontend)
 --------------------
-cd ../frontend
-npm install
-cp .env.example .env  # Configure a URL da API e outras variáveis
+- cd ../frontend
+- npm install
+- cp .env.example .env  # Configure a URL da API e outras variáveis
 # Inicie o app React em modo de desenvolvimento:
-npm run dev
+- npm run dev
 
 ELECTRON (/electron - opcional)
 -------------------------------
-cd ../electron
-npm install
+- cd ../electron
+- npm install
 # Inicie a versão desktop do app (se aplicável):
-npm start
+- npm start
 
 4. COMANDOS ÚTEIS
 ------------------
@@ -68,9 +68,9 @@ ELECTRON
 5. REINSTALAÇÃO COMPLETA (opcional)
 -----------------------------------
 # Executar na raiz do projeto:
-rm -rf backend/node_modules frontend/node_modules electron/node_modules
-rm -f backend/package-lock.json frontend/package-lock.json electron/package-lock.json
-npm install
+- rm -rf backend/node_modules frontend/node_modules electron/node_modules
+- rm -f backend/package-lock.json frontend/package-lock.json electron/package-lock.json
+- npm install
 
 6. SOLUÇÃO DE PROBLEMAS
 ------------------------
