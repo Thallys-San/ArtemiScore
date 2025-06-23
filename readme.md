@@ -5,7 +5,7 @@ ESTRUTURA DO PROJETO
 
 - /backend     - API e servidor Node.js (Express, etc)
 - /frontend    - Aplicação React
-- /electron    - Aplicação desktop (opcional)
+
 -------------------------
 1. PRÉ-REQUISITOS GLOBAIS
 
@@ -39,13 +39,6 @@ FRONTEND (/frontend)
 - npm run build
 # Inicie o app React em modo de desenvolvimento:
 - npm start
--------------------------------
-ELECTRON (/electron - opcional)
-
-- cd ../electron
-- npm install
-# Inicie a versão desktop do app (se aplicável):
-- npm start
 ------------------
 4. COMANDOS ÚTEIS
 
@@ -60,9 +53,6 @@ FRONTEND
 - Gerar build:           npm run build
 - Servir build local:    npm run serve
 
-ELECTRON
-- Iniciar em dev:        npm start
-- Gerar pacote desktop:  npm run make
 -----------------------------------
 5. REINSTALAÇÃO COMPLETA (opcional)
 
@@ -81,8 +71,6 @@ BACKEND
 FRONTEND
 - Cache corrompido: `rm -rf node_modules/.cache`
 
-ELECTRON
-- Erros nativos: delete `node_modules` e reinstale com `npm install --force`
 -----------------
 7. BOAS PRÁTICAS
 
