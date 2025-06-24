@@ -1,0 +1,81 @@
+package com.ArtemiScore.ArtemiScore.service;
+
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
+
+import com.ArtemiScore.ArtemiScore.model.rawghApi.*;
+
+import java.util.Arrays;
+import java.util.List;
+
+@Service
+public class RawgService {
+
+    @Value("${rawg.api.key}")
+    private String apiKey;
+
+    private final RestTemplate restTemplate;
+    private static final String BASE_URL = "https://api.rawg.io/api/";
+
+    public RawgService(RestTemplate restTemplate) {
+        this.restTemplate = restTemplate;
+    }
+
+    // Gêneros
+    public List<GenreDTO> getGenres() {
+        String url = BASE_URL + "genres?key=" + apiKey;
+        return Arrays.asList(restTemplate.getForObject(url, GenreDTO[].class));
+    }
+
+    public GenreDTO getGenreById(Long id) {
+        String url = BASE_URL + "genres/" + id + "?key=" + apiKey;
+        return restTemplate.getForObject(url, GenreDTO.class);
+    }
+
+    // Plataformas
+    public List<PlatformDTO> getPlatforms() {
+        String url = BASE_URL + "platforms?key=" + apiKey;
+        return Arrays.asList(restTemplate.getForObject(url, PlatformDTO[].class));
+    }
+
+    public PlatformDTO getPlatformById(Long id) {
+        String url = BASE_URL + "platforms/" + id + "?key=" + apiKey;
+        return restTemplate.getForObject(url, PlatformDTO.class);
+    }
+
+    // Jogos
+    public List<GameDTO> searchGames(String name) {
+        String url = BASE_URL + "games?key=" + apiKey + "&search=" + name;
+        return Arrays.asList(restTemplate.getForObject(url, GameDTO[].class));
+    }
+
+    public GameDTO getGameById(Long id) {
+        String url = BASE_URL + "games/" + id + "?key=" + apiKey;
+        return restTemplate.getForObject(url, GameDTO.class);
+    }
+
+    // Screenshots
+    public List<ScreenshotDTO> getGameScreenshots(Long gameId) {
+        String url = BASE_URL + "games/" + gameId + "/screenshots?key=" + apiKey;
+        return Arrays.asList(restTemplate.getForObject(url, ScreenshotDTO[].class));
+    }
+
+    // Lojas
+    public List<StoreDTO> getGameStores(Long gameId) {
+        String url = BASE_URL + "games/" + gameId + "/stores?key=" + apiKey;
+        return Arrays.asList(restTemplate.getForObject(url, StoreDTO[].class));
+    }
+
+    // DLCs
+    public List<GameDTO> getGameAdditions(Long gameId) {
+        String url = BASE_URL + "games/" + gameId + "/additions?key=" + apiKey;
+        return Arrays.asList(restTemplate.getForObject(url, GameDTO[].class));
+    }
+
+    // Conquistas
+    public List<AchievementDTO> getGameAchievements(Long gameId) {
+        String url = BASE_URL + "games/" + gameId + "/achievements?key=" + apiKey;
+        return Arrays.asList(restTemplate.getForObject(url, AchievementDTO[].class));
+    }
+}
