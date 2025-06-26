@@ -7,7 +7,8 @@ CREATE TABLE usuarios (
    email VARCHAR(255) UNIQUE NOT NULL,
    senha VARCHAR(255) NOT NULL,
    descricao VARCHAR(300),
-   foto_perfil VARCHAR(600)
+   foto_perfil VARCHAR(600),
+   data_criacao DATETIME DEFAULT CURRENT_TIMESTAMP
 );
 
 
