@@ -17,6 +17,7 @@ CREATE TABLE avaliacoes (
   jogo_id BIGINT NOT NULL, -- id do jogo na API RAWG
   nota DOUBLE NOT NULL,
   comentario TEXT,
+   tempoDeJogo INT,
   data_avaliacao DATETIME DEFAULT CURRENT_TIMESTAMP,
   FOREIGN KEY(usuario_id) REFERENCES usuarios(id)
 );
