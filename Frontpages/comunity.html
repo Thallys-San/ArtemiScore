@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Comunidade - ArtemiScore</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet" />
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: #0f0f13;
+      color: #e1e1e1;
+      padding-top: 80px;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    :root {
+      --primary: #5733ef;
+      --accent: #c688ff;
+      --dark: #0f0f13;
+      --gray: #1e1e24;
+      --light-gray: #6d6d7a;
+      --yellow: #fdcb6e;
+    }
+
+    header {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%;
+      background: rgba(15,15,19,0.95);
+      backdrop-filter: blur(8px);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 2rem;
+      z-index: 1000;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    }
+
+    .logo {
+      font-size: 1.8rem;
+      font-weight: 700;
+      background: linear-gradient(45deg, var(--primary), var(--accent));
+      -webkit-background-clip: text;
+      color: transparent;
+    }
+
+    nav a {
+      margin-left: 1.5rem;
+      font-weight: 500;
+      color: var(--light-gray);
+      transition: 0.3s;
+    }
+
+    nav a:hover {
+      color: white;
+    }
+
+    .section {
+      padding: 3rem 2rem;
+      max-width: 1000px;
+      margin: auto;
+    }
+
+    .section h2 {
+      font-size: 2rem;
+      margin-bottom: 2rem;
+      color: white;
+      border-left: 5px solid var(--primary);
+      padding-left: 0.75rem;
+    }
+
+    .post {
+      background: var(--gray);
+      border: 1px solid #2a2a35;
+      border-radius: 10px;
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+      display: flex;
+      gap: 1rem;
+    }
+
+    .avatar {
+      flex-shrink: 0;
+    }
+
+    .avatar img {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      border: 2px solid var(--primary);
+    }
+
+    .post-content {
+      flex-grow: 1;
+    }
+
+    .user-name {
+      font-weight: 600;
+      color: white;
+    }
+
+    .post-time {
+      font-size: 0.85rem;
+      color: var(--light-gray);
+      margin-bottom: 0.5rem;
+    }
+
+    .post-text {
+      font-size: 1rem;
+      margin-bottom: 1rem;
+      color: #d0d0d0;
+    }
+
+    .post-image {
+      width: 100%;
+      max-height: 240px;
+      object-fit: cover;
+      border-radius: 8px;
+      border: 1px solid #2a2a35;
+    }
+
+    .reactions {
+      margin-top: 1rem;
+      display: flex;
+      gap: 1.5rem;
+      font-size: 0.9rem;
+      color: var(--light-gray);
+    }
+
+    .reactions span {
+      cursor: pointer;
+      transition: color 0.2s;
+    }
+
+    .reactions span:hover {
+      color: var(--accent);
+    }
+
+    footer {
+      text-align: center;
+      padding: 2rem;
+      background-color: #0a0a0d;
+      font-size: 0.85rem;
+      color: var(--light-gray);
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="logo">ArtemiScore</div>
+    <nav>
+      <a href="#">Início</a>
+      <a href="#">Jogos</a>
+      <a href="#">Promoções</a>
+      <a href="#">Comunidade</a>
+      <a href="#">Minha Conta</a>
+    </nav>
+  </header>
+
+  <section class="section" id="comunidade">
+    <h2>Comunidade</h2>
+
+    <div class="post">
+      <div class="avatar">
+        <img src="https://i.pravatar.cc/150?img=15" alt="Avatar João">
+      </div>
+      <div class="post-content">
+        <div class="user-name">JoãoFPS</div>
+        <div class="post-time">Postado há 2 horas</div>
+        <div class="post-text">Acabei de terminar Elden Ring. QUE JOGO! Derrotei o Malenia na raça, depois de 34 tentativas 😅</div>
+        <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/1245620/header.jpg" alt="Elden Ring" class="post-image">
+        <div class="reactions">
+          <span>👍 Curtir</span>
+          <span>💬 Comentar</span>
+          <span>🔗 Compartilhar</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="post">
+      <div class="avatar">
+        <img src="https://i.pravatar.cc/150?img=23" alt="Avatar Ana">
+      </div>
+      <div class="post-content">
+        <div class="user-name">AnaDev</div>
+        <div class="post-time">Postado ontem</div>
+        <div class="post-text">Montei minha fazenda completa no Stardew Valley! Agora estou focando em fazer amizades com todos da vila. ❤️</div>
+        <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/413150/header.jpg" alt="Stardew Valley" class="post-image">
+        <div class="reactions">
+          <span>👍 Curtir</span>
+          <span>💬 Comentar</span>
+          <span>🔗 Compartilhar</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="post">
+      <div class="avatar">
+        <img src="https://i.pravatar.cc/150?img=8" alt="Avatar Carlos">
+      </div>
+      <div class="post-content">
+        <div class="user-name">CarlosR6</div>
+        <div class="post-time">Postado há 3 dias</div>
+        <div class="post-text">Rainbow Six Siege ainda é o meu vício. Nova temporada tá insana! Quem mais aí joga ranked?</div>
+        <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/359550/header.jpg" alt="R6" class="post-image">
+        <div class="reactions">
+          <span>👍 Curtir</span>
+          <span>💬 Comentar</span>
+          <span>🔗 Compartilhar</span>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+  <footer>
+    © 2025 ArtemiScore — Desenvolvido pra você!
+  </footer>
+
+</body>
+</html>
