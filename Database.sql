@@ -15,7 +15,7 @@ CREATE TABLE avaliacoes (
   id BIGINT PRIMARY KEY auto_increment,
   usuario_id BIGINT NOT NULL,
   jogo_id BIGINT NOT NULL, -- id do jogo na API RAWG
-  nota INTEGER DOUBLE NOT NULL
+  nota DOUBLE NOT NULL
   comentario TEXT,
   data_avaliacao DATETIME DEFAULT CURRENT_TIMESTAMP,
   FOREIGN KEY(usuario_id) REFERENCES usuarios(id)
