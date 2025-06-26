@@ -35,7 +35,7 @@ public class AvaliacaoModel {
     private Long jogo_id;
 
     @Column (nullable = false, length = 2)
-    private int nota;
+    private float nota;
 
     @Column
     private String comentario;
