@@ -19,7 +19,7 @@ CREATE TABLE avaliacoes (
   nota DOUBLE NOT NULL,
   comentario TEXT,
    tempoDeJogo INT,
-   plataforma CHAR(255),
+   plataforma CHAR(255) NOT NULL,
   data_avaliacao DATETIME DEFAULT CURRENT_TIMESTAMP,
   FOREIGN KEY(usuario_id) REFERENCES usuarios(id)
 );
