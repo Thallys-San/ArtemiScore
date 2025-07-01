@@ -4,13 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ArtemiScore Community</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Poppins', sans-serif;
         }
 
         :root {
@@ -33,6 +38,7 @@
             min-height: 100vh;
             position: relative;
             overflow-x: hidden;
+            padding-top: 80px;
         }
 
         body::before {
@@ -48,20 +54,36 @@
         }
 
         /* Header */
-        header {
-            background: rgba(15,15,19,0.95);
-            backdrop-filter: blur(8px);
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+        
+        .header-container {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 0.8rem 2rem;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-            border-bottom: 1px solid rgba(255,255,255,0.05);
-            position: sticky;
-            top: 0;
-            z-index: 1000;
+            width: 100%;
         }
-
+        
+        header {
+            position: fixed;
+            top: 0; 
+            left: 0;
+            width: 100%;
+            background: rgba(15,15,19,0.95);
+            backdrop-filter: blur(8px);
+            padding: 1rem 0;
+            z-index: 1000;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            border-bottom: 1px solid var(--primary);
+        }
+        
+        .font-pacifico {
+            font-family: 'Pacifico', cursive;
+        }
+        
         .logo {
             font-size: 1.8rem;
             font-weight: 700;
@@ -72,56 +94,151 @@
             align-items: center;
             gap: 8px;
         }
-
-        nav {
+        
+        .flex {
             display: flex;
-            align-items: center;
-            gap: 1.5rem;
         }
-
-        nav a {
+        
+        .items-center {
+            align-items: center;
+        }
+        
+        .gap-4 {
+            gap: 1rem;
+        }
+        
+        .main-nav {
+            display: flex;
+            margin-left: 2rem;
+        }
+        
+        .nav-link {
+            margin-left: 1.5rem;
             font-weight: 500;
             color: var(--light-gray);
             transition: 0.3s;
-            font-size: 0.95rem;
             position: relative;
             text-decoration: none;
         }
-
-        nav a:hover, nav a.active {
+        
+        .nav-link:hover, .nav-link.active {
             color: white;
         }
-
-        nav a.active::after {
+        
+        .nav-link::after {
             content: '';
             position: absolute;
-            bottom: -8px;
+            width: 0;
+            height: 2px;
+            bottom: -4px;
             left: 0;
+            background-color: var(--primary);
+            transition: width 0.3s;
+        }
+        
+        .nav-link:hover::after, .nav-link.active::after {
             width: 100%;
-            height: 3px;
-            background: var(--primary);
-            border-radius: 3px;
         }
-
-        .user-actions {
+        
+        .search-bar {
+            position: relative;
             display: flex;
             align-items: center;
-            gap: 1.2rem;
         }
-
-        .user-profile {
-            display: flex;
-            align-items: center;
-            gap: 0.8rem;
-            cursor: pointer;
+        
+        .search-input {
+            background: var(--gray);
+            border: 1px solid #2a2a35;
+            border-radius: 20px;
+            padding: 0.5rem 1rem 0.5rem 2.5rem;
+            color: white;
+            outline: none;
+            transition: all 0.3s;
+            width: 200px;
         }
-
-        .user-avatar {
-            width: 40px;
-            height: 40px;
+        
+        .search-input:focus {
+            border-color: var(--primary);
+            width: 250px;
+        }
+        
+        .search-icon {
+            position: absolute;
+            left: 12px;
+            color: var(--light-gray);
+        }
+        
+        .user-menu-button {
+            background: var(--gray);
+            width: 36px;
+            height: 36px;
             border-radius: 50%;
-            object-fit: cover;
-            border: 2px solid var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .user-menu-button:hover {
+            background: var(--primary);
+        }
+        
+        .user-icon {
+            font-size: 1.2rem;
+        }
+        
+        .relative {
+            position: relative;
+        }
+        
+        .user-dropdown {
+            position: absolute;
+            right: 0;
+            top: 50px;
+            background: var(--gray);
+            border-radius: 8px;
+            padding: 0.5rem 0;
+            min-width: 200px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            border: 1px solid #2a2a35;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.3s;
+            z-index: 100;
+        }
+        
+        #userMenuContainer:hover .user-dropdown {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+        
+        .dropdown-item {
+            display: flex;
+            align-items: center;
+            padding: 0.5rem 1rem;
+            color: var(--light-gray);
+            transition: all 0.3s;
+        }
+        
+        .dropdown-item:hover {
+            background: rgba(87, 51, 239, 0.1);
+            color: white;
+        }
+        
+        .dropdown-icon {
+            margin-right: 0.75rem;
+            width: 20px;
+            display: flex;
+            justify-content: center;
+        }
+        
+        .dropdown-divider {
+            height: 1px;
+            background: #2a2a35;
+            margin: 0.5rem 0;
         }
 
         /* Main Layout */
@@ -600,7 +717,7 @@
             background: var(--darker);
             padding: 2rem 0;
             margin-top: 3rem;
-            border-top: 1px solid rgba(255,255,255,0.05);
+            border-top: 1px solid var(--gray-light);
         }
 
         .footer-content {
@@ -679,7 +796,7 @@
             text-align: center;
             padding-top: 2rem;
             margin-top: 2rem;
-            border-top: 1px solid rgba(255,255,255,0.05);
+            border-top: 1px solid var(--gray-light);
             color: var(--light-gray);
             font-size: 0.9rem;
         }
@@ -707,8 +824,15 @@
             .right-sidebar {
                 grid-template-columns: 1fr;
             }
-            nav {
+            .main-nav {
                 display: none;
+            }
+            .search-input {
+                display: none;
+            }
+            .search-icon {
+                position: static;
+                margin-left: 0.5rem;
             }
         }
 
@@ -725,25 +849,74 @@
             .post-actions {
                 flex-wrap: wrap;
             }
+            .logo {
+                font-size: 1.5rem;
+            }
         }
     </style>
 </head>
 <body>
+    <!-- Header -->
     <header>
-        <div class="logo">
-            <i class="fas fa-gamepad"></i>
-            ArtemiScore Community
-        </div>
-        <nav>
-            <a href="#" class="active">Fórum</a>
-            <a href="#">Eventos</a>
-            <a href="#">Grupos</a>
-            <a href="#">Membros</a>
-            <a href="#">Notícias</a>
-        </nav>
-        <div class="user-actions">
-            <div class="user-profile">
-                <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Usuário" class="user-avatar">
+        <div class="container header-container">
+            <div class="flex items-center">
+                <a href="#" class="logo font-pacifico">
+                    <i class="fas fa-gamepad"></i>
+                    ArtemiScore
+                </a>
+                <nav class="main-nav">
+                    <a href="/" class="nav-link">Início</a>
+                    <a href="Jogos.html" class="nav-link">Jogos</a>
+                    <a href="rank.html" class="nav-link active">Comunidade</a>
+                    <a href="Lançamentos.html" class="nav-link">Lançamentos</a>
+                    <a href="comunidade.html" class="nav-link">Fórum</a>
+                </nav>
+            </div>
+            <div class="flex items-center gap-4">
+                <div class="search-bar">
+                    <input type="text" placeholder="Buscar jogos..." class="search-input">
+                    <div class="search-icon">
+                        <i class="ri-search-line"></i>
+                    </div>
+                </div>
+                <div class="relative" id="userMenuContainer">
+                    <div class="user-menu-button" id="userMenuButton">
+                        <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Usuário" style="width: 36px; height: 36px; border-radius: 50%; object-fit: cover;">
+                    </div>
+                    <div class="user-dropdown" id="userDropdownMenu">
+                        <a href="#" class="dropdown-item">
+                            <div class="dropdown-icon">
+                                <i class="ri-user-3-line"></i>
+                            </div>
+                            <span>Meu Perfil</span>
+                        </a>
+                        <a href="#" class="dropdown-item">
+                            <div class="dropdown-icon">
+                                <i class="ri-star-line"></i>
+                            </div>
+                            <span>Minhas Avaliações</span>
+                        </a>
+                        <a href="#" class="dropdown-item">
+                            <div class="dropdown-icon">
+                                <i class="ri-heart-line"></i>
+                            </div>
+                            <span>Jogos Favoritos</span>
+                        </a>
+                        <a href="#" class="dropdown-item">
+                            <div class="dropdown-icon">
+                                <i class="ri-settings-3-line"></i>
+                            </div>
+                            <span>Configurações</span>
+                        </a>
+                        <div class="dropdown-divider"></div>
+                        <a href="#" class="dropdown-item">
+                            <div class="dropdown-icon">
+                                <i class="ri-logout-box-line"></i>
+                            </div>
+                            <span>Sair</span>
+                        </a>
+                    </div>
+                </div>
             </div>
         </div>
     </header>
@@ -936,203 +1109,4 @@
                             <img src="https://randomuser.me/api/portraits/women/68.jpg" alt="Autor" class="post-author-avatar">
                             <div class="author-info">
                                 <span class="author-name">JuliaFPS</span>
-                                <span class="post-time">Ontem</span>
-                            </div>
-                        </div>
-                        <div class="post-category">Arte e Conteúdo</div>
-                    </div>
-                    <div class="post-content">
-                        <h3>Minha nova fanart do Genshin Impact - Personagem Zhongli</h3>
-                        <p>Demorei cerca de 20 horas para finalizar essa ilustração do Zhongli. Fiz usando Photoshop e uma mesa digitalizadora. O que acharam?</p>
-                        <img src="https://images.unsplash.com/photo-1633327941347-6cea86b5f1f8?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" alt="Fanart" class="post-image">
-                    </div>
-                    <div class="post-stats">
-                        <div>347 curtidas</div>
-                        <div>56 comentários</div>
-                        <div>42 compartilhamentos</div>
-                    </div>
-                    <div class="post-actions">
-                        <button class="post-action active">
-                            <i class="fas fa-thumbs-up"></i> Curtido
-                        </button>
-                        <button class="post-action">
-                            <i class="fas fa-comment"></i> Comentar
-                        </button>
-                        <button class="post-action">
-                            <i class="fas fa-share"></i> Compartilhar
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Sidebar Direita -->
-        <div class="right-sidebar">
-            <div class="community-events">
-                <h3><i class="fas fa-calendar-alt"></i> Próximos Eventos</h3>
-                <div class="events-list">
-                    <div class="event">
-                        <div class="event-date">
-                            <span class="event-day">15</span>
-                            <span class="event-month">JUN</span>
-                        </div>
-                        <div class="event-info">
-                            <div class="event-title">Torneio de Fortnite</div>
-                            <div class="event-details">
-                                <span><i class="fas fa-clock"></i> 20:00 BRT</span>
-                                <span><i class="fas fa-trophy"></i> Prêmio: R$ 1.000</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="event">
-                        <div class="event-date">
-                            <span class="event-day">22</span>
-                            <span class="event-month">JUN</span>
-                        </div>
-                        <div class="event-info">
-                            <div class="event-title">Lançamento: Starfield</div>
-                            <div class="event-details">
-                                <span><i class="fas fa-clock"></i> 00:01 BRT</span>
-                                <span><i class="fas fa-gamepad"></i> Pré-venda disponível</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="event">
-                        <div class="event-date">
-                            <span class="event-day">30</span>
-                            <span class="event-month">JUN</span>
-                        </div>
-                        <div class="event-info">
-                            <div class="event-title">Encontro de Cosplay</div>
-                            <div class="event-details">
-                                <span><i class="fas fa-clock"></i> 15:00 BRT</span>
-                                <span><i class="fas fa-map-marker-alt"></i> Discord Oficial</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="popular-games">
-                <h3><i class="fas fa-fire"></i> Jogos Populares</h3>
-                <div class="games-list">
-                    <div class="game-item">
-                        <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/730/header.jpg" alt="CS:GO" class="game-icon">
-                        <div class="game-info">
-                            <div class="game-name">Counter-Strike 2</div>
-                            <div class="game-stats">
-                                <span><i class="fas fa-users"></i> 542K</span>
-                                <span><i class="fas fa-comments"></i> 12K</span>
-                            </div>
-                        </div>
-                        <button class="join-btn">Participar</button>
-                    </div>
-                    <div class="game-item">
-                        <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/570/header.jpg" alt="Dota 2" class="game-icon">
-                        <div class="game-info">
-                            <div class="game-name">Dota 2</div>
-                            <div class="game-stats">
-                                <span><i class="fas fa-users"></i> 328K</span>
-                                <span><i class="fas fa-comments"></i> 8.4K</span>
-                            </div>
-                        </div>
-                        <button class="join-btn">Participar</button>
-                    </div>
-                    <div class="game-item">
-                        <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/1245620/header.jpg" alt="Elden Ring" class="game-icon">
-                        <div class="game-info">
-                            <div class="game-name">Elden Ring</div>
-                            <div class="game-stats">
-                                <span><i class="fas fa-users"></i> 198K</span>
-                                <span><i class="fas fa-comments"></i> 24K</span>
-                            </div>
-                        </div>
-                        <button class="join-btn">Participar</button>
-                    </div>
-                    <div class="game-item">
-                        <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/1086940/header.jpg" alt="Baldur's Gate 3" class="game-icon">
-                        <div class="game-info">
-                            <div class="game-name">Baldur's Gate 3</div>
-                            <div class="game-stats">
-                                <span><i class="fas fa-users"></i> 142K</span>
-                                <span><i class="fas fa-comments"></i> 18K</span>
-                            </div>
-                        </div>
-                        <button class="join-btn">Participar</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <footer>
-        <div class="footer-content">
-            <div class="footer-column">
-                <h3>ArtemiScore Community</h3>
-                <p style="color: #aaa; line-height: 1.6; margin-bottom: 1.5rem;">
-                    Conectando jogadores, compartilhando paixões e construindo a melhor comunidade de games do mundo.
-                </p>
-                <div class="social-links">
-                    <a href="#"><i class="fab fa-discord"></i></a>
-                    <a href="#"><i class="fab fa-twitter"></i></a>
-                    <a href="#"><i class="fab fa-instagram"></i></a>
-                    <a href="#"><i class="fab fa-youtube"></i></a>
-                    <a href="#"><i class="fab fa-twitch"></i></a>
-                </div>
-            </div>
-            
-            <div class="footer-column">
-                <h3>Recursos</h3>
-                <ul class="footer-links">
-                    <li><a href="#"><i class="fas fa-book"></i> Fórum</a></li>
-                    <li><a href="#"><i class="fas fa-calendar"></i> Eventos</a></li>
-                    <li><a href="#"><i class="fas fa-users"></i> Grupos</a></li>
-                    <li><a href="#"><i class="fas fa-trophy"></i> Torneios</a></li>
-                    <li><a href="#"><i class="fas fa-download"></i> Downloads</a></li>
-                </ul>
-            </div>
-            
-            <div class="footer-column">
-                <h3>Suporte</h3>
-                <ul class="footer-links">
-                    <li><a href="#"><i class="fas fa-question-circle"></i> Central de Ajuda</a></li>
-                    <li><a href="#"><i class="fas fa-book"></i> Documentação</a></li>
-                    <li><a href="#"><i class="fas fa-comments"></i> Fale Conosco</a></li>
-                    <li><a href="#"><i class="fas fa-shield-alt"></i> Política de Privacidade</a></li>
-                    <li><a href="#"><i class="fas fa-file-alt"></i> Termos de Uso</a></li>
-                </ul>
-            </div>
-        </div>
-        
-        <div class="copyright">
-            © 2025 ArtemiScore Community — Desenvolvido para gamers por gamers. Todos os direitos reservados.
-        </div>
-    </footer>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Interação com os botões de ação
-            const actionButtons = document.querySelectorAll('.action-btn, .post-action');
-            actionButtons.forEach(button => {
-                button.addEventListener('click', function() {
-                    this.classList.toggle('active');
-                    
-                    if(this.querySelector('.fa-thumbs-up')) {
-                        if(this.classList.contains('active')) {
-                            this.innerHTML = '<i class="fas fa-thumbs-up"></i> Curtido';
-                        } else {
-                            this.innerHTML = '<i class="fas fa-thumbs-up"></i> Curtir';
-                        }
-                    }
-                });
-            });
-            
-            // Simulação de contagem de membros online
-            const onlineCount = document.querySelector('.online-indicator');
-            setInterval(() => {
-                onlineCount.style.backgroundColor = onlineCount.style.backgroundColor === 'var(--green)' ? 'var(--gray-light)' : 'var(--green)';
-            }, 5000);
-        });
-    </script>
-</body>
-</html>
+                                <span class="post
