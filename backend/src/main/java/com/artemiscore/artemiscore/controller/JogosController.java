@@ -1,8 +1,12 @@
 package com.artemiscore.artemiscore.controller;
 
-
-
-import com.artemiscore.artemiscore.model.rawghApi.*;
+import com.artemiscore.artemiscore.model.rawghApi.AchievementDTO;
+import com.artemiscore.artemiscore.model.rawghApi.GameCardDTO;
+import com.artemiscore.artemiscore.model.rawghApi.GameDTO;
+import com.artemiscore.artemiscore.model.rawghApi.GenreDTO;
+import com.artemiscore.artemiscore.model.rawghApi.PlatformDTO;
+import com.artemiscore.artemiscore.model.rawghApi.ScreenshotDTO;
+import com.artemiscore.artemiscore.model.rawghApi.StoreDTO;
 import com.artemiscore.artemiscore.service.RawgService;
 
 import org.springframework.http.HttpStatus;
@@ -117,6 +121,62 @@ public ResponseEntity<?> searchGames(@RequestParam(required = false) String nome
                     .body("Erro ao buscar jogo: " + e.getMessage());
         }
     }
+
+    // --------------------- Detalhes de Jogo por Slug ---------------------
+    @GetMapping("/slug/{slug}")
+    public ResponseEntity<?> getGameBySlug(@PathVariable String slug) {
+        try {
+            GameDTO game = rawgService.getGameBySlug(slug);
+            if (game == null) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("Jogo não encontrado com o slug: " + slug);
+            }
+            return ResponseEntity.ok(game);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Erro ao buscar jogo: " + e.getMessage());
+        }
+    }
+
+    @GetMapping("/detalhado")
+public ResponseEntity<?> getAllGamesWithDescription() {
+    try {
+        List<GameDTO> jogos = rawgService.searchGames(null); // pega todos os jogos (ou pagine se quiser)
+        if (jogos == null || jogos.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Nenhum jogo encontrado.");
+        }
+
+        // Para cada jogo, busca os detalhes completos pelo slug e atualiza as descrições
+        for (GameDTO jogo : jogos) {
+            GameDTO detalhado = rawgService.getGameBySlug(jogo.getSlug());
+            if (detalhado != null) {
+                jogo.setDescription(detalhado.getDescription());
+                jogo.setDescription_raw(detalhado.getDescription_raw());
+            }
+        }
+        return ResponseEntity.ok(jogos);
+
+    } catch (Exception e) {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body("Erro ao buscar jogos detalhados: " + e.getMessage());
+    }
+}
+
+    // --------------------- Cards de Jogo ---------------------
+    @GetMapping("/cards")
+    public ResponseEntity<?> getGameCards() {
+        try {
+            List<GameCardDTO> cards = rawgService.getBasicGameCards();
+            if (cards == null || cards.isEmpty()) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Nenhum card de jogo encontrado.");
+            }
+            return ResponseEntity.ok(cards);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Erro ao buscar cards: " + e.getMessage());
+        }
+    }
+
 
     // --------------------- Screenshots ---------------------
     @GetMapping("/{id}/screenshots")
