@@ -30,20 +30,31 @@ public class SecurityConfiguration {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-            .csrf(csfr -> csfr.disable()) // desativa CSRF para facilitar testes com Postman, por exemplo
-            .authorizeHttpRequests(auth -> auth
-            .requestMatchers("/login","/cadastro","/css/**","/js/**").permitAll() //rotas publicas
-            .anyRequest().authenticated()// o resto precisa estar logado
-            )
-            .formLogin(form -> form
-            .loginPage("login")// página personalizada de login
-            .defaultSuccessUrl("home",true)// redireciona após login bem-sucedido
+        .csrf(csrf -> csrf.disable())
+        .authorizeHttpRequests(auth -> auth
+        // Define as rotas públicas
+        .requestMatchers(
+            "/login", 
+            "/cadastro", 
+            "/css/**", 
+            "/js/**", 
+            "/api/games/**",        
+            "/avaliacoes/**"        
+            ).permitAll()
+            .anyRequest().authenticated()
+        )
+
+        .formLogin(form -> form
+            .loginPage("/login")                          
+            .defaultSuccessUrl("/home", true)             
             .permitAll()
-            )
-            .logout(logout -> logout
-            .logoutSuccessUrl("/login?logout")//redireciona apos logout
+        )
+        .logout(logout -> logout
+            .logoutSuccessUrl("/login?logout")            
             .permitAll()
-            );
-            return http.build();
+        );
+
+    return http.build();
     }
+
 }

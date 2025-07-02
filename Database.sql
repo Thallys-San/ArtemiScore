@@ -1,7 +1,7 @@
 CREATE DATABASE ArtemiScore;
 use ArtemiScore;
 
-CREATE TABLE usuarios (
+CREATE TABLE IF NOT EXISTS usuarios (
    id BIGINT AUTO_INCREMENT PRIMARY KEY,
    nome VARCHAR(255) NOT NULL,
    email VARCHAR(255) UNIQUE NOT NULL,
@@ -12,7 +12,7 @@ CREATE TABLE usuarios (
 );
 
 
-CREATE TABLE avaliacoes (
+CREATE TABLE IF NOT EXISTS avaliacoes (
   id BIGINT PRIMARY KEY auto_increment,
   usuario_id BIGINT NOT NULL,
   jogo_id BIGINT NOT NULL, -- id do jogo na API RAWG

@@ -96,6 +96,41 @@ public class RawgService {
         }
     }
 
+    public GameDTO getGameBySlug(String slug) {
+    String url = BASE_URL + "games/" + slug + "?key=" + apiKey;
+    ResponseEntity<GameDTO> response = restTemplate.exchange(
+        url,
+        HttpMethod.GET,
+        null,
+        new ParameterizedTypeReference<GameDTO>() {}
+    );
+    return response.getBody();
+    }
+
+        // Game Ca
+        public List<GameCardDTO> getBasicGameCards() {
+        List<GameDTO> jogos = searchGames(null); // busca jogos da API
+
+        return jogos.stream().map(j -> {
+            GameDTO detalhado = getGameBySlug(j.getSlug()); // uma chamada por jogo
+
+            GameCardDTO card = new GameCardDTO();
+            card.setId(j.getId());
+            card.setName(j.getName());
+            card.setSlug(j.getSlug());
+            card.setReleased(j.getReleased());
+            card.setBackground_image(j.getBackground_image());
+
+            if (detalhado != null) {
+                card.setDescription(detalhado.getDescription());
+                card.setDescription_raw(detalhado.getDescription_raw());
+            }
+
+            return card;
+        }).toList();
+    }
+
+
     // Screenshots
     public List<ScreenshotDTO> getGameScreenshots(Long gameId) {
         String url = BASE_URL + "games/" + gameId + "/screenshots?key=" + apiKey;
