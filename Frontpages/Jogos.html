@@ -1,684 +1,813 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ArtemiScore - Avaliador de Jogos</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css">
-  <style>
-    * { 
-      margin: 0; 
-      padding: 0; 
-      box-sizing: border-box; 
-    }
-    
-    body {
-      font-family: 'Poppins', sans-serif;
-      background: #0f0f13;
-      color: #e1e1e1;
-      padding-top: 80px;
-    }
-    
-    a { 
-      color: inherit; 
-      text-decoration: none; 
-    }
-    
-    :root {
-      --primary: #5733ef;
-      --accent: #c688ff;
-      --dark: #0f0f13;
-      --gray: #1e1e24;
-      --light-gray: #6d6d7a;
-      --yellow: #fdcb6e;
-    }
-    
-    /* Header Styles */
-    .container {
-      max-width: 1400px;
-      margin: 0 auto;
-      padding: 0 2rem;
-    }
-    
-    .header-container {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    
-    header {
-      position: fixed;
-      top: 0; 
-      left: 0;
-      width: 100%;
-      background: rgba(15,15,19,0.95);
-      backdrop-filter: blur(8px);
-      padding: 1rem 0;
-      z-index: 1000;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-      border-bottom: 1px solid var(--primary);
-    }
-    
-    .font-pacifico {
-      font-family: 'Pacifico', cursive;
-    }
-    
-    .logo {
-      font-size: 1.8rem;
-      font-weight: 700;
-      background: linear-gradient(45deg, var(--primary), var(--accent));
-      -webkit-background-clip: text;
-      color: transparent;
-    }
-    
-    .flex {
-      display: flex;
-    }
-    
-    .items-center {
-      align-items: center;
-    }
-    
-    .gap-4 {
-      gap: 1rem;
-    }
-    
-    .main-nav {
-      display: flex;
-      margin-left: 2rem;
-    }
-    
-    .nav-link {
-      margin-left: 1.5rem;
-      font-weight: 500;
-      color: var(--light-gray);
-      transition: 0.3s;
-      position: relative;
-    }
-    
-    .nav-link:hover {
-      color: white;
-    }
-    
-    .nav-link::after {
-      content: '';
-      position: absolute;
-      width: 0;
-      height: 2px;
-      bottom: -4px;
-      left: 0;
-      background-color: var(--primary);
-      transition: width 0.3s;
-    }
-    
-    .nav-link:hover::after {
-      width: 100%;
-    }
-    
-    .nav-link.active {
-      color: white;
-    }
-    
-    .nav-link.active::after {
-      width: 100%;
-    }
-    
-    .search-bar {
-      position: relative;
-      display: flex;
-      align-items: center;
-    }
-    
-    .search-input {
-      background: var(--gray);
-      border: 1px solid #2a2a35;
-      border-radius: 20px;
-      padding: 0.5rem 1rem 0.5rem 2.5rem;
-      color: white;
-      outline: none;
-      transition: all 0.3s;
-      width: 200px;
-    }
-    
-    .search-input:focus {
-      border-color: var(--primary);
-      width: 250px;
-    }
-    
-    .search-icon {
-      position: absolute;
-      left: 12px;
-      color: var(--light-gray);
-    }
-    
-    .user-menu-button {
-      background: var(--gray);
-      width: 36px;
-      height: 36px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      transition: all 0.3s;
-    }
-    
-    .user-menu-button:hover {
-      background: var(--primary);
-    }
-    
-    .user-icon {
-      font-size: 1.2rem;
-    }
-    
-    .relative {
-      position: relative;
-    }
-    
-    .user-dropdown {
-      position: absolute;
-      right: 0;
-      top: 50px;
-      background: var(--gray);
-      border-radius: 8px;
-      padding: 0.5rem 0;
-      min-width: 200px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-      border: 1px solid #2a2a35;
-      opacity: 0;
-      visibility: hidden;
-      transform: translateY(-10px);
-      transition: all 0.3s;
-      z-index: 100;
-    }
-    
-    #userMenuContainer:hover .user-dropdown {
-      opacity: 1;
-      visibility: visible;
-      transform: translateY(0);
-    }
-    
-    .dropdown-item {
-      display: flex;
-      align-items: center;
-      padding: 0.5rem 1rem;
-      color: var(--light-gray);
-      transition: all 0.3s;
-    }
-    
-    .dropdown-item:hover {
-      background: rgba(87, 51, 239, 0.1);
-      color: white;
-    }
-    
-    .dropdown-icon {
-      margin-right: 0.75rem;
-      width: 20px;
-      display: flex;
-      justify-content: center;
-    }
-    
-    .dropdown-divider {
-      height: 1px;
-      background: #2a2a35;
-      margin: 0.5rem 0;
-    }
-    
-    /* Section Styles */
-    .section {
-      padding: 3rem 2rem;
-      max-width: 1400px;
-      margin: auto;
-    }
-    
-    .section h2 {
-      font-size: 2rem;
-      margin-bottom: 1.5rem;
-      color: white;
-      border-left: 5px solid var(--primary);
-      padding-left: 0.75rem;
-      position: relative;
-    }
-    
-    .section h2::after {
-      content: '';
-      position: absolute;
-      bottom: -8px;
-      left: 0;
-      width: 50px;
-      height: 3px;
-      background: linear-gradient(90deg, var(--primary), transparent);
-    }
-    
-    .games-grid {
-      display: grid;
-      grid-template-columns: repeat(5, 1fr);
-      gap: 2rem;
-    }
-    
-    .game-card {
-      background: var(--gray);
-      border-radius: 12px;
-      overflow: hidden;
-      border: 1px solid #2a2a35;
-      transition: 0.3s;
-      display: flex;
-      flex-direction: column;
-    }
-    
-    .game-card:hover {
-      transform: translateY(-6px);
-      border-color: var(--primary);
-      box-shadow: 0 10px 20px rgba(87, 51, 239, 0.2);
-    }
-    
-    .game-image {
-      width: 100%;
-      height: 160px;
-      object-fit: cover;
-      transition: transform 0.3s;
-    }
-    
-    .game-card:hover .game-image {
-      transform: scale(1.05);
-    }
-    
-    .game-info {
-      padding: 1rem;
-      flex-grow: 1;
-      display: flex;
-      flex-direction: column;
-    }
-    
-    .game-title {
-      font-size: 1rem;
-      font-weight: 600;
-      margin-bottom: 0.5rem;
-      color: white;
-    }
-    
-    .rating {
-      color: var(--yellow);
-      font-size: 1rem;
-      margin-top: auto;
-      display: flex;
-      align-items: center;
-    }
-    
-    .rating::before {
-      content: '★';
-      margin-right: 4px;
-      font-size: 1.2rem;
-    }
-    
-    /* Footer Styles */
-    footer {
-      text-align: center;
-      padding: 2rem;
-      background-color: #0a0a0d;
-      font-size: 0.85rem;
-      color: var(--light-gray);
-      border-top: 1px solid #2a2a35;
-    }
-    
-    /* Responsive Styles */
-    @media (max-width: 1200px) {
-      .games-grid {
-        grid-template-columns: repeat(4, 1fr);
-      }
-    }
-    
-    @media (max-width: 900px) {
-      .games-grid {
-        grid-template-columns: repeat(3, 1fr);
-      }
-      
-      .search-input {
-        width: 150px;
-      }
-      
-      .search-input:focus {
-        width: 180px;
-      }
-    }
-    
-    @media (max-width: 600px) {
-      .games-grid {
-        grid-template-columns: repeat(2, 1fr);
-      }
-      
-      .header-container {
-        padding: 0 1rem;
-      }
-      
-      .nav-link {
-        margin-left: 1rem;
-        font-size: 0.9rem;
-      }
-      
-      .main-nav {
-        margin-left: 1rem;
-      }
-      
-      .search-input {
-        display: none;
-      }
-      
-      .search-icon {
-        position: static;
-        margin-left: 0.5rem;
-      }
-    }
-    
-    @media (max-width: 400px) {
-      .games-grid {
-        grid-template-columns: 1fr;
-      }
-      
-      .logo {
-        font-size: 1.5rem;
-      }
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ArtemiScore - Avaliador de Jogos</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"> <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--darker) 0%, var(--dark) 100%); /* Improved background */
+            color: #e1e1e1;
+            min-height: 100vh; /* Ensure full height */
+            position: relative;
+            overflow-x: hidden;
+            padding-top: 80px;
+        }
+
+        /* Added background effect */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 10% 20%, rgba(87, 51, 239, 0.1) 0%, rgba(15, 15, 19, 0) 40%),
+                        radial-gradient(circle at 90% 80%, rgba(198, 136, 255, 0.1) 0%, rgba(15, 15, 19, 0) 40%);
+            z-index: -1;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        :root {
+            --primary: #5733ef;
+            --primary-dark: #4625c9; /* Added for hover effects */
+            --accent: #c688ff;
+            --dark: #0f0f13;
+            --darker: #0a0a0d; /* Added for footer background */
+            --gray: #1e1e24;
+            --gray-light: #2a2a35; /* Added for borders/dividers */
+            --light-gray: #6d6d7a;
+            --yellow: #fdcb6e;
+        }
+
+        /* Header Styles */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%; /* Ensure it spans full width */
+        }
+
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(15,15,19,0.95);
+            backdrop-filter: blur(8px);
+            padding: 1rem 0;
+            z-index: 1000;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            border-bottom: 1px solid var(--primary);
+        }
+
+        .font-pacifico {
+            font-family: 'Pacifico', cursive;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            background: linear-gradient(45deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            color: transparent;
+            display: flex; /* Aligned with icon */
+            align-items: center;
+            gap: 8px; /* Spacing between icon and text */
+        }
+
+        .flex {
+            display: flex;
+        }
+
+        .items-center {
+            align-items: center;
+        }
+
+        .gap-4 {
+            gap: 1rem;
+        }
+
+        .main-nav {
+            display: flex;
+            margin-left: 2rem;
+        }
+
+        .nav-link {
+            margin-left: 1.5rem;
+            font-weight: 500;
+            color: var(--light-gray);
+            transition: 0.3s;
+            position: relative;
+            text-decoration: none; /* Ensure no underline */
+        }
+
+        .nav-link:hover, .nav-link.active {
+            color: white;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -4px;
+            left: 0;
+            background-color: var(--primary);
+            transition: width 0.3s;
+        }
+
+        .nav-link:hover::after, .nav-link.active::after {
+            width: 100%;
+        }
+
+        .search-bar {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .search-input {
+            background: var(--gray);
+            border: 1px solid #2a2a35;
+            border-radius: 20px;
+            padding: 0.5rem 1rem 0.5rem 2.5rem;
+            color: white;
+            outline: none;
+            transition: all 0.3s;
+            width: 200px;
+        }
+
+        .search-input:focus {
+            border-color: var(--primary);
+            width: 250px;
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 12px;
+            color: var(--light-gray);
+        }
+
+        .user-menu-button {
+            background: var(--gray);
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .user-menu-button:hover {
+            background: var(--primary);
+        }
+
+        .user-icon { /* For default icon, not used with img */
+            font-size: 1.2rem;
+        }
+
+        .relative {
+            position: relative;
+        }
+
+        .user-dropdown {
+            position: absolute;
+            right: 0;
+            top: 50px;
+            background: var(--gray);
+            border-radius: 8px;
+            padding: 0.5rem 0;
+            min-width: 200px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            border: 1px solid #2a2a35;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.3s;
+            z-index: 100;
+        }
+
+        /* Show dropdown on container hover */
+        #userMenuContainer:hover .user-dropdown {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .dropdown-item {
+            display: flex;
+            align-items: center;
+            padding: 0.5rem 1rem;
+            color: var(--light-gray);
+            transition: all 0.3s;
+            text-decoration: none; /* Ensure no underline */
+        }
+
+        .dropdown-item:hover {
+            background: rgba(87, 51, 239, 0.1);
+            color: white;
+        }
+
+        .dropdown-icon {
+            margin-right: 0.75rem;
+            width: 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .dropdown-divider {
+            height: 1px;
+            background: #2a2a35;
+            margin: 0.5rem 0;
+        }
+
+        /* Section Styles */
+        .section {
+            padding: 3rem 2rem;
+            max-width: 1400px;
+            margin: auto;
+        }
+
+        .section h2 {
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            color: white;
+            border-left: 5px solid var(--primary);
+            padding-left: 0.75rem;
+            position: relative;
+        }
+
+        .section h2::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            width: 50px;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary), transparent);
+        }
+
+        .games-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); /* More flexible grid */
+            gap: 2rem;
+        }
+
+        .game-card {
+            background: var(--gray);
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid #2a2a35;
+            transition: 0.3s;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .game-card:hover {
+            transform: translateY(-6px);
+            border-color: var(--primary);
+            box-shadow: 0 10px 20px rgba(87, 51, 239, 0.2);
+        }
+
+        .game-image {
+            width: 100%;
+            height: 160px;
+            object-fit: cover;
+            transition: transform 0.3s;
+        }
+
+        .game-card:hover .game-image {
+            transform: scale(1.05);
+        }
+
+        .game-info {
+            padding: 1rem;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .game-title {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: white;
+            white-space: nowrap; /* Prevent title wrapping */
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .rating {
+            color: var(--yellow);
+            font-size: 1rem;
+            margin-top: auto;
+            display: flex;
+            align-items: center;
+        }
+
+        .rating i { /* Changed to use Font Awesome star */
+            margin-right: 4px;
+            font-size: 1.2rem;
+        }
+
+        /* Footer Styles */
+        footer {
+            background: var(--darker); /* Darker background */
+            padding: 2rem 0;
+            margin-top: 3rem;
+            border-top: 1px solid var(--gray-light);
+        }
+
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 1rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Flexible columns */
+            gap: 2rem;
+        }
+
+        .footer-column h3 {
+            color: white;
+            margin-bottom: 1.5rem;
+            position: relative;
+            padding-bottom: 0.5rem;
+        }
+
+        .footer-column h3::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 40px;
+            height: 2px;
+            background: var(--primary);
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 0.8rem;
+        }
+
+        .footer-links a {
+            color: var(--light-gray);
+            transition: 0.3s;
+            font-size: 0.95rem;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .footer-links a:hover {
+            color: var(--accent);
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .social-links a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+            background: var(--gray);
+            border-radius: 50%;
+            color: white;
+            transition: 0.3s;
+            text-decoration: none;
+        }
+
+        .social-links a:hover {
+            background: var(--primary);
+            transform: translateY(-3px);
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 2rem;
+            margin-top: 2rem;
+            border-top: 1px solid var(--gray-light);
+            color: var(--light-gray);
+            font-size: 0.9rem;
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 1200px) {
+            .games-grid {
+                grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            }
+        }
+
+        @media (max-width: 900px) {
+            .games-grid {
+                grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            }
+
+            .main-nav {
+                display: none; /* Hide main nav for smaller screens */
+            }
+
+            .search-input {
+                width: 150px;
+            }
+
+            .search-input:focus {
+                width: 180px;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .games-grid {
+                grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            }
+
+            .header-container {
+                padding: 0 1rem;
+            }
+
+            .logo {
+                font-size: 1.5rem;
+            }
+
+            .search-input {
+                display: none; /* Hide search input completely on very small screens */
+            }
+
+            .search-icon {
+                position: static;
+                margin-left: 0.5rem;
+            }
+        }
+
+        @media (max-width: 400px) {
+            .games-grid {
+                grid-template-columns: 1fr; /* Single column on smallest screens */
+            }
+        }
+    </style>
 </head>
 <body>
-  <!-- Header -->
-  <header>
-    <div class="container header-container">
-      <div class="flex items-center">
-        <a href="#" class="logo font-pacifico">ArtemiScore</a>
-        <nav class="main-nav">
-          <a href="/" class="nav-link active">Início</a>
-          <a href="Jogos.html" class="nav-link">Jogos</a>
-          <a href="rank.html" class="nav-link">Ranking</a>
-          <a href="Lançamentos.html" class="nav-link">Lançamentos</a>
-          <a href="comunidade.html" class="nav-link">Comunidade</a>
-        </nav>
-      </div>
-      <div class="flex items-center gap-4">
-        <div class="search-bar">
-          <input type="text" placeholder="Buscar jogos..." class="search-input">
-          <div class="search-icon">
-            <i class="ri-search-line"></i>
-          </div>
+    <header>
+        <div class="container header-container">
+            <div class="flex items-center">
+                <a href="/" class="logo font-pacifico">
+                    <i class="fas fa-gamepad"></i> ArtemiScore
+                </a>
+                <nav class="main-nav">
+                    <a href="/" class="nav-link active">Início</a>
+                    <a href="Jogos.html" class="nav-link">Jogos</a>
+                    <a href="rank.html" class="nav-link">Comunidade</a> <a href="Lançamentos.html" class="nav-link">Lançamentos</a>
+                    <a href="comunidade.html" class="nav-link">Fórum</a> </nav>
+            </div>
+            <div class="flex items-center gap-4">
+                <div class="search-bar">
+                    <input type="text" placeholder="Buscar jogos..." class="search-input">
+                    <div class="search-icon">
+                        <i class="ri-search-line"></i>
+                    </div>
+                </div>
+                <div class="relative" id="userMenuContainer">
+                    <div class="user-menu-button" id="userMenuButton">
+                        <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Usuário" style="width: 36px; height: 36px; border-radius: 50%; object-fit: cover;"> </div>
+                    <div class="user-dropdown" id="userDropdownMenu">
+                        <a href="#" class="dropdown-item">
+                            <div class="dropdown-icon">
+                                <i class="ri-user-3-line"></i>
+                            </div>
+                            <span>Meu Perfil</span>
+                        </a>
+                        <a href="#" class="dropdown-item">
+                            <div class="dropdown-icon">
+                                <i class="ri-star-line"></i>
+                            </div>
+                            <span>Minhas Avaliações</span>
+                        </a>
+                        <a href="#" class="dropdown-item">
+                            <div class="dropdown-icon">
+                                <i class="ri-heart-line"></i>
+                            </div>
+                            <span>Jogos Favoritos</span>
+                        </a>
+                        <a href="settings.html" class="dropdown-item"> <div class="dropdown-icon">
+                                <i class="ri-settings-3-line"></i>
+                            </div>
+                            <span>Configurações</span>
+                        </a>
+                        <div class="dropdown-divider"></div>
+                        <a href="#" class="dropdown-item">
+                            <div class="dropdown-icon">
+                                <i class="ri-logout-box-line"></i>
+                            </div>
+                            <span>Sair</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="relative" id="userMenuContainer">
-          <div class="user-menu-button" id="userMenuButton">
-            <i class="ri-user-line user-icon"></i>
-          </div>
-          <div class="user-dropdown" id="userDropdownMenu">
-            <a href="#" class="dropdown-item">
-              <div class="dropdown-icon">
-                <i class="ri-user-3-line"></i>
-              </div>
-              <span>Meu Perfil</span>
-            </a>
-            <a href="#" class="dropdown-item">
-              <div class="dropdown-icon">
-                <i class="ri-star-line"></i>
-              </div>
-              <span>Minhas Avaliações</span>
-            </a>
-            <a href="#" class="dropdown-item">
-              <div class="dropdown-icon">
-                <i class="ri-heart-line"></i>
-              </div>
-              <span>Jogos Favoritos</span>
-            </a>
-            <a href="#" class="dropdown-item">
-              <div class="dropdown-icon">
-                <i class="ri-settings-3-line"></i>
-              </div>
-              <span>Configurações</span>
-            </a>
-            <div class="dropdown-divider"></div>
-            <a href="#" class="dropdown-item">
-              <div class="dropdown-icon">
-                <i class="ri-logout-box-line"></i>
-              </div>
-              <span>Sair</span>
-            </a>
-          </div>
-        </div>
-      </div>
-    </div>
-  </header>
+    </header>
 
-  <!-- Destaques -->
-  <section class="section" id="destaques">
-    <h2>Destaques</h2>
-    <div class="games-grid">
-      <div class="game-card">
-        <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/271590/header.jpg" class="game-image" />
-        <div class="game-info">
-          <div class="game-title">GTA V</div>
-          <div class="rating">5.0</div>
+    <section class="section" id="destaques">
+        <h2>Destaques</h2>
+        <div class="games-grid">
+            <div class="game-card">
+                <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/271590/header.jpg" class="game-image" alt="GTA V" />
+                <div class="game-info">
+                    <div class="game-title">Grand Theft Auto V</div> <div class="rating"><i class="fas fa-star"></i> 5.0</div>
+                </div>
+            </div>
+            <div class="game-card">
+                <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/1174180/header.jpg" class="game-image" alt="Red Dead Redemption 2" />
+                <div class="game-info">
+                    <div class="game-title">Red Dead Redemption 2</div>
+                    <div class="rating"><i class="fas fa-star"></i> 5.0</div>
+                </div>
+            </div>
+            <div class="game-card">
+                <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/292030/header.jpg" class="game-image" alt="The Witcher 3" />
+                <div class="game-info">
+                    <div class="game-title">The Witcher 3: Wild Hunt</div> <div class="rating"><i class="fas fa-star"></i> 5.0</div>
+                </div>
+            </div>
+            <div class="game-card">
+                <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/812140/header.jpg" class="game-image" alt="Assassin's Creed Odyssey" />
+                <div class="game-info">
+                    <div class="game-title">Assassin's Creed Odyssey</div>
+                    <div class="rating"><i class="fas fa-star"></i> 4.5</div>
+                </div>
+            </div>
+            <div class="game-card">
+                <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/379720/header.jpg" class="game-image" alt="DOOM" />
+                <div class="game-info">
+                    <div class="game-title">DOOM (2016)</div> <div class="rating"><i class="fas fa-star"></i> 4.5</div>
+                </div>
+            </div>
         </div>
-      </div>
-      <div class="game-card">
-        <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/1174180/header.jpg" class="game-image" />
-        <div class="game-info">
-          <div class="game-title">Red Dead Redemption 2</div>
-          <div class="rating">5.0</div>
-        </div>
-      </div>
-      <div class="game-card">
-        <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/292030/header.jpg" class="game-image" />
-        <div class="game-info">
-          <div class="game-title">The Witcher 3</div>
-          <div class="rating">5.0</div>
-        </div>
-      </div>
-      <div class="game-card">
-        <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/812140/header.jpg" class="game-image" />
-        <div class="game-info">
-          <div class="game-title">Assassin's Creed Odyssey</div>
-          <div class="rating">4.5</div>
-        </div>
-      </div>
-      <div class="game-card">
-        <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/379720/header.jpg" class="game-image" />
-        <div class="game-info">
-          <div class="game-title">DOOM</div>
-          <div class="rating">4.5</div>
-        </div>
-      </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- Melhores Avaliações -->
-  <section class="section" id="melhores">
-    <h2>Melhores Avaliações</h2>
-    <div class="games-grid">
-      <div class="game-card">
-        <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/601150/header.jpg" class="game-image" />
-        <div class="game-info">
-          <div class="game-title">Devil May Cry 5</div>
-          <div class="rating">5.0</div>
+    <section class="section" id="melhores">
+        <h2>Melhores Avaliações</h2>
+        <div class="games-grid">
+            <div class="game-card">
+                <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/601150/header.jpg" class="game-image" alt="Devil May Cry 5" />
+                <div class="game-info">
+                    <div class="game-title">Devil May Cry 5</div>
+                    <div class="rating"><i class="fas fa-star"></i> 5.0</div>
+                </div>
+            </div>
+            <div class="game-card">
+                <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/413150/header.jpg" class="game-image" alt="Stardew Valley" />
+                <div class="game-info">
+                    <div class="game-title">Stardew Valley</div>
+                    <div class="rating"><i class="fas fa-star"></i> 5.0</div>
+                </div>
+            </div>
+            <div class="game-card">
+                <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/236390/header.jpg" class="game-image" alt="War Thunder" />
+                <div class="game-info">
+                    <div class="game-title">War Thunder</div>
+                    <div class="rating"><i class="fas fa-star"></i> 5.0</div>
+                </div>
+            </div>
+            <div class="game-card">
+                <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/570/header.jpg" class="game-image" alt="Dota 2" />
+                <div class="game-info">
+                    <div class="game-title">Dota 2</div>
+                    <div class="rating"><i class="fas fa-star"></i> 4.5</div>
+                </div>
+            </div>
+            <div class="game-card">
+                <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/359550/header.jpg" class="game-image" alt="Rainbow Six Siege" />
+                <div class="game-info">
+                    <div class="game-title">Rainbow Six Siege</div>
+                    <div class="rating"><i class="fas fa-star"></i> 4.5</div>
+                </div>
+            </div>
         </div>
-      </div>
-      <div class="game-card">
-        <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/413150/header.jpg" class="game-image" />
-        <div class="game-info">
-          <div class="game-title">Stardew Valley</div>
-          <div class="rating">5.0</div>
-        </div>
-      </div>
-      <div class="game-card">
-        <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/236390/header.jpg" class="game-image" />
-        <div class="game-info">
-          <div class="game-title">War Thunder</div>
-          <div class="rating">5.0</div>
-        </div>
-      </div>
-      <div class="game-card">
-        <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/570/header.jpg" class="game-image" />
-        <div class="game-info">
-          <div class="game-title">Dota 2</div>
-          <div class="rating">4.5</div>
-        </div>
-      </div>
-      <div class="game-card">
-        <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/359550/header.jpg" class="game-image" />
-        <div class="game-info">
-          <div class="game-title">Rainbow Six Siege</div>
-          <div class="rating">4.5</div>
-        </div>
-      </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- Indie Gems -->
-  <section class="section" id="indie">
-    <h2>Jogos Indie Notáveis</h2>
-    <div class="games-grid">
-      <div class="game-card">
-        <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/268910/header.jpg" class="game-image" />
-        <div class="game-info">
-          <div class="game-title">Cuphead</div>
-          <div class="rating">4.5</div>
+    <section class="section" id="indie">
+        <h2>Jogos Indie Notáveis</h2>
+        <div class="games-grid">
+            <div class="game-card">
+                <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/268910/header.jpg" class="game-image" alt="Cuphead" />
+                <div class="game-info">
+                    <div class="game-title">Cuphead</div>
+                    <div class="rating"><i class="fas fa-star"></i> 4.5</div>
+                </div>
+            </div>
+            <div class="game-card">
+                <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/250900/header.jpg" class="game-image" alt="The Binding of Isaac" />
+                <div class="game-info">
+                    <div class="game-title">The Binding of Isaac: Rebirth</div> <div class="rating"><i class="fas fa-star"></i> 4.5</div>
+                </div>
+            </div>
+            <div class="game-card">
+                <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/105600/header.jpg" class="game-image" alt="Terraria" />
+                <div class="game-info">
+                    <div class="game-title">Terraria</div>
+                    <div class="rating"><i class="fas fa-star"></i> 4.5</div>
+                </div>
+            </div>
+            <div class="game-card">
+                <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/367520/header.jpg" class="game-image" alt="Hollow Knight" /> <div class="game-info">
+                    <div class="game-title">Hollow Knight</div>
+                    <div class="rating"><i class="fas fa-star"></i> 5.0</div>
+                </div>
+            </div>
+            <div class="game-card">
+                <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/4000/header.jpg" class="game-image" alt="Garry's Mod" />
+                <div class="game-info">
+                    <div class="game-title">Garry's Mod</div>
+                    <div class="rating"><i class="fas fa-star"></i> 4.5</div>
+                </div>
+            </div>
         </div>
-      </div>
-      <div class="game-card">
-        <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/250900/header.jpg" class="game-image" />
-        <div class="game-info">
-          <div class="game-title">The Binding of Isaac</div>
-          <div class="rating">4.5</div>
-        </div>
-      </div>
-      <div class="game-card">
-        <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/105600/header.jpg" class="game-image" />
-        <div class="game-info">
-          <div class="game-title">Terraria</div>
-          <div class="rating">4.5</div>
-        </div>
-      </div>
-      <div class="game-card">
-        <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/105600/header.jpg" class="game-image" />
-        <div class="game-info">
-          <div class="game-title">Hollow Knight</div>
-          <div class="rating">5.0</div>
-        </div>
-      </div>
-      <div class="game-card">
-        <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/4000/header.jpg" class="game-image" />
-        <div class="game-info">
-          <div class="game-title">Garry's Mod</div>
-          <div class="rating">4.5</div>
-        </div>
-      </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- Lançamentos -->
-  <section class="section" id="lancamentos">
-    <h2>Lançamentos Recentes</h2>
-    <div class="games-grid">
-      <div class="game-card">
-        <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/1245620/header.jpg" class="game-image" />
-        <div class="game-info">
-          <div class="game-title">Elden Ring</div>
-          <div class="rating">5.0</div>
+    <section class="section" id="lancamentos">
+        <h2>Lançamentos Recentes</h2>
+        <div class="games-grid">
+            <div class="game-card">
+                <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/1245620/header.jpg" class="game-image" alt="Elden Ring" />
+                <div class="game-info">
+                    <div class="game-title">Elden Ring</div>
+                    <div class="rating"><i class="fas fa-star"></i> 5.0</div>
+                </div>
+            </div>
+            <div class="game-card">
+                <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/1811260/header.jpg" class="game-image" alt="Forza Horizon 5" />
+                <div class="game-info">
+                    <div class="game-title">Forza Horizon 5</div>
+                    <div class="rating"><i class="fas fa-star"></i> 5.0</div>
+                </div>
+            </div>
+            <div class="game-card">
+                <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/1086940/header.jpg" class="game-image" alt="Baldur's Gate 3" />
+                <div class="game-info">
+                    <div class="game-title">Baldur's Gate 3</div>
+                    <div class="rating"><i class="fas fa-star"></i> 5.0</div>
+                </div>
+            </div>
+            <div class="game-card">
+                <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/239140/header.jpg" class="game-image" alt="Dying Light 2" />
+                <div class="game-info">
+                    <div class="game-title">Dying Light 2 Stay Human</div> <div class="rating"><i class="fas fa-star"></i> 4.0</div>
+                </div>
+            </div>
+            <div class="game-card">
+                <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/1145360/header.jpg" class="game-image" alt="Hades" />
+                <div class="game-info">
+                    <div class="game-title">Hades</div>
+                    <div class="rating"><i class="fas fa-star"></i> 5.0</div>
+                </div>
+            </div>
         </div>
-      </div>
-      <div class="game-card">
-        <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/1811260/header.jpg" class="game-image" />
-        <div class="game-info">
-          <div class="game-title">Forza Horizon 5</div>
-          <div class="rating">5.0</div>
-        </div>
-      </div>
-      <div class="game-card">
-        <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/1086940/header.jpg" class="game-image" />
-        <div class="game-info">
-          <div class="game-title">Baldur's Gate 3</div>
-          <div class="rating">5.0</div>
-        </div>
-      </div>
-      <div class="game-card">
-        <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/239140/header.jpg" class="game-image" />
-        <div class="game-info">
-          <div class="game-title">Dying Light 2</div>
-          <div class="rating">4.0</div>
-        </div>
-      </div>
-      <div class="game-card">
-        <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/1145360/header.jpg" class="game-image" />
-        <div class="game-info">
-          <div class="game-title">Hades</div>
-          <div class="rating">5.0</div>
-        </div>
-      </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- Clássicos -->
-  <section class="section" id="classicos">
-    <h2>Clássicos Atemporais</h2>
-    <div class="games-grid">
-      <div class="game-card">
-        <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/220/header.jpg" class="game-image" />
-        <div class="game-info">
-          <div class="game-title">Half-Life 2</div>
-          <div class="rating">5.0</div>
+    <section class="section" id="classicos">
+        <h2>Clássicos Atemporais</h2>
+        <div class="games-grid">
+            <div class="game-card">
+                <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/220/header.jpg" class="game-image" alt="Half-Life 2" />
+                <div class="game-info">
+                    <div class="game-title">Half-Life 2</div>
+                    <div class="rating"><i class="fas fa-star"></i> 5.0</div>
+                </div>
+            </div>
+            <div class="game-card">
+                <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/70/header.jpg" class="game-image" alt="Half-Life" />
+                <div class="game-info">
+                    <div class="game-title">Half-Life</div>
+                    <div class="rating"><i class="fas fa-star"></i> 5.0</div>
+                </div>
+            </div>
+            <div class="game-card">
+                <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/10/header.jpg" class="game-image" alt="Counter-Strike" />
+                <div class="game-info">
+                    <div class="game-title">Counter-Strike 1.6</div> <div class="rating"><i class="fas fa-star"></i> 4.5</div>
+                </div>
+            </div>
+            <div class="game-card">
+                <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/219640/header.jpg" class="game-image" alt="Spec Ops: The Line" />
+                <div class="game-info">
+                    <div class="game-title">Spec Ops: The Line</div>
+                    <div class="rating"><i class="fas fa-star"></i> 4.5</div>
+                </div>
+            </div>
+            <div class="game-card">
+                <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/814380/header.jpg" class="game-image" alt="Sekiro: Shadows Die Twice" />
+                <div class="game-info">
+                    <div class="game-title">Sekiro: Shadows Die Twice</div>
+                    <div class="rating"><i class="fas fa-star"></i> 5.0</div>
+                </div>
+            </div>
         </div>
-      </div>
-      <div class="game-card">
-        <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/70/header.jpg" class="game-image" />
-        <div class="game-info">
-          <div class="game-title">Half-Life</div>
-          <div class="rating">5.0</div>
-        </div>
-      </div>
-      <div class="game-card">
-        <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/10/header.jpg" class="game-image" />
-        <div class="game-info">
-          <div class="game-title">Counter-Strike</div>
-          <div class="rating">4.5</div>
-        </div>
-      </div>
-      <div class="game-card">
-        <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/219640/header.jpg" class="game-image" />
-        <div class="game-info">
-          <div class="game-title">Spec Ops: The Line</div>
-          <div class="rating">4.5</div>
-        </div>
-      </div>
-      <div class="game-card">
-        <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/814380/header.jpg" class="game-image" />
-        <div class="game-info">
-          <div class="game-title">Sekiro: Shadows Die Twice</div>
-          <div class="rating">5.0</div>
-        </div>
-      </div>
-    </div>
-  </section>
+    </section>
 
-  <footer>
-    © 2025 ArtemiScore — Plataforma de Avaliação de Jogos
-  </footer>
+    ---
+    <footer>
+        <div class="footer-content">
+            <div class="footer-column">
+                <a href="/" class="logo font-pacifico" style="font-size: 1.5rem; margin-bottom: 1rem;">
+                    <i class="fas fa-gamepad"></i>
+                    ArtemiScore
+                </a>
+                <p style="color: var(--light-gray); font-size: 0.9rem;">Sua plataforma completa para o mundo dos jogos. Descubra, avalie e conecte-se.</p>
+                <div class="social-links">
+                    <a href="#" title="Facebook"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" title="Twitter"><i class="fab fa-twitter"></i></a>
+                    <a href="#" title="Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="#" title="YouTube"><i class="fab fa-youtube"></i></a>
+                </div>
+            </div>
+            <div class="footer-column">
+                <h3>Links Úteis</h3>
+                <ul class="footer-links">
+                    <li><a href="#"><i class="ri-arrow-right-s-line"></i> Sobre Nós</a></li>
+                    <li><a href="#"><i class="ri-arrow-right-s-line"></i> Carreira</a></li>
+                    <li><a href="#"><i class="ri-arrow-right-s-line"></i> Termos de Serviço</a></li>
+                    <li><a href="#"><i class="ri-arrow-right-s-line"></i> Política de Privacidade</a></li>
+                    <li><a href="#"><i class="ri-arrow-right-s-line"></i> Ajuda e FAQ</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>Navegar</h3>
+                <ul class="footer-links">
+                    <li><a href="#"><i class="ri-arrow-right-s-line"></i> Todos os Jogos</a></li>
+                    <li><a href="#"><i class="ri-arrow-right-s-line"></i> Próximos Lançamentos</a></li>
+                    <li><a href="#"><i class="ri-arrow-right-s-line"></i> Jogos Populares</a></li>
+                    <li><a href="#"><i class="ri-arrow-right-s-line"></i> Análises Recentes</a></li>
+                    <li><a href="#"><i class="ri-arrow-right-s-line"></i> Fóruns da Comunidade</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>Contato</h3>
+                <ul class="footer-links">
+                    <li><a href="#"><i class="ri-map-pin-line"></i> Rua Exemplo, 123, Cidade, País</a></li>
+                    <li><a href="mailto:contato@artemiscore.com"><i class="ri-mail-line"></i> contato@artemiscore.com</a></li>
+                    <li><a href="tel:+5511987654321"><i class="ri-phone-line"></i> +55 (11) 98765-4321</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="copyright">
+            &copy; 2025 ArtemiScore. Todos os direitos reservados.
+        </div>
+    </footer>
 
-  <script>
-    // Simple script to handle user dropdown
-    document.addEventListener('DOMContentLoaded', function() {
-      const userMenuButton = document.getElementById('userMenuButton');
-      const userDropdown = document.getElementById('userDropdownMenu');
-      
-      userMenuButton.addEventListener('click', function() {
-        userDropdown.classList.toggle('show');
-      });
-      
-      // Close dropdown when clicking outside
-      document.addEventListener('click', function(event) {
-        if (!event.target.closest('#userMenuContainer')) {
-          userDropdown.classList.remove('show');
-        }
-      });
-    });
-  </script>
+    <script>
+        // Simple script to handle user dropdown
+        document.addEventListener('DOMContentLoaded', function() {
+            const userMenuContainer = document.getElementById('userMenuContainer'); // Changed from userMenuButton for hover behavior
+            const userDropdown = document.getElementById('userDropdownMenu');
+
+            // This script handles the dropdown visibility on hover as per your existing CSS.
+            // No need for 'click' event unless you want to switch to click behavior.
+            // If the CSS for :hover isn't working as expected, you can uncomment a JS toggle like this:
+            /*
+            userMenuContainer.addEventListener('click', function() {
+                userDropdown.classList.toggle('show'); // You'd need to define .show in CSS
+            });
+
+            document.addEventListener('click', function(event) {
+                if (!userMenuContainer.contains(event.target) && !userDropdown.contains(event.target)) {
+                    userDropdown.classList.remove('show');
+                }
+            });
+            */
+        });
+    </script>
 </body>
 </html>
