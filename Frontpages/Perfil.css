@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Perfil do Usuário - ArtemiScore</title>
+    <title>Configurações - ArtemiScore</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        /* All your existing CSS goes here. Copy everything from your provided <style> block. */
         * {
             margin: 0;
             padding: 0;
@@ -621,6 +622,139 @@
             color: var(--yellow);
         }
 
+        /* Settings Page Specific Styles */
+        .settings-container {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        .settings-section {
+            background: rgba(30, 30, 36, 0.7);
+            backdrop-filter: blur(10px);
+            border-radius: 12px;
+            padding: 2rem;
+            border: 1px solid var(--gray-light);
+            margin-bottom: 1.5rem;
+        }
+
+        .settings-section h2 {
+            font-size: 1.5rem;
+            color: white;
+            margin-bottom: 1.5rem;
+            border-bottom: 1px solid var(--gray-light);
+            padding-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .settings-section h2 i {
+            color: var(--primary);
+        }
+
+        .form-group {
+            margin-bottom: 1.25rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: white;
+            font-weight: 500;
+        }
+
+        .form-group input[type="text"],
+        .form-group input[type="email"],
+        .form-group input[type="password"],
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            background: var(--gray);
+            border: 1px solid var(--gray-light);
+            border-radius: 8px;
+            color: white;
+            font-size: 1rem;
+            outline: none;
+            transition: all 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(87, 51, 239, 0.2);
+        }
+
+        .form-group textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .checkbox-group input[type="checkbox"] {
+            margin-right: 0.75rem;
+            width: 18px;
+            height: 18px;
+            accent-color: var(--primary); /* Styles the checkbox */
+        }
+
+        .button-group {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+            justify-content: flex-end;
+        }
+
+        .button-group .profile-btn {
+            padding: 0.8rem 1.5rem;
+            font-size: 1rem;
+            min-width: 120px;
+        }
+
+        /* Profile image upload specific */
+        .profile-image-upload {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .profile-image-upload img {
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid var(--primary);
+        }
+
+        .profile-image-upload input[type="file"] {
+            display: none; /* Hide default input */
+        }
+
+        .custom-file-upload {
+            background: var(--gray-light);
+            color: white;
+            padding: 0.6rem 1.2rem;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: 0.3s;
+            font-size: 0.9rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .custom-file-upload:hover {
+            background: var(--gray);
+        }
+
         /* Footer */
         footer {
             background: var(--darker);
@@ -743,15 +877,21 @@
             .games-grid {
                 grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
             }
+             .button-group {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .button-group .profile-btn {
+                width: 100%;
+            }
         }
     </style>
 </head>
 <body>
-    <!-- Header -->
     <header>
         <div class="container header-container">
             <div class="flex items-center">
-                <a href="#" class="logo font-pacifico">
+                <a href="/" class="logo font-pacifico">
                     <i class="fas fa-gamepad"></i>
                     ArtemiScore
                 </a>
@@ -760,7 +900,7 @@
                     <a href="Jogos.html" class="nav-link">Jogos</a>
                     <a href="rank.html" class="nav-link">Comunidade</a>
                     <a href="Lançamentos.html" class="nav-link">Lançamentos</a>
-                    <a href="comunidade.html" class="nav-link active">Fórum</a>
+                    <a href="comunidade.html" class="nav-link">Fórum</a>
                 </nav>
             </div>
             <div class="flex items-center gap-4">
@@ -793,8 +933,7 @@
                             </div>
                             <span>Jogos Favoritos</span>
                         </a>
-                        <a href="#" class="dropdown-item">
-                            <div class="dropdown-icon">
+                        <a href="settings.html" class="dropdown-item"> <div class="dropdown-icon">
                                 <i class="ri-settings-3-line"></i>
                             </div>
                             <span>Configurações</span>
@@ -812,249 +951,173 @@
         </div>
     </header>
 
-    <div class="profile-container">
-        <!-- Sidebar do Perfil -->
-        <div class="profile-sidebar">
-            <div class="profile-header">
-                <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Avatar" class="profile-avatar">
-                <h2 class="profile-name">Carlos Oliveira</h2>
-                <div class="profile-username">@carlosgamer</div>
-                <p class="profile-bio">Apaixonado por RPGs e jogos de estratégia. Streamer nas horas vagas e colecionador de conquistas.</p>
-                
-                <div class="profile-stats">
-                    <div class="stat-item">
-                        <div class="stat-number">1.2K</div>
-                        <div class="stat-label">Seguidores</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-number">856</div>
-                        <div class="stat-label">Seguindo</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-number">342</div>
-                        <div class="stat-label">Posts</div>
+    <main class="settings-container">
+        <div class="settings-section">
+            <h2><i class="ri-user-settings-line"></i> Configurações da Conta</h2>
+            <form>
+                <div class="form-group">
+                    <label for="username">Nome de Usuário</label>
+                    <input type="text" id="username" value="carlosgamer" placeholder="Seu nome de usuário">
+                </div>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" value="carlos.oliveira@example.com" placeholder="Seu email">
+                </div>
+                <div class="form-group">
+                    <label for="bio">Bio</label>
+                    <textarea id="bio" placeholder="Fale um pouco sobre você...">Apaixonado por RPGs e jogos de estratégia. Streamer nas horas vagas e colecionador de conquistas.</textarea>
+                </div>
+                <div class="profile-image-upload">
+                    <img id="profileImagePreview" src="https://randomuser.me/api/portraits/men/32.jpg" alt="Avatar do Usuário">
+                    <div>
+                        <label for="profileImage" class="custom-file-upload">
+                            <i class="ri-upload-cloud-line"></i> Alterar Imagem de Perfil
+                        </label>
+                        <input type="file" id="profileImage" accept="image/*">
                     </div>
                 </div>
-                
-                <div class="profile-actions">
-                    <button class="profile-btn">
-                        <i class="fas fa-user-edit"></i> Editar Perfil
-                    </button>
-                    <button class="profile-btn secondary">
-                        <i class="fas fa-share-alt"></i> Compartilhar
-                    </button>
+                <div class="button-group">
+                    <button type="button" class="profile-btn secondary">Cancelar</button>
+                    <button type="submit" class="profile-btn">Salvar Alterações</button>
                 </div>
-                
-                <div class="profile-details">
-                    <div class="detail-item">
-                        <i class="fas fa-map-marker-alt"></i>
-                        <span>São Paulo, Brasil</span>
-                    </div>
-                    <div class="detail-item">
-                        <i class="fas fa-link"></i>
-                        <a href="#" style="color: var(--accent);">twitch.tv/carlosgamer</a>
-                    </div>
-                    <div class="detail-item">
-                        <i class="fas fa-calendar-alt"></i>
-                        <span>Membro desde Jun 2018</span>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="profile-section">
-                <h3 class="section-title"><i class="fas fa-trophy"></i> Conquistas</h3>
-                <div class="badges-container">
-                    <div class="badge">
-                        <i class="fas fa-medal"></i>
-                        <span>Veterano</span>
-                    </div>
-                    <div class="badge">
-                        <i class="fas fa-crown"></i>
-                        <span>Top Player</span>
-                    </div>
-                    <div class="badge">
-                        <i class="fas fa-comment-dots"></i>
-                        <span>Comentarista</span>
-                    </div>
-                    <div class="badge">
-                        <i class="fas fa-heart"></i>
-                        <span>Fã Nível 5</span>
-                    </div>
-                    <div class="badge">
-                        <i class="fas fa-gamepad"></i>
-                        <span>Completista</span>
-                    </div>
-                </div>
-            </div>
+            </form>
         </div>
-        
-        <!-- Conteúdo Principal do Perfil -->
-        <div class="profile-content">
-            <div class="profile-section">
-                <div class="section-header">
-                    <h3 class="section-title"><i class="fas fa-gamepad"></i> Jogos Favoritos</h3>
-                    <button class="profile-btn secondary" style="padding: 0.4rem 0.8rem; font-size: 0.9rem;">
-                        Ver Todos
-                    </button>
-                </div>
-                
-                <div class="games-grid">
-                    <div class="game-card">
-                        <img src="https://images.unsplash.com/photo-1542751371-adc38448a05e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Valorant" class="game-cover">
-                        <div class="game-info">
-                            <div class="game-title">Valorant</div>
-                            <div class="game-rating">
-                                <i class="fas fa-star"></i>
-                                <span>4.8</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="game-card">
-                        <img src="https://images.unsplash.com/photo-1585771724684-38269d6639fd?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Baldur's Gate 3" class="game-cover">
-                        <div class="game-info">
-                            <div class="game-title">Baldur's Gate 3</div>
-                            <div class="game-rating">
-                                <i class="fas fa-star"></i>
-                                <span>5.0</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="game-card">
-                        <img src="https://images.unsplash.com/photo-1608889825103-eb5c0a8e0b5f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Cyberpunk 2077" class="game-cover">
-                        <div class="game-info">
-                            <div class="game-title">Cyberpunk 2077</div>
-                            <div class="game-rating">
-                                <i class="fas fa-star"></i>
-                                <span>4.2</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="game-card">
-                        <img src="https://images.unsplash.com/photo-1607853202273-797f1c22a38e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1527&q=80" alt="Starfield" class="game-cover">
-                        <div class="game-info">
-                            <div class="game-title">Starfield</div>
-                            <div class="game-rating">
-                                <i class="fas fa-star"></i>
-                                <span>4.5</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="profile-section">
-                <div class="section-header">
-                    <h3 class="section-title"><i class="fas fa-pencil-alt"></i> Atividade Recente</h3>
-                    <div class="section-tabs">
-                        <div class="tab active">Posts</div>
-                        <div class="tab">Comentários</div>
-                        <div class="tab">Curtidas</div>
-                    </div>
-                </div>
-                
-                <div class="posts-container">
-                    <!-- Post 1 -->
-                    <div class="post">
-                        <div class="post-header">
-                            <div class="post-author">
-                                <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Autor" class="post-author-avatar">
-                                <div class="author-info">
-                                    <span class="author-name">Carlos Oliveira</span>
-                                    <span class="post-time">Há 3 horas</span>
-                                </div>
-                            </div>
-                            <div class="post-category">Discussões Gerais</div>
-                        </div>
-                        <div class="post-content">
-                            <h3>Minha experiência com Baldur's Gate 3 após 100 horas</h3>
-                            <p>Finalmente terminei minha primeira campanha no Baldur's Gate 3 e queria compartilhar algumas impressões. O jogo é incrível, com histórias ramificadas que realmente importam e personagens memoráveis.</p>
-                            <p>Alguém mais já jogou com a classe Bardo? Fiquei impressionado com como as opções de diálogo mudam completamente!</p>
-                        </div>
-                        <div class="post-stats">
-                            <div>87 curtidas</div>
-                            <div>24 comentários</div>
-                            <div>5 compartilhamentos</div>
-                        </div>
-                        <div class="post-actions">
-                            <button class="post-action active">
-                                <i class="fas fa-thumbs-up"></i> Curtir
-                            </button>
-                            <button class="post-action">
-                                <i class="fas fa-comment"></i> Comentar
-                            </button>
-                            <button class="post-action">
-                                <i class="fas fa-share"></i> Compartilhar
-                            </button>
-                        </div>
-                    </div>
-                    
-                    <!-- Post 2 -->
-                    <div class="post">
-                        <div class="post-header">
-                            <div class="post-author">
-                                <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Autor" class="post-author-avatar">
-                                <div class="author-info">
-                                    <span class="author-name">Carlos Oliveira</span>
-                                    <span class="post-time">Ontem</span>
-                                </div>
-                            </div>
-                            <div class="post-category">Arte e Conteúdo</div>
-                        </div>
-                        <div class="post-content">
-                            <h3>Minha coleção de steelbooks</h3>
-                            <p>Decidi organizar minha coleção de steelbooks hoje. Tenho cerca de 45 edições especiais de vários jogos. Aqui está uma foto da minha favorita - a edição de Cyberpunk 2077.</p>
-                            <img src="https://images.unsplash.com/photo-1608889825271-9696287cac6b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Coleção de Steelbooks" class="post-image">
-                        </div>
-                        <div class="post-stats">
-                            <div>124 curtidas</div>
-                            <div>18 comentários</div>
-                            <div>7 compartilhamentos</div>
-                        </div>
-                        <div class="post-actions">
-                            <button class="post-action">
-                                <i class="fas fa-thumbs-up"></i> Curtir
-                            </button>
-                            <button class="post-action">
-                                <i class="fas fa-comment"></i> Comentar
-                            </button>
-                            <button class="post-action">
-                                <i class="fas fa-share"></i> Compartilhar
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
 
-    <!-- Footer -->
+        <div class="settings-section">
+            <h2><i class="ri-lock-line"></i> Segurança e Senha</h2>
+            <form>
+                <div class="form-group">
+                    <label for="currentPassword">Senha Atual</label>
+                    <input type="password" id="currentPassword" placeholder="Sua senha atual">
+                </div>
+                <div class="form-group">
+                    <label for="newPassword">Nova Senha</label>
+                    <input type="password" id="newPassword" placeholder="Nova senha">
+                </div>
+                <div class="form-group">
+                    <label for="confirmNewPassword">Confirmar Nova Senha</label>
+                    <input type="password" id="confirmNewPassword" placeholder="Confirme a nova senha">
+                </div>
+                <div class="button-group">
+                    <button type="submit" class="profile-btn">Alterar Senha</button>
+                </div>
+            </form>
+        </div>
+
+        <div class="settings-section">
+            <h2><i class="ri-notification-3-line"></i> Preferências de Notificação</h2>
+            <form>
+                <div class="checkbox-group">
+                    <input type="checkbox" id="emailNotifications" checked>
+                    <label for="emailNotifications">Receber notificações por email</label>
+                </div>
+                <div class="checkbox-group">
+                    <input type="checkbox" id="pushNotifications" checked>
+                    <label for="pushNotifications">Receber notificações push (no navegador)</label>
+                </div>
+                <div class="checkbox-group">
+                    <input type="checkbox" id="forumActivity">
+                    <label for="forumActivity">Notificações de atividade no fórum</label>
+                </div>
+                <div class="button-group">
+                    <button type="submit" class="profile-btn">Salvar Preferências</button>
+                </div>
+            </form>
+        </div>
+
+        <div class="settings-section">
+            <h2><i class="ri-delete-bin-7-line"></i> Gerenciamento da Conta</h2>
+            <form>
+                <p style="color: var(--light-gray); margin-bottom: 1.5rem;">
+                    Aqui você pode gerenciar sua conta, incluindo a opção de desativá-la.
+                </p>
+                <div class="button-group">
+                    <button type="button" class="profile-btn" style="background: var(--red);">
+                        <i class="ri-close-circle-line"></i> Desativar Conta
+                    </button>
+                </div>
+            </form>
+        </div>
+    </main>
+
     <footer>
         <div class="footer-content">
             <div class="footer-column">
-                <h3>Sobre Nós</h3>
-                <ul class="footer-links">
-                    <li><a href="#"><i class="fas fa-info-circle"></i> Quem Somos</a></li>
-                    <li><a href="#"><i class="fas fa-bullhorn"></i> Anuncie</a></li>
-                    <li><a href="#"><i class="fas fa-newspaper"></i> Blog</a></li>
-                    <li><a href="#"><i class="fas fa-briefcase"></i> Trabalhe Conosco</a></li>
-                </ul>
+                <a href="#" class="logo font-pacifico" style="font-size: 1.5rem; margin-bottom: 1rem;">
+                    <i class="fas fa-gamepad"></i>
+                    ArtemiScore
+                </a>
+                <p style="color: var(--light-gray); font-size: 0.9rem;">Sua plataforma completa para o mundo dos jogos. Descubra, avalie e conecte-se.</p>
+                <div class="social-links">
+                    <a href="#" title="Facebook"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" title="Twitter"><i class="fab fa-twitter"></i></a>
+                    <a href="#" title="Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="#" title="YouTube"><i class="fab fa-youtube"></i></a>
+                </div>
             </div>
             <div class="footer-column">
                 <h3>Links Úteis</h3>
                 <ul class="footer-links">
-                    <li><a href="#"><i class="fas fa-question-circle"></i> Ajuda</a></li>
-                    <li><a href="#"><i class="fas fa-shield-alt"></i> Termos de Uso</a></li>
-                    <li><a href="#"><i class="fas fa-lock"></i> Política de Privacidade</a></li>
-                    <li><a href="#"><i class="fas fa-envelope"></i> Contato</a></li>
+                    <li><a href="#"><i class="ri-arrow-right-s-line"></i> Sobre Nós</a></li>
+                    <li><a href="#"><i class="ri-arrow-right-s-line"></i> Carreira</a></li>
+                    <li><a href="#"><i class="ri-arrow-right-s-line"></i> Termos de Serviço</a></li>
+                    <li><a href="#"><i class="ri-arrow-right-s-line"></i> Política de Privacidade</a></li>
+                    <li><a href="#"><i class="ri-arrow-right-s-line"></i> Ajuda e FAQ</a></li>
                 </ul>
             </div>
             <div class="footer-column">
-                <h3>Redes Sociais</h3>
-                <div class="social-links">
-                    <a href="#"><i class="fab fa-facebook-f"></i></a>
-                    <a href="#"><i class="fab fa-twitter"></i></a>
-                    <a href="#"><i class="fab fa-instagram"></i></a>
-                    <a href="#"><i class="fab fa-discord"></i></a>
-                    <a href="#"><i class="fab fa-youtube"></i></a>
-                    <a href="#"><i class="fab fa-twitch"></i></a>
-                </div>
+                <h3>Navegar</h3>
+                <ul class="footer-links">
+                    <li><a href="#"><i class="ri-arrow-right-s-line"></i> Todos os Jogos</a></li>
+                    <li><a href="#"><i class="ri-arrow-right-s-line"></i> Próximos Lançamentos</a></li>
+                    <li><a href="#"><i class="ri-arrow-right-s-line"></i> Jogos Populares</a></li>
+                    <li><a href="#"><i class="ri-arrow-right-s-line"></i> Análises Recentes</a></li>
+                    <li><a href="#"><i class="ri-arrow-right-s-line"></i> Fóruns da Comunidade</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>Contato</h3>
+                <ul class="footer-links">
+                    <li><a href="#"><i class="ri-map-pin-line"></i> Rua Exemplo, 123, Cidade, País</a></li>
+                    <li><a href="mailto:contato@artemiscore.com"><i class="ri-mail-line"></i> contato@artemiscore.com</a></li>
+                    <li><a href="tel:+5511987654321"><i class="ri-phone-line"></i> +55 (11) 98765-4321</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="copyright">
+            &copy; 2025 ArtemiScore. Todos os direitos reservados.
+        </div>
+    </footer>
+
+    <script>
+        // Optional: JavaScript to handle dropdown menu visibility (if not purely CSS)
+        document.addEventListener('DOMContentLoaded', function() {
+            const userMenuContainer = document.getElementById('userMenuContainer');
+            const userDropdownMenu = document.getElementById('userDropdownMenu');
+
+            // Example for showing/hiding dropdown on click (if you prefer this over hover)
+            // If using pure CSS hover, this part can be removed.
+            // userMenuContainer.addEventListener('click', function() {
+            //     userDropdownMenu.classList.toggle('show-dropdown'); // You'd need a 'show-dropdown' class
+            // });
+
+            // To handle image preview for file input
+            const profileImageInput = document.getElementById('profileImage');
+            const profileImagePreview = document.getElementById('profileImagePreview');
+
+            if (profileImageInput && profileImagePreview) {
+                profileImageInput.addEventListener('change', function(event) {
+                    const file = event.target.files[0];
+                    if (file) {
+                        const reader = new FileReader();
+                        reader.onload = function(e) {
+                            profileImagePreview.src = e.target.result;
+                        };
+                        reader.readAsDataURL(file);
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>
