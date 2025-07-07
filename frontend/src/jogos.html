@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jogos - AtermiScore</title>
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="style.css"> <link rel="stylesheet" href="jogos.css"> </head>
+<body>
+
+    <header>
+        <div class="container header-container">
+            <div class="header-left"> 
+                <a href="/" class="logo font-pacifico">AtermiScore</a>
+                <nav class="main-nav">
+                    <a href="index.html" class="nav-link">Início</a>
+                    <a href="jogos.html" class="nav-link active">Jogos</a>
+                    <a href="rank.html" class="nav-link">Ranking</a>
+                    <a href="lancamentos.html" class="nav-link">Lançamentos</a>
+                    <a href="comunidade.html" class="nav-link">Comunidade</a>
+                </nav>
+            </div>
+
+            <div class="header-right">
+                <div class="search-bar">
+                    <input type="text" placeholder="Buscar jogos..." class="search-input">
+                    <div class="search-icon">
+                        <i class="ri-search-line"></i>
+                    </div>
+                </div>
+
+                <div class="relative user-menu-wrapper" id="userMenuContainer">
+                    <div class="user-menu-button" id="userMenuButton">
+                        <i class="ri-user-line user-icon"></i>
+                    </div>
+                    <div class="user-dropdown" id="userDropdownMenu">
+                        <a href="#" class="dropdown-item">
+                            <div class="dropdown-icon"><i class="ri-user-3-line"></i></div>
+                            <span>Meu Perfil</span>
+                        </a>
+                        <a href="#" class="dropdown-item">
+                            <div class="dropdown-icon"><i class="ri-star-line"></i></div>
+                            <span>Minhas Avaliações</span>
+                        </a>
+                        <a href="#" class="dropdown-item">
+                            <div class="dropdown-icon"><i class="ri-heart-line"></i></div>
+                            <span>Jogos Favoritos</span>
+                        </a>
+                        <a href="#" class="dropdown-item">
+                            <div class="dropdown-icon"><i class="ri-settings-3-line"></i></div>
+                            <span>Configurações</span>
+                        </a>
+                        <div class="dropdown-divider"></div>
+                        <a href="#" class="dropdown-item">
+                            <div class="dropdown-icon"><i class="ri-logout-box-line"></i></div>
+                            <span>Sair</span>
+                        </a>
+                    </div>
+                </div>
+                <button class="mobile-menu-button" id="mobileMenuButton"><i class="ri-menu-line"></i></button>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section class="games-section">
+            <div class="container">
+                <h1 class="section-title">Todos os Jogos</h1>
+
+                <div class="filters">
+                    <select id="genre-filter">
+                        <option value="">Todos os Gêneros</option>
+                        <option value="Ação">Ação</option>
+                        <option value="Aventura">Aventura</option>
+                        <option value="RPG">RPG</option>
+                        <option value="Estratégia">Estratégia</option>
+                        <option value="Esporte">Esporte</option>
+                        <option value="Terror">Terror</option>
+                    </select>
+                    <select id="platform-filter">
+                        <option value="">Todas as Plataformas</option>
+                        <option value="PC">PC</option>
+                        <option value="PlayStation">PlayStation</option>
+                        <option value="Xbox">Xbox</option>
+                        <option value="Nintendo Switch">Nintendo Switch</option>
+                    </select>
+                    <button class="filter-button" id="apply-filters">Aplicar Filtros</button>
+                </div>
+
+                <div class="game-grid" id="game-list">
+                    </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 AtermiScore. Todos os direitos reservados.</p>
+        </div>
+    </footer>
+
+    <script src="main.js"></script>
+    <script src="jogos.js"></script> </body>
+</html>
