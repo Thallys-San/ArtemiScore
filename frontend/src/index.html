@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<!-- Define o idioma do documento como Português do Brasil -->
+<html lang="pt-BR">
+<head>
+    <!-- Metadados básicos -->
+    <meta charset="UTF-8"> <!-- Define a codificação de caracteres como UTF-8 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Configura viewport para responsividade -->
+    <title>AtermiScore - Avaliador de Jogos</title> <!-- Título da página exibido na aba do navegador -->
+    
+    <!-- Carregamento de fontes do Google -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <!-- Fontes Montserrat e Poppins para títulos e textos -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800;900&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Fonte Pacifico para o logo -->
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+    <!-- Fonte Poppins com pesos adicionais -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Ícones Remix Icon -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css">
+    
+    <!-- Arquivo CSS local -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <!-- Cabeçalho do site -->
+    <header>
+        <div class="container header-container">
+            <div class="flex items-center">
+                <!-- Logo do site -->
+                <a href="#" class="logo font-pacifico">AtermiScore</a>
+                
+                <!-- Navegação principal -->
+                <nav class="main-nav">
+                    <a href="/" class="nav-link active">Início</a>
+                    <a href="Jogos.html" class="nav-link">Jogos</a>
+                    <a href="rank.html" class="nav-link">Ranking</a>
+                    <a href="Lançamentos.html" class="nav-link">Lançamentos</a>
+                    <a href="comunidade.html" class="nav-link">Comunidade</a>
+                </nav>
+            </div>
+            
+            <!-- Área de busca e perfil do usuário -->
+            <div class="flex items-center gap-4">
+                <!-- Barra de pesquisa -->
+                <div class="search-bar">
+                    <input type="text" placeholder="Buscar jogos..." class="search-input">
+                    <div class="search-icon">
+                        <i class="ri-search-line"></i>
+                    </div>
+                </div>
+                
+                <!-- Menu do usuário (dropdown) -->
+                <div class="relative" id="userMenuContainer">
+                    <div class="user-menu-button" id="userMenuButton">
+                        <i class="ri-user-line user-icon"></i>
+                    </div>
+                    <div class="user-dropdown" id="userDropdownMenu">
+                        <a href="#" class="dropdown-item">
+                            <div class="dropdown-icon">
+                                <i class="ri-user-3-line"></i>
+                            </div>
+                            <span>Meu Perfil</span>
+                        </a>
+                        <a href="#" class="dropdown-item">
+                            <div class="dropdown-icon">
+                                <i class="ri-star-line"></i>
+                            </div>
+                            <span>Minhas Avaliações</span>
+                        </a>
+                        <a href="#" class="dropdown-item">
+                            <div class="dropdown-icon">
+                                <i class="ri-heart-line"></i>
+                            </div>
+                            <span>Jogos Favoritos</span>
+                        </a>
+                        <a href="#" class="dropdown-item">
+                            <div class="dropdown-icon">
+                                <i class="ri-settings-3-line"></i>
+                            </div>
+                            <span>Configurações</span>
+                        </a>
+                        <div class="dropdown-divider"></div>
+                        <a href="#" class="dropdown-item">
+                            <div class="dropdown-icon">
+                                <i class="ri-logout-box-line"></i>
+                            </div>
+                            <span>Sair</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Conteúdo principal do site -->
+    <main>
+        <!-- Seção Hero/Banner principal -->
+        <section class="hero-banner">
+            <div class="hero-slide active">
+                <div class="hero-background">
+                    <!-- Imagem de fundo do banner (placeholder) -->
+                    <img src="https://images.unsplash.com/photo-1608889825103-eb5b3bdf5ad7" alt="Destaque" class="hero-image">
+                    <div class="hero-overlay"></div> <!-- Overlay para melhor legibilidade do texto -->
+                </div>
+                <div class="hero-container">
+                    <div class="hero-content">
+                        <span class="hero-tag">DESTAQUE DA SEMANA</span>
+                        <h1 class="hero-title">Título do Jogo em Destaque</h1>
+                        <div class="hero-rating">
+                            <div class="star-rating">
+                                <!-- Ícones de estrelas para avaliação -->
+                                <i class="ri-star-fill"></i>
+                                <i class="ri-star-fill"></i>
+                                <i class="ri-star-fill"></i>
+                                <i class="ri-star-fill"></i>
+                                <i class="ri-star-half-fill"></i>
+                            </div>
+                            <span class="rating-text">x.x/xx (x.xxx avaliações)</span>
+                        </div>
+                        <p class="hero-description">Aqui estaria a descrição completa do jogo de destaque da semana com detalhes impressionantes sobre a jogabilidade e inovações.</p>
+                        <div class="hero-buttons">
+                            <button class="hero-button primary-button">
+                                <i class="ri-information-line"></i> Ver Detalhes
+                            </button>
+                            <button class="hero-button secondary-button">
+                                <i class="ri-star-line"></i> Avaliar Agora
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <!-- Indicadores do slider (pontos de navegação) -->
+                <div class="hero-indicators">
+                    <button class="indicator active"></button>
+                    <button class="indicator"></button>
+                    <button class="indicator"></button>
+                    <button class="indicator"></button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Seção de Jogos Populares -->
+        <section class="popular-games">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">Jogos Populares</h2>
+                    <a href="#" class="view-all">
+                        Ver todos
+                        <i class="ri-arrow-right-line view-all-icon"></i>
+                    </a>
+                </div>
+                <!-- Container onde os jogos serão carregados dinamicamente -->
+                <div id="game-container" class="games-grid">
+                    <!-- Os cards de jogos seriam inseridos aqui via JavaScript -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Seção de Próximos Lançamentos -->
+        <section class="upcoming-releases">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">Próximos Lançamentos</h2>
+                    <a href="#" class="view-all">
+                        Ver todos
+                        <i class="ri-arrow-right-line view-all-icon"></i>
+                    </a>
+                </div>
+
+                <!-- Container onde os cards serão inseridos via JS -->
+                <div class="releases-slider" id="releases-container">
+                    <!-- Os cards de lançamentos serão carregados aqui dinamicamente -->
+                </div>
+            </div>
+        </section>
+
+                    
+
+        <!-- Seção dos Melhores Avaliados -->
+        <section class="top-rated">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">Melhores Avaliados</h2>
+                    <a href="#" class="view-all">
+                        Ver todos
+                        <i class="ri-arrow-right-line view-all-icon"></i>
+                    </a>
+                </div>
+                <div class="top-rated-grid">
+                    <!-- Jogo top 1 -->
+                    <div class="top-game-card">
+                        <div class="top-game-rank">1</div>
+                        <img src="https://images.unsplash.com/photo-1608889825205-eebdb9fc5806" alt="Jogo Top 1" class="top-game-image">
+                        <div class="top-game-info">
+                            <h3 class="top-game-title">The Witcher 3: Wild Hunt</h3>
+                            <div class="top-game-rating">
+                                <div class="top-game-stars">
+                                    <i class="ri-star-fill"></i>
+                                    <i class="ri-star-fill"></i>
+                                    <i class="ri-star-fill"></i>
+                                    <i class="ri-star-fill"></i>
+                                    <i class="ri-star-fill"></i>
+                                </div>
+                                <span class="top-game-score">9.8/10</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Jogo top 2 -->
+                    <div class="top-game-card">
+                        <div class="top-game-rank">2</div>
+                        <img src="https://images.unsplash.com/photo-1608889825205-eebdb9fc5806" alt="Jogo Top 2" class="top-game-image">
+                        <div class="top-game-info">
+                            <h3 class="top-game-title">Red Dead Redemption 2</h3>
+                            <div class="top-game-rating">
+                                <div class="top-game-stars">
+                                    <i class="ri-star-fill"></i>
+                                    <i class="ri-star-fill"></i>
+                                    <i class="ri-star-fill"></i>
+                                    <i class="ri-star-fill"></i>
+                                    <i class="ri-star-fill"></i>
+                                </div>
+                                <span class="top-game-score">9.7/10</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Jogo top 3 -->
+                    <div class="top-game-card">
+                        <div class="top-game-rank">3</div>
+                        <img src="https://images.unsplash.com/photo-1608889825205-eebdb9fc5806" alt="Jogo Top 3" class="top-game-image">
+                        <div class="top-game-info">
+                            <h3 class="top-game-title">The Legend of Zelda: Breath of the Wild</h3>
+                            <div class="top-game-rating">
+                                <div class="top-game-stars">
+                                    <i class="ri-star-fill"></i>
+                                    <i class="ri-star-fill"></i>
+                                    <i class="ri-star-fill"></i>
+                                    <i class="ri-star-fill"></i>
+                                    <i class="ri-star-fill"></i>
+                                </div>
+                                <span class="top-game-score">9.6/10</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Jogo top 4 -->
+                    <div class="top-game-card">
+                        <div class="top-game-rank">4</div>
+                        <img src="https://images.unsplash.com/photo-1608889825205-eebdb9fc5806" alt="Jogo Top 4" class="top-game-image">
+                        <div class="top-game-info">
+                            <h3 class="top-game-title">Elden Ring</h3>
+                            <div class="top-game-rating">
+                                <div class="top-game-stars">
+                                    <i class="ri-star-fill"></i>
+                                    <i class="ri-star-fill"></i>
+                                    <i class="ri-star-fill"></i>
+                                    <i class="ri-star-fill"></i>
+                                    <i class="ri-star-half-fill"></i>
+                                </div>
+                                <span class="top-game-score">9.5/10</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Seção da Comunidade -->
+        <section class="community-section">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">Comunidade em Destaque</h2>
+                    <a href="#" class="view-all">
+                        Ver todos
+                        <i class="ri-arrow-right-line view-all-icon"></i>
+                    </a>
+                </div>
+                <div class="community-grid">
+                    <!-- Card de avaliação em destaque -->
+                    <div class="community-card">
+                        <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2" alt="Perfil de Usuário" class="community-image">
+                        <div class="community-content">
+                            <span class="community-tag">AVALIAÇÃO EM DESTAQUE</span>
+                            <h3 class="community-title">"The Last of Us Part II" por GamemasterX</h3>
+                            <p class="community-excerpt">"Uma jornada emocionalmente intensa com gráficos deslumbrantes e uma narrativa que te prende do início ao fim..."</p>
+                            <a href="#" class="community-link">Ver perfil <i class="ri-arrow-right-line"></i></a>
+                        </div>
+                    </div>
+                    
+                    <!-- Card de guia de jogo -->
+                    <div class="community-card">
+                        <img src="https://images.unsplash.com/photo-1519327232521-48a074744d03" alt="Guia de Jogo" class="community-image">
+                        <div class="community-content">
+                            <span class="community-tag">GUIA DE JOGO</span>
+                            <h3 class="community-title">Dicas Essenciais para Iniciantes em Elden Ring</h3>
+                            <p class="community-excerpt">"Desvende os segredos de Lands Between com este guia completo, que abrange desde a criação de personagem até as lutas contra chefes..."</p>
+                            <a href="#" class="community-link">Ler guia <i class="ri-arrow-right-line"></i></a>
+                        </div>
+                    </div>
+                    
+                    <!-- Card de evento da comunidade -->
+                    <div class="community-card">
+                        <img src="https://images.unsplash.com/photo-1511974035430-cdfea6b8f98a" alt="Evento da Comunidade" class="community-image">
+                        <div class="community-content">
+                            <span class="community-tag">EVENTO</span>
+                            <h3 class="community-title">Desafio de Captura de Tela: "Cenas Épicas de Batalha"</h3>
+                            <p class="community-excerpt">"Compartilhe suas capturas de tela mais incríveis de momentos de batalha e concorra a prêmios!"</p>
+                            <a href="#" class="community-link">Participar <i class="ri-arrow-right-line"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Rodapé do site -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <!-- Coluna 1: Sobre o site -->
+                <div class="footer-column">
+                    <h3 class="footer-title">AtermiScore</h3>
+                    <p class="footer-about">A plataforma definitiva para avaliação e descoberta de jogos. Conecte-se com outros jogadores e compartilhe suas opiniões.</p>
+                    <div class="footer-social">
+                        <a href="#" class="social-link"><i class="ri-facebook-fill"></i></a>
+                        <a href="#" class="social-link"><i class="ri-twitter-fill"></i></a>
+                        <a href="#" class="social-link"><i class="ri-instagram-fill"></i></a>
+                        <a href="#" class="social-link"><i class="ri-discord-fill"></i></a>
+                        <a href="#" class="social-link"><i class="ri-youtube-fill"></i></a>
+                    </div>
+                </div>
+                
+                <!-- Coluna 2: Links rápidos -->
+                <div class="footer-column">
+                    <h3 class="footer-title">Links Rápidos</h3>
+                    <ul class="footer-links">
+                        <li><a href="#" class="footer-link">Início</a></li>
+                        <li><a href="#" class="footer-link">Jogos</a></li>
+                        <li><a href="#" class="footer-link">Ranking</a></li>
+                        <li><a href="#" class="footer-link">Lançamentos</a></li>
+                        <li><a href="#" class="footer-link">Comunidade</a></li>
+                    </ul>
+                </div>
+                
+                <!-- Coluna 3: Informações legais -->
+                <div class="footer-column">
+                    <h3 class="footer-title">Informações</h3>
+                    <ul class="footer-links">
+                        <li><a href="#" class="footer-link">Sobre Nós</a></li>
+                        <li><a href="#" class="footer-link">Termos de Serviço</a></li>
+                        <li><a href="#" class="footer-link">Política de Privacidade</a></li>
+                        <li><a href="#" class="footer-link">FAQ</a></li>
+                        <li><a href="#" class="footer-link">Contato</a></li>
+                    </ul>
+                </div>
+                
+                <!-- Coluna 4: Newsletter -->
+                <div class="footer-column">
+                    <h3 class="footer-title">Newsletter</h3>
+                    <p class="footer-newsletter-text">Inscreva-se para receber as últimas novidades e atualizações.</p>
+                    <form class="newsletter-form">
+                        <input type="email" placeholder="Seu e-mail" class="newsletter-input">
+                        <button type="submit" class="newsletter-button">
+                            <i class="ri-send-plane-fill"></i>
+                        </button>
+                    </form>
+                </div>
+            </div>
+            
+            <!-- Rodapé inferior (copyright e links legais) -->
+            <div class="footer-bottom">
+                <div class="footer-copyright">
+                    &copy; 2023 AtermiScore. Todos os direitos reservados.
+                </div>
+                <div class="footer-legal">
+                    <a href="#" class="legal-link">Termos de Uso</a>
+                    <a href="#" class="legal-link">Política de Privacidade</a>
+                    <a href="#" class="legal-link">Cookies</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Arquivo JavaScript local -->
+    <script src="script.js"></script>
+</body>
+</html>
