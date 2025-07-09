@@ -888,69 +888,66 @@
     </style>
 </head>
 <body>
-    <header>
-        <div class="container header-container">
-            <div class="flex items-center">
-                <a href="/" class="logo font-pacifico">
-                    <i class="fas fa-gamepad"></i>
-                    ArtemiScore
-                </a>
-                <nav class="main-nav">
-                    <a href="/" class="nav-link">Início</a>
-                    <a href="Jogos.html" class="nav-link">Jogos</a>
-                    <a href="rank.html" class="nav-link">Comunidade</a>
-                    <a href="Lançamentos.html" class="nav-link">Lançamentos</a>
-                    <a href="comunidade.html" class="nav-link">Fórum</a>
-                </nav>
-            </div>
-            <div class="flex items-center gap-4">
-                <div class="search-bar">
-                    <input type="text" placeholder="Buscar jogos..." class="search-input">
-                    <div class="search-icon">
-                        <i class="ri-search-line"></i>
-                    </div>
-                </div>
-                <div class="relative" id="userMenuContainer">
-                    <div class="user-menu-button" id="userMenuButton">
-                        <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Usuário" style="width: 36px; height: 36px; border-radius: 50%; object-fit: cover;">
-                    </div>
-                    <div class="user-dropdown" id="userDropdownMenu">
-                        <a href="#" class="dropdown-item">
-                            <div class="dropdown-icon">
-                                <i class="ri-user-3-line"></i>
-                            </div>
-                            <span>Meu Perfil</span>
-                        </a>
-                        <a href="#" class="dropdown-item">
-                            <div class="dropdown-icon">
-                                <i class="ri-star-line"></i>
-                            </div>
-                            <span>Minhas Avaliações</span>
-                        </a>
-                        <a href="#" class="dropdown-item">
-                            <div class="dropdown-icon">
-                                <i class="ri-heart-line"></i>
-                            </div>
-                            <span>Jogos Favoritos</span>
-                        </a>
-                        <a href="settings.html" class="dropdown-item"> <div class="dropdown-icon">
-                                <i class="ri-settings-3-line"></i>
-                            </div>
-                            <span>Configurações</span>
-                        </a>
-                        <div class="dropdown-divider"></div>
-                        <a href="#" class="dropdown-item">
-                            <div class="dropdown-icon">
-                                <i class="ri-logout-box-line"></i>
-                            </div>
-                            <span>Sair</span>
-                        </a>
-                    </div>
-                </div>
-            </div>
+   <header>
+  <div class="container header-container">
+    <div class="flex items-center">
+      <a href="#" class="logo font-pacifico">AtermiScore</a>
+      <nav class="main-nav">
+        <a href="/" class="nav-link active">Início</a>
+        <a href="Jogos.html" class="nav-link">Jogos</a>
+        <a href="rank.html" class="nav-link">Ranking</a>
+        <a href="Lançamentos.html" class="nav-link">Lançamentos</a>
+        <a href="comunidade.html" class="nav-link">Comunidade</a>
+      </nav>
+    </div>
+    <div class="flex items-center gap-4">
+      <div class="search-bar">
+        <input type="text" placeholder="Buscar jogos..." class="search-input">
+        <div class="search-icon">
+          <i class="ri-search-line"></i>
         </div>
-    </header>
-
+      </div>
+      <div class="relative" id="userMenuContainer">
+        <div class="user-menu-button" id="userMenuButton">
+          <i class="ri-user-line user-icon"></i>
+        </div>
+        <div class="user-dropdown" id="userDropdownMenu">
+          <a href="#" class="dropdown-item">
+            <div class="dropdown-icon">
+              <i class="ri-user-3-line"></i>
+            </div>
+            <span>Meu Perfil</span>
+          </a>
+          <a href="#" class="dropdown-item">
+            <div class="dropdown-icon">
+              <i class="ri-star-line"></i>
+            </div>
+            <span>Minhas Avaliações</span>
+          </a>
+          <a href="#" class="dropdown-item">
+            <div class="dropdown-icon">
+              <i class="ri-heart-line"></i>
+            </div>
+            <span>Jogos Favoritos</span>
+          </a>
+          <a href="#" class="dropdown-item">
+            <div class="dropdown-icon">
+              <i class="ri-settings-3-line"></i>
+            </div>
+            <span>Configurações</span>
+          </a>
+          <div class="dropdown-divider"></div>
+          <a href="#" class="dropdown-item">
+            <div class="dropdown-icon">
+              <i class="ri-logout-box-line"></i>
+            </div>
+            <span>Sair</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
     <main class="settings-container">
         <div class="settings-section">
             <h2><i class="ri-user-settings-line"></i> Configurações da Conta</h2>
