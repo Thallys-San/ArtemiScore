@@ -1,0 +1,25 @@
+.release-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 350px; /* ou ajuste conforme seu layout */
+}
+
+
+.release-card img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    background-color: var(--dark-gray); /* fallback para imagem quebrada */
+}
+
+.release-info {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    justify-content: space-between;
+}
+
+.release-wishlist {
+    margin-top: auto;
+}

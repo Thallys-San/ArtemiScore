@@ -883,7 +883,7 @@ header.scrolled {
 
 .game-image, .release-image, .top-game-image, .community-image {
     width: 100%;
-    height: 250px; /* MODIFICADO: Ajustado para a nova altura de 250px */
+    aspect-ratio: 16 / 9; /* Mantém a proporção de 16:9 */
     object-fit: cover;
     object-position: center; /* ADICIONADO: Garante que o centro da imagem seja o foco */
     display: block; /* Para remover espaços indesejados abaixo da imagem */
@@ -1171,8 +1171,12 @@ header.scrolled {
 }
 
 .release-card {
-    /* Herda estilos de .game-card, .release-card, etc. */
-    position: relative; /* Para posicionamento da data */
+    display: flex;          /* Ativa flexbox para alinhamento interno */
+    flex-direction: column; /* Empilha os elementos verticalmente */
+    height: 100%;           /* Garante que todos os cards usem a altura total do grid */
+    background-color: var(--dark-gray); /* Opcional: fundo para visualização */
+    border-radius: 12px;    /* Borda arredondada (ajuste conforme necessário) */
+    overflow: hidden;       
 }
 
 .release-date {
@@ -1202,6 +1206,7 @@ header.scrolled {
 }
 
 .release-info {
+     flex-grow: 1;           /* Faz com que esta seção ocupe o espaço restante */
     padding: 1.25rem;
     display: flex;
     flex-direction: column;
@@ -1210,14 +1215,16 @@ header.scrolled {
 
 .release-title {
     font-size: 1.25rem;
-    margin: 0; /* Remove margem padrão de h3 */
+    margin: 0;
     color: var(--white);
+    min-height: 3rem;
 }
 
 .release-platforms {
     display: flex;
     flex-wrap: wrap;
     gap: 0.5rem;
+    min-height: 2rem; 
 }
 
 .platform-tag {
@@ -1230,7 +1237,8 @@ header.scrolled {
 }
 
 .release-wishlist {
-    margin-top: 0.5rem;
+    margin-top: auto;       /* Empurra o botão para a parte inferior do card */
+    padding-top: 0.75rem;
 }
 
 .wishlist-button {

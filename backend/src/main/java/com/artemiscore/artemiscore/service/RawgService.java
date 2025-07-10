@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
-import com.artemiscore.artemiscore.model.AvaliacaoModel;
+
 import com.artemiscore.artemiscore.model.rawghApi.*;
 import com.artemiscore.artemiscore.repository.AvaliacaoRepository;
 

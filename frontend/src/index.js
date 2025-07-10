@@ -7,6 +7,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     console.log("Script carregado corretamente");
 
+    
+
     // ------------ POPULARES ------------
     fetch("http://localhost:8080/api/games/cards")
         .then(res => res.json())
@@ -85,7 +87,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 const imgURL = jogo.background_image
                     ? jogo.background_image
-                    : './assets/images/sem-imagem.jpg';
+                    : 'https://www.reddit.com/media?url=https%3A%2F%2Fi.redd.it%2Fx1sr1lob3ai41.jpg';
 
                 const date = new Date(jogo.released || jogo.release_date);
                 const dia = date.getDate().toString().padStart(2, '0');
@@ -143,7 +145,6 @@ function renderEstrelas(nota, containerId, scoreId) {
 
     if (!container || !score) return;
 
-    // Limpa antes de adicionar
     container.innerHTML = '';
     score.textContent = `${nota.toFixed(1)}/5`;
 
@@ -151,28 +152,67 @@ function renderEstrelas(nota, containerId, scoreId) {
     const half = nota % 1 >= 0.25 && nota % 1 <= 0.75;
     const empty = 5 - full - (half ? 1 : 0);
 
-    // Estilo comum
-    const starStyle = 'color: #FDB813; font-size: 1rem; margin-right: 2px;';
+    const starStyle = 'color: #FDB813; font-size: 18px; margin-right: 2px;';
+    const emptyStarStyle = 'color: #DDD; font-size: 18px; margin-right: 2px;';
 
     for (let i = 0; i < full; i++) {
         const icon = document.createElement('i');
         icon.className = 'ri-star-fill';
-        icon.style = starStyle;
+        icon.style.cssText = starStyle;
         container.appendChild(icon);
     }
 
     if (half) {
         const icon = document.createElement('i');
         icon.className = 'ri-star-half-fill';
-        icon.style = starStyle;
+        icon.style.cssText = starStyle;
         container.appendChild(icon);
     }
 
     for (let i = 0; i < empty; i++) {
         const icon = document.createElement('i');
         icon.className = 'ri-star-line';
-        icon.style = 'color: #DDD; font-size: 1rem; margin-right: 2px;';
+        icon.style.cssText = emptyStarStyle;
         container.appendChild(icon);
     }
 }
 
+
+// Exemplo de função que atualiza a imagem hero
+function atualizarHero(backgroundImageUrl) {
+    const img = document.querySelector('.hero-image');
+    const heroBackground = document.querySelector('.hero-background');
+    
+    // Remover qualquer texto antigo de fallback se existir
+    const textoFallbackExistente = document.querySelector('.fallback-text');
+    if (textoFallbackExistente) textoFallbackExistente.remove();
+
+    if (backgroundImageUrl && backgroundImageUrl.trim() !== '' && backgroundImageUrl !== 'null') {
+        // Se existe imagem válida, define src e esconde texto
+        img.src = backgroundImageUrl;
+        img.style.display = 'block';
+    } else {
+        // Se for nulo ou vazio, usar logo padrão e mostrar texto de aviso
+        img.src = 'images/logo-atermi.png'; // caminho da sua logo
+        img.style.display = 'block';
+
+        // Criar texto explicativo sobre ausência de imagem
+        const fallbackText = document.createElement('div');
+        fallbackText.className = 'fallback-text';
+        fallbackText.textContent = 'Imagem não disponível';
+        
+        // Estilize para aparecer sobre a imagem, por exemplo
+        fallbackText.style.position = 'absolute';
+        fallbackText.style.top = '50%';
+        fallbackText.style.left = '50%';
+        fallbackText.style.transform = 'translate(-50%, -50%)';
+        fallbackText.style.color = '#fff';
+        fallbackText.style.backgroundColor = 'rgba(0,0,0,0.6)';
+        fallbackText.style.padding = '10px 20px';
+        fallbackText.style.borderRadius = '8px';
+        fallbackText.style.fontSize = '1.2rem';
+        fallbackText.style.fontWeight = '600';
+
+        heroBackground.appendChild(fallbackText);
+    }
+}

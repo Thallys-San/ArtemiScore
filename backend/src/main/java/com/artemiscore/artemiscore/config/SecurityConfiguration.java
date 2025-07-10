@@ -39,7 +39,8 @@ public class SecurityConfiguration {
             "/css/**", 
             "/js/**", 
             "/api/games/**",        
-            "/avaliacoes/**"        
+            "/avaliacoes/**",
+            "/usuarios/**" 
             ).permitAll()
             .anyRequest().authenticated()
         )
