@@ -11,7 +11,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* Shared Styles (copy from your main index.html or create a shared.css) */
         * {
             margin: 0;
             padding: 0;
@@ -25,7 +24,7 @@
             min-height: 100vh;
             position: relative;
             overflow-x: hidden;
-            padding-top: 80px; /* Space for fixed header */
+            padding-top: 80px;
         }
 
         body::before {
@@ -57,7 +56,6 @@
             --yellow: #fdcb6e;
         }
 
-        /* Header Styles (identical to index.html and minhas-avaliacoes.html) */
         .container {
             max-width: 1400px;
             margin: 0 auto;
@@ -97,6 +95,11 @@
             display: flex;
             align-items: center;
             gap: 8px;
+        }
+
+        .logo-img {
+            height: 40px;
+            margin-right: 10px;
         }
 
         .flex {
@@ -246,7 +249,6 @@
             margin: 0.5rem 0;
         }
 
-        /* Main Content Styles */
         .section {
             padding: 3rem 2rem;
             max-width: 1400px;
@@ -272,13 +274,13 @@
             background: linear-gradient(90deg, var(--primary), transparent);
         }
 
-        .games-grid { /* Reusing games-grid from index.html */
+        .games-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
             gap: 2rem;
         }
 
-        .game-card { /* Reusing game-card from index.html */
+        .game-card {
             background: var(--gray);
             border-radius: 12px;
             overflow: hidden;
@@ -294,7 +296,7 @@
             box-shadow: 0 10px 20px rgba(87, 51, 239, 0.2);
         }
 
-        .game-image { /* Reusing game-image from index.html */
+        .game-image {
             width: 100%;
             height: 160px;
             object-fit: cover;
@@ -305,14 +307,14 @@
             transform: scale(1.05);
         }
 
-        .game-info { /* Reusing game-info from index.html */
+        .game-info {
             padding: 1rem;
             flex-grow: 1;
             display: flex;
             flex-direction: column;
         }
 
-        .game-title { /* Reusing game-title from index.html */
+        .game-title {
             font-size: 1rem;
             font-weight: 600;
             margin-bottom: 0.5rem;
@@ -322,7 +324,7 @@
             text-overflow: ellipsis;
         }
 
-        .rating { /* Reusing rating from index.html */
+        .rating {
             color: var(--yellow);
             font-size: 1rem;
             margin-top: auto;
@@ -330,12 +332,11 @@
             align-items: center;
         }
 
-        .rating i { /* Reusing rating i from index.html */
+        .rating i {
             margin-right: 4px;
             font-size: 1.2rem;
         }
 
-        /* Message for no favorites */
         .no-favorites-message {
             text-align: center;
             padding: 3rem;
@@ -357,7 +358,6 @@
             color: var(--accent);
         }
 
-        /* Footer Styles (identical to index.html and minhas-avaliacoes.html) */
         footer {
             background: var(--darker);
             padding: 2rem 0;
@@ -446,7 +446,6 @@
             font-size: 0.9rem;
         }
 
-        /* Responsive Styles (identical to index.html and minhas-avaliacoes.html) */
         @media (max-width: 900px) {
             .main-nav {
                 display: none;
@@ -470,6 +469,10 @@
                 font-size: 1.5rem;
             }
 
+            .logo-img {
+                height: 30px;
+            }
+
             .search-input {
                 display: none;
             }
@@ -480,18 +483,18 @@
             }
 
             .games-grid {
-                grid-template-columns: 1fr; /* Single column on smallest screens */
+                grid-template-columns: 1fr;
             }
         }
     </style>
 </head>
 <body>
-     <header>
+    <header>
         <div class="container header-container">
             <div class="flex items-center">
                 <a href="/" class="logo font-pacifico">
-                    <i class="fas fa-gamepad"></i>
-                    ArtemiScore
+                    <img src="https://github.com/Thallys-San/ArtemiScore/blob/main/ArtemiScore%20(1).png?raw=true" alt="ArtemiScore Logo" class="logo-img">
+                    
                 </a>
                 <nav class="main-nav">
                     <a href="/" class="nav-link">Início</a>
@@ -525,7 +528,8 @@
                             </div>
                             <span>Minhas Avaliações</span>
                         </a>
-                        <a href="jogos-favoritos.html" class="dropdown-item active"> <div class="dropdown-icon">
+                        <a href="jogos-favoritos.html" class="dropdown-item active">
+                            <div class="dropdown-icon">
                                 <i class="ri-heart-line"></i>
                             </div>
                             <span>Jogos Favoritos</span>
@@ -599,17 +603,15 @@
                     <div class="rating"><i class="fas fa-star"></i> 5.0</div>
                 </div>
             </div>
-
-            </div>
+        </div>
     </main>
 
-    ---
     <footer>
         <div class="footer-content">
             <div class="footer-column">
-                <a href="/" class="logo font-pacifico" style="font-size: 1.5rem; margin-bottom: 1rem;">
-                    <i class="fas fa-gamepad"></i>
-                    ArtemiScore
+                <a href="/" class="logo font-pacifico" style="font-size: 1.5rem; margin-bottom: 1rem; display: flex; align-items: center;">
+                    <img src="https://github.com/Thallys-San/ArtemiScore/blob/main/ArtemiScore%20(1).png?raw=true" alt="ArtemiScore Logo" style="height: 30px; margin-right: 8px;">
+            
                 </a>
                 <p style="color: var(--light-gray); font-size: 0.9rem;">Sua plataforma completa para o mundo dos jogos. Descubra, avalie e conecte-se.</p>
                 <div class="social-links">
@@ -658,20 +660,7 @@
             const userMenuContainer = document.getElementById('userMenuContainer');
             const userDropdown = document.getElementById('userDropdownMenu');
 
-            // The dropdown behavior is primarily handled by CSS :hover
-            // If you need JavaScript for click toggle or mobile, uncomment below:
-            /*
-            userMenuContainer.addEventListener('click', function(event) {
-                userDropdown.classList.toggle('show');
-                event.stopPropagation(); // Prevent document click from immediately closing
-            });
-
-            document.addEventListener('click', function(event) {
-                if (!userMenuContainer.contains(event.target) && !userDropdown.contains(event.target)) {
-                    userDropdown.classList.remove('show');
-                }
-            });
-            */
+         
         });
     </script>
 </body>
