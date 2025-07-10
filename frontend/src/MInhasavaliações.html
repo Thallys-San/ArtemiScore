@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minhas Avaliações - ArtemiScore</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <div class="container header-container">
+            <div class="flex items-center">
+                <a href="/" class="logo font-pacifico">
+                    <img src="https://github.com/Thallys-San/ArtemiScore/blob/main/ArtemiScore%20(1).png?raw=true" alt="ArtemiScore" class="logo-img">
+                </a>
+                <nav class="main-nav">
+                    <a href="/" class="nav-link">Início</a>
+                    <a href="Jogos.html" class="nav-link">Jogos</a>
+                    <a href="rank.html" class="nav-link">Comunidade</a>
+                    <a href="Lançamentos.html" class="nav-link">Lançamentos</a>
+                    <a href="comunidade.html" class="nav-link">Fórum</a>
+                </nav>
+            </div>
+            <div class="flex items-center gap-4">
+                <div class="search-bar">
+                    <input type="text" placeholder="Buscar jogos..." class="search-input">
+                    <div class="search-icon">
+                        <i class="ri-search-line"></i>
+                    </div>
+                </div>
+                <div class="relative" id="userMenuContainer">
+                    <div class="user-menu-button" id="userMenuButton">
+                        <img src="" alt="Usuário" style="width: 36px; height: 36px; border-radius: 50%; object-fit: cover;">
+                    </div>
+                    <div class="user-dropdown" id="userDropdownMenu">
+                        <a href="perfil.html" class="dropdown-item">
+                            <div class="dropdown-icon">
+                                <i class="ri-user-3-line"></i>
+                            </div>
+                            <span>Meu Perfil</span>
+                        </a>
+                        <a href="minhas-avaliacoes.html" class="dropdown-item active">
+                            <div class="dropdown-icon">
+                                <i class="ri-star-line"></i>
+                            </div>
+                            <span>Minhas Avaliações</span>
+                        </a>
+                        <a href="jogos-favoritos.html" class="dropdown-item">
+                            <div class="dropdown-icon">
+                                <i class="ri-heart-line"></i>
+                            </div>
+                            <span>Jogos Favoritos</span>
+                        </a>
+                        <a href="settings.html" class="dropdown-item">
+                            <div class="dropdown-icon">
+                                <i class="ri-settings-3-line"></i>
+                            </div>
+                            <span>Configurações</span>
+                        </a>
+                        <div class="dropdown-divider"></div>
+                        <a href="#" class="dropdown-item">
+                            <div class="dropdown-icon">
+                                <i class="ri-logout-box-line"></i>
+                            </div>
+                            <span>Sair</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="section">
+        <h2>Minhas Avaliações Recentes</h2>
+        <div class="reviews-grid">
+            <div class="review-card">
+                <div class="review-header">
+                    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/271590/header.jpg" alt="GTA V" class="review-game-image">
+                    <div class="review-game-info">
+                        <div class="review-game-title">Grand Theft Auto V</div>
+                        <div class="review-rating">
+                            <i class="fas fa-star"></i> 5.0
+                        </div>
+                    </div>
+                </div>
+                <div class="review-content">
+                    "GTA V continua sendo uma obra-prima! O mundo aberto é gigantesco e cheio de vida, as missões são variadas e a história é envolvente. Joguei por centenas de horas e ainda encontro coisas novas para fazer. O online também é viciante, apesar de alguns problemas de balanceamento."
+                </div>
+                <div class="review-actions">
+                    <button class="review-action-button edit"><i class="ri-edit-line"></i> Editar</button>
+                    <button class="review-action-button delete"><i class="ri-delete-bin-line"></i> Excluir</button>
+                </div>
+            </div>
+
+            <div class="review-card">
+                <div class="review-header">
+                    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/1174180/header.jpg" alt="Red Dead Redemption 2" class="review-game-image">
+                    <div class="review-game-info">
+                        <div class="review-game-title">Red Dead Redemption 2</div>
+                        <div class="review-rating">
+                            <i class="fas fa-star"></i> 5.0
+                        </div>
+                    </div>
+                </div>
+                <div class="review-content">
+                    "Que experiência incrível! RDR2 é um marco nos jogos, com uma narrativa profunda e personagens inesquecíveis. Os detalhes do mundo são absurdos, e cada atividade, por menor que seja, contribui para a imersão. É lento no começo, mas compensa cada minuto."
+                </div>
+                <div class="review-actions">
+                    <button class="review-action-button edit"><i class="ri-edit-line"></i> Editar</button>
+                    <button class="review-action-button delete"><i class="ri-delete-bin-line"></i> Excluir</button>
+                </div>
+            </div>
+
+            <div class="review-card">
+                <div class="review-header">
+                    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/413150/header.jpg" alt="Stardew Valley" class="review-game-image">
+                    <div class="review-game-info">
+                        <div class="review-game-title">Stardew Valley</div>
+                        <div class="review-rating">
+                            <i class="fas fa-star"></i> 4.5
+                        </div>
+                    </div>
+                </div>
+                <div class="review-content">
+                    "Um jogo relaxante e viciante! Comecei a jogar para descontrair e não consegui mais parar. Tem muita coisa para fazer, desde cuidar da fazenda até explorar cavernas e fazer amizade com os moradores. A trilha sonora é um charme à parte."
+                </div>
+                <div class="review-actions">
+                    <button class="review-action-button edit"><i class="ri-edit-line"></i> Editar</button>
+                    <button class="review-action-button delete"><i class="ri-delete-bin-line"></i> Excluir</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-column">
+                <a href="/" class="logo font-pacifico" style="font-size: 1.5rem; margin-bottom: 1rem; display: flex; align-items: center;">
+                    <img src="https://github.com/Thallys-San/ArtemiScore/blob/main/ArtemiScore%20(1).png?raw=true" alt="ArtemiScore Logo" style="height: 30px; margin-right: 8px;">
+                    ArtemiScore
+                </a>
+                <p style="color: var(--light-gray); font-size: 0.9rem;">Sua plataforma completa para o mundo dos jogos. Descubra, avalie e conecte-se.</p>
+                <div class="social-links">
+                    <a href="#" title="Facebook"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" title="Twitter"><i class="fab fa-twitter"></i></a>
+                    <a href="#" title="Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="#" title="YouTube"><i class="fab fa-youtube"></i></a>
+                </div>
+            </div>
+            <div class="footer-column">
+                <h3>Links Úteis</h3>
+                <ul class="footer-links">
+                    <li><a href="#"><i class="ri-arrow-right-s-line"></i> Sobre Nós</a></li>
+                    <li><a href="#"><i class="ri-arrow-right-s-line"></i> Carreira</a></li>
+                    <li><a href="#"><i class="ri-arrow-right-s-line"></i> Termos de Serviço</a></li>
+                    <li><a href="#"><i class="ri-arrow-right-s-line"></i> Política de Privacidade</a></li>
+                    <li><a href="#"><i class="ri-arrow-right-s-line"></i> Ajuda e FAQ</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>Navegar</h3>
+                <ul class="footer-links">
+                    <li><a href="#"><i class="ri-arrow-right-s-line"></i> Todos os Jogos</a></li>
+                    <li><a href="#"><i class="ri-arrow-right-s-line"></i> Próximos Lançamentos</a></li>
+                    <li><a href="#"><i class="ri-arrow-right-s-line"></i> Jogos Populares</a></li>
+                    <li><a href="#"><i class="ri-arrow-right-s-line"></i> Análises Recentes</a></li>
+                    <li><a href="#"><i class="ri-arrow-right-s-line"></i> Fóruns da Comunidade</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>Contato</h3>
+                <ul class="footer-links">
+                    <li><a href="#"><i class="ri-map-pin-line"></i> Rua Exemplo, 123, Cidade, País</a></li>
+                    <li><a href="mailto:contato@artemiscore.com"><i class="ri-mail-line"></i> contato@artemiscore.com</a></li>
+                    <li><a href="tel:+5511987654321"><i class="ri-phone-line"></i> +55 (11) 98765-4321</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="copyright">
+            &copy; 2025 ArtemiScore. Todos os direitos reservados.
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const userMenuContainer = document.getElementById('userMenuContainer');
+            const userDropdown = document.getElementById('userDropdownMenu');
+
+            // User dropdown interaction
+            userMenuContainer.addEventListener('click', function(e) {
+                e.stopPropagation();
+                const isVisible = userDropdown.style.display === 'block';
+                userDropdown.style.display = isVisible ? 'none' : 'block';
+            });
+
+            // Close dropdown when clicking outside
+            document.addEventListener('click', function() {
+                userDropdown.style.display = 'none';
+            });
+        });
+    </script>
+</body>
+</html>
