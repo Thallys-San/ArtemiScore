@@ -10,7 +10,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
+import com.artemiscore.artemiscore.model.AvaliacaoModel;
 import com.artemiscore.artemiscore.model.rawghApi.*;
+import com.artemiscore.artemiscore.repository.AvaliacaoRepository;
 
 import java.util.Arrays;
 import java.util.List;
@@ -18,14 +20,17 @@ import java.util.List;
 @Service
 public class RawgService {
 
+    private final AvaliacaoRepository avaliacaoRepository;
+    private final RestTemplate restTemplate;
+
     @Value("${rawg.api.key}")
     private String apiKey;
 
-    private final RestTemplate restTemplate;
     private static final String BASE_URL = "https://api.rawg.io/api/";
-
-    public RawgService(RestTemplate restTemplate) {
+    
+    public RawgService(RestTemplate restTemplate, AvaliacaoRepository avaliacaoRepository) {
         this.restTemplate = restTemplate;
+        this.avaliacaoRepository = avaliacaoRepository;
     }
 
     // Gêneros
@@ -69,7 +74,7 @@ public class RawgService {
     }
 
     // Jogos
-    public List<GameDTO> searchGames(String name) {
+public List<GameDTO> searchGames(String name) {
     String url = BASE_URL + "games?key=" + apiKey;
     if (name != null && !name.trim().isEmpty()) {
         url += "&search=" + name.trim();
@@ -82,19 +87,24 @@ public class RawgService {
         new ParameterizedTypeReference<RawghResponse<GameDTO>>() {}
     );
 
-    return response.getBody().getResults();
+    List<GameDTO> lista = response.getBody().getResults();
+    lista.forEach(this::adicionarDadosDeAvaliacao); // ✅ insere avaliações em todos
+    return lista;
 }
 
 
+
     public GameDTO getGameById(Long id) {
-        String url = BASE_URL + "games/" + id + "?key=" + apiKey;
-        try {
-            return restTemplate.getForObject(url, GameDTO.class);
-        } catch (HttpClientErrorException.NotFound e) {
-            // Retorna null se não encontrar o jogo na API RAWG (erro 404)
-            return null;
-        }
+    String url = BASE_URL + "games/" + id + "?key=" + apiKey;
+    try {
+        GameDTO game = restTemplate.getForObject(url, GameDTO.class);
+        adicionarDadosDeAvaliacao(game); // ✅ insere avaliações
+        return game;
+    } catch (HttpClientErrorException.NotFound e) {
+        return null;
     }
+}
+
 
     public GameDTO getGameBySlug(String slug) {
     String url = BASE_URL + "games/" + slug + "?key=" + apiKey;
@@ -104,31 +114,43 @@ public class RawgService {
         null,
         new ParameterizedTypeReference<GameDTO>() {}
     );
-    return response.getBody();
-    }
+    GameDTO game = response.getBody();
+    adicionarDadosDeAvaliacao(game); // ✅ insere avaliações
+    return game;
+}
+
+
 
         // Game Card
-        public List<GameCardDTO> getBasicGameCards() {
-        List<GameDTO> jogos = searchGames(null); // busca jogos da API
+public List<GameCardDTO> getBasicGameCards() {
+    List<GameDTO> jogos = searchGames(null); // busca jogos da API
 
-        return jogos.stream().map(j -> {
-            GameDTO detalhado = getGameBySlug(j.getSlug()); // uma chamada por jogo
+    return jogos.stream().map(j -> {
+        GameDTO detalhado = getGameBySlug(j.getSlug()); // já com avaliações
 
-            GameCardDTO card = new GameCardDTO();
-            card.setId(j.getId());
-            card.setName(j.getName());
-            card.setSlug(j.getSlug());
-            card.setReleased(j.getReleased());
-            card.setBackground_image(j.getBackground_image());
+        GameCardDTO card = new GameCardDTO();
+        card.setId(j.getId());
+        card.setName(j.getName());
+        card.setSlug(j.getSlug());
+        card.setReleased(j.getReleased());
+        card.setBackground_image(j.getBackground_image());
 
-            if (detalhado != null) {
-                card.setDescription(detalhado.getDescription());
-                card.setDescription_raw(detalhado.getDescription_raw());
-            }
+        if (detalhado != null) {
+            card.setDescription(detalhado.getDescription());
+            card.setDescription_raw(detalhado.getDescription_raw());
 
-            return card;
-        }).toList();
-    }
+            // Copia avaliações do GameDTO detalhado para o card
+            card.setMediaAvaliacao(detalhado.getMediaAvaliacao());
+            card.setTotalAvaliacoes(detalhado.getTotalAvaliacoes());
+            card.setAvaliacoes(detalhado.getAvaliacoes());
+
+        }
+
+        return card;
+    }).toList();
+}
+
+
 
     public List<GameCardDTO> getUpcomingGameCards() {
     // Define o intervalo de datas: hoje até 2 anos depois
@@ -158,6 +180,13 @@ public class RawgService {
         if (detalhado != null) {
             card.setDescription(detalhado.getDescription());
             card.setDescription_raw(detalhado.getDescription_raw());
+
+            
+            // Copia avaliações do GameDTO detalhado para o card
+            card.setMediaAvaliacao(detalhado.getMediaAvaliacao());
+            card.setTotalAvaliacoes(detalhado.getTotalAvaliacoes());
+            card.setAvaliacoes(detalhado.getAvaliacoes());
+
         }
 
         return card;
@@ -165,6 +194,14 @@ public class RawgService {
 }
 
 
+private void adicionarDadosDeAvaliacao(GameDTO game) {
+    if (game != null) {
+        Long jogoId = game.getId();
+        game.setMediaAvaliacao(avaliacaoRepository.findMediaAvaliacaoByJogoId(jogoId));
+        game.setAvaliacoes(avaliacaoRepository.findAvaliacoesByJogoId(jogoId));
+        game.setTotalAvaliacoes(game.getAvaliacoes() != null ? game.getAvaliacoes().size() : 0);
+    }
+}
 
     // Screenshots
     public List<ScreenshotDTO> getGameScreenshots(Long gameId) {
