@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+
 import org.springframework.web.bind.annotation.RestController;
 
 import com.artemiscore.artemiscore.model.AvaliacaoModel;
@@ -62,6 +63,7 @@ public class AvaliacaoController {
     }
 
 
+    
     // ✅ Criar uma nova avaliação
     @PostMapping
     public ResponseEntity<AvaliacaoModel> criar(@Valid @RequestBody AvaliacaoModel avaliacaoModel) {

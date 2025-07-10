@@ -6,10 +6,15 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.stereotype.Service;
 
 
+
+
+
 import com.artemiscore.artemiscore.model.AvaliacaoModel;
+
 import com.artemiscore.artemiscore.repository.AvaliacaoRepository;
 
 @Service
@@ -38,9 +43,9 @@ public class AvaliacaoService {
         return repository.findAvaliacoesByJogoId(jogoId);
     }
 
-
+    
     public AvaliacaoModel salvar(AvaliacaoModel avaliacaoModel) {
-    Long jogoId = avaliacaoModel.getJogo_id();
+    Long jogoId = avaliacaoModel.getId();
     if (jogoId == null || rawgService.getGameById(jogoId) == null) {
         throw new IllegalArgumentException("Jogo inválido ou não encontrado: " + jogoId);
     }
