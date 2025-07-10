@@ -43,7 +43,7 @@ public class AvaliacaoModel {
     private Double nota;
 
     @Column
-    private int tempoDeJogo;
+    private Integer tempoDeJogo;
 
     @Column(nullable = false, length = 255)
     private String plataforma;
