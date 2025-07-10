@@ -885,13 +885,25 @@
                 width: 100%;
             }
         }
+        
+        /* Novo estilo para a imagem do logo */
+        .logo-image {
+            height: 40px;
+            width: auto;
+            display: block;
+        }
     </style>
 </head>
 <body>
    <header>
   <div class="container header-container">
     <div class="flex items-center">
-      <a href="#" class="logo font-pacifico">AtermiScore</a>
+      <!-- Imagem substituindo o texto -->
+      <a href="#" class="logo">
+        <img src="https://raw.githubusercontent.com/Thallys-San/ArtemiScore/refs/heads/main/ArtemiScore%20(1).png" 
+             alt="ArtemiScore Logo" 
+             class="logo-image">
+      </a>
       <nav class="main-nav">
         <a href="/" class="nav-link active">Início</a>
         <a href="Jogos.html" class="nav-link">Jogos</a>
@@ -954,18 +966,18 @@
             <form>
                 <div class="form-group">
                     <label for="username">Nome de Usuário</label>
-                    <input type="text" id="username" value="carlosgamer" placeholder="Seu nome de usuário">
+                    <input type="text" id="username" value="" placeholder="Seu nome de usuário">
                 </div>
                 <div class="form-group">
                     <label for="email">Email</label>
-                    <input type="email" id="email" value="carlos.oliveira@example.com" placeholder="Seu email">
+                    <input type="email" id="email" value="" placeholder="Seu email">
                 </div>
                 <div class="form-group">
                     <label for="bio">Bio</label>
-                    <textarea id="bio" placeholder="Fale um pouco sobre você...">Apaixonado por RPGs e jogos de estratégia. Streamer nas horas vagas e colecionador de conquistas.</textarea>
+                    <textarea id="bio" placeholder="Fale um pouco sobre você..."></textarea>
                 </div>
                 <div class="profile-image-upload">
-                    <img id="profileImagePreview" src="https://randomuser.me/api/portraits/men/32.jpg" alt="Avatar do Usuário">
+                    <img id="profileImagePreview" src="" alt="Avatar do Usuário">
                     <div>
                         <label for="profileImage" class="custom-file-upload">
                             <i class="ri-upload-cloud-line"></i> Alterar Imagem de Perfil
@@ -1040,9 +1052,11 @@
     <footer>
         <div class="footer-content">
             <div class="footer-column">
-                <a href="#" class="logo font-pacifico" style="font-size: 1.5rem; margin-bottom: 1rem;">
-                    <i class="fas fa-gamepad"></i>
-                    ArtemiScore
+                <!-- Imagem substituindo o texto no rodapé -->
+                <a href="#" class="logo" style="margin-bottom: 1rem; display: inline-block;">
+                    <img src="https://raw.githubusercontent.com/Thallys-San/ArtemiScore/refs/heads/main/ArtemiScore%20(1).png" 
+                         alt="ArtemiScore Logo" 
+                         class="logo-image">
                 </a>
                 <p style="color: var(--light-gray); font-size: 0.9rem;">Sua plataforma completa para o mundo dos jogos. Descubra, avalie e conecte-se.</p>
                 <div class="social-links">
