@@ -165,7 +165,8 @@ public ResponseEntity<?> getAllGamesWithDescription() {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body("Erro ao buscar jogos detalhados: " + e.getMessage());
     }
-}
+    }
+
 
     // --------------------- Cards de Jogo ---------------------
     @GetMapping("/cards")
@@ -195,7 +196,6 @@ public ResponseEntity<?> getAllGamesWithDescription() {
                     .body("Erro ao buscar jogos futuros: " + e.getMessage());
         }
     }
-
 
 
     // --------------------- Screenshots ---------------------

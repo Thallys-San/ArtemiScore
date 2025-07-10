@@ -471,7 +471,7 @@ header.scrolled {
 }
 
 .hero-slide {
-    position: absolute;
+    position: relative;
     width: 100%;
     height: 100%;
     top: 0;
@@ -489,7 +489,7 @@ header.scrolled {
     height: 100%;
     object-fit: cover;
     object-position: center;
-    animation: zoomEffect 20s infinite alternate;
+    animation: zoomEffect 5s infinite alternate;
 }
 
 @keyframes zoomEffect {
@@ -518,8 +518,29 @@ header.scrolled {
     width: 100%;
     padding: 3rem;
     text-align: center;
-    margin-top: -50px;
+
+    /* NOVOS ajustes */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1.5rem;
+
+    /* CENTRALIZA VERTICALMENTE DENTRO DO CONTAINER PAI */
+    height: 100%;
 }
+
+.hero-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    padding: 0 2rem;
+    position: relative;
+    z-index: 2;
+}
+
+
 
 /* Tag de destaque no Hero */
 .hero-tag {
@@ -565,16 +586,27 @@ header.scrolled {
 }
 
 /* Contêiner das estrelas */
-.star-rating {
-    display: flex;
-    gap: 0.5rem;
+.star {
+    width: 18px;
+    height: 18px;
+    display: inline-block;
+    background-size: contain;
+    background-repeat: no-repeat;
+    margin-right: 2px;
 }
 
-.star-rating i {
-    font-size: 2rem;
-    color: var(--yellow);
-    text-shadow: 0 0 10px rgba(253, 203, 110, 0.7);
+.star.full {
+    background-image: url('data:image/svg+xml;utf8,<svg fill="%23FDB813" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 .587l3.668 7.571 8.332 1.151-6.064 5.877 1.464 8.291L12 18.896l-7.4 4.581 1.464-8.291L0 9.309l8.332-1.151z"/></svg>');
 }
+
+.star.half {
+    background-image: url('data:image/svg+xml;utf8,<svg fill="%23FDB813" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 .587l3.668 7.571 8.332 1.151-6.064 5.877 1.464 8.291L12 18.896V.587z" /><path fill="%23DDD" d="M12 18.896l-7.4 4.581 1.464-8.291L0 9.309l8.332-1.151L12 .587z"/></svg>');
+}
+
+.star.empty {
+    background-image: url('data:image/svg+xml;utf8,<svg fill="%23DDD" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 .587l3.668 7.571 8.332 1.151-6.064 5.877 1.464 8.291L12 18.896l-7.4 4.581 1.464-8.291L0 9.309l8.332-1.151z"/></svg>');
+}
+
 
 /* Texto da avaliação (ex: "4.8/5 Estrelas") */
 .rating-text {
@@ -833,12 +865,14 @@ header.scrolled {
 
 /* --- Cards Base (Jogos, Lançamentos, Top Avaliados, Comunidade) --- */
 .game-card, .release-card, .top-game-card, .community-card { /* Adicionado .community-card aqui */
-    background-color: var(--dark-gray);
+    display: flex;
+    flex-direction: column;
     border-radius: 12px;
     overflow: hidden;
-    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease; /* Adicionado border-color */
-    box-shadow: var(--shadow-md); /* Usando variável de sombra padrão */
-    border: 1px solid var(--medium-gray); /* Borda padrão */
+    background-color: var(--dark-gray);
+    box-shadow: var(--shadow-md);
+    border: 1px solid var(--medium-gray);
+    transition: transform 0.3s ease;
 }
 
 .game-card:hover, .release-card:hover, .top-game-card:hover, .community-card:hover {
@@ -927,17 +961,34 @@ header.scrolled {
     z-index: 1;
 }
 
-
-
-
 /* Se você tiver uma classe específica para a imagem do card de jogo, como .game-img,
    certifique-se de que ela também tenha essas propriedades: */
 .game-img { /* Se esta classe for usada no HTML */
     width: 100%;
-    height: 250px; /* MODIFICADO: Ajustado para a nova altura de 250px */
+    aspect-ratio: 16 / 9; /* Mantém a proporção de 16:9 */
+
     object-fit: cover;
     object-position: center; /* ADICIONADO: Garante que o centro da imagem seja o foco */
     display: block;
+}
+
+.game-content {
+    padding: 1rem; /* Adiciona respiro interno */
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    flex-grow: 1;
+}
+
+.descricao {
+    font-size: 0.85rem;
+    color: var(--light-gray);
+    line-height: 1.4;
+    display: -webkit-box;
+    -webkit-line-clamp: 4; /* Limita a 4 linhas */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .game-card:hover .game-image {

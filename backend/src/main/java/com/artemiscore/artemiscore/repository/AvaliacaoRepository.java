@@ -18,5 +18,10 @@ public interface AvaliacaoRepository extends JpaRepository<AvaliacaoModel, Long>
 
     @Query("SELECT a FROM AvaliacaoModel a WHERE a.usuario_id = :usuarioId")
     List<AvaliacaoModel> findAvaliacoesByUsuarioId(@Param("usuarioId") Long usuarioId);
+
+    @Query("SELECT AVG(a.nota) FROM AvaliacaoModel a WHERE a.jogo_id = :jogoId")
+    Double findMediaAvaliacaoByJogoId(@Param("jogoId") Long jogoId);
+
+
   
 }

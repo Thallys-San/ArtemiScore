@@ -23,8 +23,9 @@ public class GameDTO {
     private String website;
 
     private Double mediaAvaliacao;
-    private Long totalAvaliacoes;
+    private Integer totalAvaliacoes;
     private List<AvaliacaoModel> avaliacoes;
+
      
     private ClipDTO clip;
     private List<ScreenshotDTO> screenshots;
