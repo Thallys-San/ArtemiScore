@@ -1,449 +1,350 @@
-/* --- Variáveis CSS (Design Tokens) --- */
-:root {
-    /* Paleta de Cores Primárias */
-    --color1: #3217ea; /* Tom mais escuro do primário */
-    --color2: #5733ef; /* Primário base */
-    --color3: #7c50f4; /* Primário médio / Secundário */
-    --color4: #a16cfa; /* Tom mais claro do primário */
-    --color5: #c688ff; /* Acento / Tom mais vibrante */
-
-    --primary: var(--color2);
-    --primary-hover: var(--color1);
-    --secondary: var(--color3);
-    --accent: var(--color5);
-    
-    /* Tons de Cinza e Cores Neutras */
-    --dark: #0f0f13; /* Cor de fundo principal */
-    --darker: #0a0a0d; /* Fundo mais escuro, para gradientes ou elementos sobrepostos */
-    --dark-gray: #1e1e24; /* Cinza escuro para componentes, inputs */
-    --medium-gray: #3d3d45; /* Cinza médio para bordas, divisores */
-    --light-gray: #6d6d7a; /* Cinza claro para texto secundário, placeholders */
-    --lighter: #e1e1e1; /* Texto principal claro */
-    --white: #ffffff; /* Branco puro */
-    --black-transparent: rgba(15, 15, 19, 0.95); /* Para top-bar com blur */
-
-
-    /* Cores de Feedback/Auxiliares */
-    --yellow: #fdcb6e; /* Estrelas, avisos */
-    --green: #00b894; /* Sucesso, positivo */
-    --red: #e74c3c; /* Para erros, alertas */
-
-    /* Efeitos e Transições */
-    --glow: 0 0 15px rgba(87, 51, 239, 0.5); /* Sombra de brilho para elementos interativos */
-    --glow-hover: 0 0 25px rgba(124, 80, 244, 0.459); /* Brilho mais intenso no hover */
-    --shadow-sm: 0 4px 6px hsla(0, 0%, 0%, 0.25); /* Sombra pequena (mais escura para dark theme) */
-    --shadow-md: 0 10px 15px hsla(0, 0%, 0%, 0.45); /* Sombra média (mais escura) */
-    --shadow-lg: 0 20px 25px hsla(0, 0%, 0%, 0.6); /* Sombra grande (mais escura) */
-    --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); /* Transição padrão (ease-out-back) */
-    --transition-slow: all 0.6s cubic-bezier(0.16, 1, 0.3, 1); /* Transição mais lenta */
-
-    /* Gradientes */
-    --gradient-primary: linear-gradient(45deg, var(--color2), var(--color5));
-    --gradient-dark: linear-gradient(to bottom, var(--dark), var(--darker));
-}
-
-/* --- Base Styles --- */
-body {
+/* perfil.css */
+* {
     margin: 0;
+    padding: 0;
+    box-sizing: border-box;
     font-family: 'Inter', sans-serif;
-    background-color: var(--dark); /* Cor de fundo principal do tema dark */
-    color: var(--lighter); /* Cor do texto principal no tema dark */
 }
 
-/* --- Top Bar (Cabeçalho) --- */
-.top-bar {
-    background-color: var(--black-transparent); /* Fundo semi-transparente com blur */
-    backdrop-filter: blur(12px);
-    border-bottom: 1px solid var(--medium-gray); /* Borda inferior sutil */
-    padding: 15px 20px; 
-    display: flex;
-    justify-content: space-between; /* Mantém espaço entre logo e nav */
-    align-items: center;
-    box-shadow: var(--shadow-md); /* Sombra para profundidade */
-    position: sticky;
+:root {
+    --primary: #5733ef;
+    --primary-dark: #4625c9;
+    --accent: #c688ff;
+    --dark: #0f0f13;
+    --darker: #0a0a0d;
+    --gray: #1e1e24;
+    --gray-light: #2a2a35;
+    --light-gray: #6d6d7a;
+    --yellow: #fdcb6e;
+    --green: #00cc96;
+    --red: #ff6b6b;
+}
+
+body {
+    background: linear-gradient(135deg, var(--darker) 0%, var(--dark) 100%);
+    color: #e1e1e1;
+    min-height: 100vh;
+    padding-top: 80px;
+}
+
+body::before {
+    content: '';
+    position: fixed;
     top: 0;
-    z-index: 1000;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at 10% 20%, rgba(87, 51, 239, 0.1) 0%, rgba(15, 15, 19, 0) 40%),
+                radial-gradient(circle at 90% 80%, rgba(198, 136, 255, 0.1) 0%, rgba(15, 15, 19, 0) 40%);
+    z-index: -1;
 }
 
-/* Adicionando um container para controlar a largura máxima da top-bar */
-.top-bar .container {
+/* Header */
+.top-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background: rgba(15,15,19,0.95);
+    backdrop-filter: blur(8px);
+    padding: 1rem 0;
+    z-index: 1000;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    border-bottom: 1px solid var(--primary);
+}
+
+.container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 2rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    width: 100%; /* Garante que o container ocupe a largura total */
-    max-width: 1400px; /* Define uma largura máxima para o conteúdo da barra */
-    margin: 0 auto; /* Centraliza o conteúdo dentro da barra */
 }
 
-.top-bar .logo {
-    font-size: 24px;
-    font-weight: 700;
-    background: var(--gradient-primary);
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-    text-decoration: none;
-    transition: var(--transition);
+.logo img {
+    height: 40px;
+    width: auto;
 }
 
-.top-bar .logo:hover {
-    opacity: 0.8;
-}
-
-.top-bar nav { /* Flexbox para o NAV, que contém UL e INPUT */
+nav ul {
     display: flex;
     align-items: center;
-    gap: 25px; /* Espaço entre a UL e o INPUT */
-}
-
-.top-bar nav ul {
     list-style: none;
-    display: flex;
-    gap: 25px; /* Espaço entre os itens de navegação */
-    margin: 0;
-    padding: 0;
-    align-items: center;
+    gap: 1.5rem;
 }
 
-.top-bar nav ul li a {
+nav ul li a {
+    color: var(--light-gray);
     text-decoration: none;
-    color: var(--lighter);
     font-weight: 500;
-    padding: 8px 0;
+    transition: 0.3s;
     position: relative;
-    transition: var(--transition);
-    white-space: nowrap; /* Impede que os links quebrem a linha */
 }
 
-.top-bar nav ul li a:hover {
-    color: var(--white);
+nav ul li a:hover {
+    color: white;
 }
 
-.top-bar nav ul li a::after {
+nav ul li a::after {
     content: '';
     position: absolute;
-    width: 0%;
+    width: 0;
     height: 2px;
-    bottom: 0;
+    bottom: -4px;
     left: 0;
     background-color: var(--primary);
-    transition: width 0.3s ease-out;
+    transition: width 0.3s;
 }
 
-.top-bar nav ul li a:hover::after {
+nav ul li a:hover::after {
     width: 100%;
 }
 
-.top-bar input {
-    padding: 8px 15px;
-    background-color: var(--dark-gray);
-    border: 1px solid var(--medium-gray);
-    border-radius: 50px;
-    color: var(--lighter);
-    transition: var(--transition);
-    width: 200px;
-    font-size: 0.95rem;
-    flex-shrink: 0; /* Impede que o input encolha demais */
-}
-
-.top-bar input::placeholder {
-    color: var(--light-gray);
-}
-
-.top-bar input:focus {
+nav ul input {
+    background: var(--gray);
+    border: 1px solid var(--gray-light);
+    border-radius: 20px;
+    padding: 0.5rem 1rem;
+    color: white;
     outline: none;
+    transition: all 0.3s;
+    width: 200px;
+    margin-left: 1.5rem;
+}
+
+nav ul input:focus {
     border-color: var(--primary);
-    box-shadow: 0 0 0 2px rgba(87, 51, 239, 0.3), var(--glow);
     width: 250px;
 }
 
-/* --- Profile Section --- */
+/* Profile Section */
 .profile {
-    max-width: 1200px;
-    margin: 30px auto;
-    padding: 0 20px;
+    max-width: 1400px;
+    margin: 2rem auto;
+    padding: 0 2rem;
     display: grid;
-    grid-template-columns: 3fr 1fr; /* 3/4 para conteúdo principal, 1/4 para sidebar em telas grandes */
-    gap: 30px;
+    grid-template-columns: 1fr 300px;
+    gap: 2rem;
 }
 
 .profile-header {
     display: flex;
-    gap: 20px;
-    align-items: center;
-    margin-bottom: 20px;
-    background-color: var(--dark-gray);
-    padding: 20px;
-    border-radius: 12px;
-    box-shadow: var(--shadow-md);
-    border: 1px solid var(--medium-gray);
+    gap: 2rem;
+    margin-bottom: 2rem;
+    grid-column: 1 / -1;
 }
 
 .avatar {
-    width: 100px;
-    height: 100px;
+    width: 120px;
+    height: 120px;
     border-radius: 50%;
     object-fit: cover;
-    border: 3px solid var(--primary);
-    box-shadow: var(--shadow-sm);
-}
-
-.profile-info {
-    flex: 1;
+    border: 4px solid var(--primary);
 }
 
 .profile-info h2 {
-    margin: 0;
-    font-size: 24px;
-    font-weight: 700;
-    color: var(--white);
+    font-size: 1.8rem;
+    color: white;
+    margin-bottom: 0.5rem;
 }
 
 .profile-info .data {
-    font-size: 14px;
     color: var(--light-gray);
-    margin-bottom: 10px;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+}
+
+.profile-info p {
+    margin-bottom: 1.5rem;
+    line-height: 1.6;
 }
 
 .profile-info button {
-    margin-right: 10px;
-    padding: 8px 16px;
-    border: none;
+    padding: 0.6rem 1.2rem;
     border-radius: 6px;
+    font-weight: 500;
     cursor: pointer;
-    font-weight: 600;
-    transition: var(--transition);
+    transition: 0.3s;
+    margin-right: 1rem;
 }
 
-.edit {
-    background-color: var(--primary);
-    color: var(--white);
+.profile-info .edit {
+    background: var(--primary);
+    color: white;
+    border: none;
 }
 
-.edit:hover {
-    background-color: var(--primary-hover);
-    transform: translateY(-1px);
-    box-shadow: var(--glow);
+.profile-info .edit:hover {
+    background: var(--primary-dark);
 }
 
-.share {
-    background-color: var(--darker);
-    color: var(--lighter);
-    border: 1px solid var(--medium-gray);
+.profile-info .share {
+    background: var(--gray-light);
+    color: white;
+    border: none;
 }
 
-.share:hover {
-    background-color: var(--medium-gray);
-    color: var(--white);
-    transform: translateY(-1px);
+.profile-info .share:hover {
+    background: var(--gray);
 }
 
 .metrics {
     display: flex;
-    gap: 20px;
-    margin-bottom: 30px;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+    grid-column: 1 / -1;
 }
 
 .metrics .card {
-    flex: 1;
-    background-color: var(--dark-gray);
-    padding: 20px;
+    background: rgba(30, 30, 36, 0.7);
+    backdrop-filter: blur(10px);
     border-radius: 12px;
-    box-shadow: var(--shadow-sm);
-    text-align: center;
-    font-weight: 600;
-    color: var(--lighter);
-    border: 1px solid var(--medium-gray);
+    padding: 1.5rem;
+    border: 1px solid var(--gray-light);
+    flex: 1;
+}
+
+.metrics .card strong {
+    font-size: 1.5rem;
+    color: var(--accent);
 }
 
 .reviews {
-    background-color: var(--dark-gray);
-    padding: 20px;
+    background: rgba(30, 30, 36, 0.7);
+    backdrop-filter: blur(10px);
     border-radius: 12px;
-    box-shadow: var(--shadow-md);
-    border: 1px solid var(--medium-gray);
+    padding: 1.5rem;
+    border: 1px solid var(--gray-light);
 }
 
 .reviews h3 {
-    margin-top: 0;
-    color: var(--white);
-    font-size: 1.5rem;
-    position: relative;
-    padding-bottom: 0.5rem;
+    font-size: 1.25rem;
+    color: white;
     margin-bottom: 1.5rem;
-}
-
-.reviews h3::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 60px;
-    height: 3px;
-    background: var(--primary);
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--gray-light);
 }
 
 .review {
-    margin-bottom: 20px;
-    padding-bottom: 20px;
-    border-bottom: 1px dashed var(--medium-gray);
+    margin-bottom: 1.5rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--gray-light);
 }
 
 .review:last-child {
-    border-bottom: none;
     margin-bottom: 0;
     padding-bottom: 0;
+    border-bottom: none;
 }
 
 .review h4 {
-    margin: 0;
-    font-size: 18px;
-    font-weight: 600;
+    font-size: 1.1rem;
+    color: white;
+    margin-bottom: 0.5rem;
     display: flex;
     justify-content: space-between;
-    color: var(--lighter);
+}
+
+.review h4 span {
+    color: var(--yellow);
+    font-weight: 700;
 }
 
 .review p {
     color: var(--light-gray);
-    font-size: 14px;
-    margin-top: 6px;
-}
-
-/* --- Sidebar --- */
-.sidebar {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
+    line-height: 1.6;
 }
 
 .sidebar > div {
-    background-color: var(--dark-gray);
-    padding: 16px;
+    background: rgba(30, 30, 36, 0.7);
+    backdrop-filter: blur(10px);
     border-radius: 12px;
-    box-shadow: var(--shadow-sm);
-    border: 1px solid var(--medium-gray);
+    padding: 1.5rem;
+    border: 1px solid var(--gray-light);
+    margin-bottom: 1.5rem;
 }
 
 .sidebar h4 {
-    margin-top: 0;
-    font-size: 16px;
-    font-weight: 600;
-    color: var(--white);
-    position: relative;
-    padding-bottom: 0.5rem;
+    font-size: 1.1rem;
+    color: white;
     margin-bottom: 1rem;
-}
-
-.sidebar h4::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 40px;
-    height: 3px;
-    background: var(--primary);
 }
 
 .sidebar ul {
     list-style: none;
-    padding-left: 0;
 }
 
 .sidebar ul li {
-    margin-bottom: 6px;
-    font-size: 14px;
-    color: var(--lighter);
+    margin-bottom: 0.5rem;
+    color: var(--light-gray);
 }
 
-.sidebar ul li:last-child {
-    margin-bottom: 0;
+.sidebar p {
+    color: var(--light-gray);
+    line-height: 1.6;
 }
 
-/* --- Responsive Adjustments --- */
-@media (max-width: 992px) {
+/* Responsividade */
+@media (max-width: 1024px) {
     .profile {
         grid-template-columns: 1fr;
-        padding: 0 15px; 
-        }
-    .profile-header {
-        flex-direction: column;
-        text-align: center;
-        align-items: center;
-        order: 1; /* Garante que o cabeçalho do perfil venha primeiro */
     }
-
-    .profile-info button {
-        width: 100%;
-        margin-right: 0;
-        margin-bottom: 10px;
-    }
-
-    .metrics {
-        flex-wrap: wrap;
-        justify-content: center;
-        order: 2; /* Métricas vêm depois do cabeçalho */
-    }
-
-    .metrics .card {
-        flex-basis: calc(50% - 10px);
-        margin-bottom: 10px;
-    }
-
-    .reviews {
-        order: 3; /* Reviews vêm depois das métricas */
-    }
-
+    
     .sidebar {
-        order: 4; /* A sidebar (preferências, plataformas, conquistas) vem por último */
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.5rem;
     }
-
-@media (max-width: 768px) {
-    .top-bar {
-        flex-direction: column; /* Coluna no mobile para o top-bar */
-        align-items: flex-start; /* Alinha à esquerda */
-        padding: 15px 20px;
-    }
-
-    .top-bar .container { /* Ajusta o container para mobile */
-        flex-direction: column;
-        align-items: flex-start;
-    }
-
-    .top-bar .logo {
-        margin-bottom: 15px; /* Espaço abaixo da logo */
-    }
-
-    .top-bar nav { /* Adicionei isso para englobar ul e input */
-        flex-direction: column; /* Faz com que a navegação e o input fiquem em coluna */
-        width: 100%;
-        align-items: flex-start;
-        gap: 10px; /* Reduz o gap entre ul e input no mobile */
-    }
-
-    .top-bar nav ul {
-        flex-direction: column; /* Links em coluna no mobile */
-        width: 100%;
-        gap: 10px;
-        align-items: flex-start; /* Alinha à esquerda */
-        margin-bottom: 0; /* Remove margem para não ter espaçamento duplicado com o gap da nav */
-    }
-
-    .top-bar nav ul li {
-        width: 100%; /* Links ocupam a largura total */
-    }
-
-    .top-bar input {
-        width: 100%; /* Input ocupa a largura total */
-        margin-left: 0;
-    }
-
-    .profile-info button {
-        display: block;
-    }
-
-    .metrics .card {
-        flex-basis: 100%;
+    
+    .sidebar > div {
+        margin-bottom: 0;
     }
 }
+
+@media (max-width: 768px) {
+    .profile-header {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+    
+    .metrics {
+        flex-direction: column;
+    }
+    
+    nav ul {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    
+    nav ul input {
+        margin-left: 0;
+        width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    .sidebar {
+        grid-template-columns: 1fr;
+    }
+    
+    .container {
+        flex-direction: column;
+        gap: 1rem;
+    }
+    
+    nav ul {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    nav ul li {
+        width: 100%;
+        text-align: center;
+    }
+    
+    nav ul input {
+        width: 100%;
+    }
 }
