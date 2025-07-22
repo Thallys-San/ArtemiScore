@@ -50,7 +50,7 @@
             width: 100%;
             height: 100%;
             background: radial-gradient(circle at 10% 20%, rgba(87, 51, 239, 0.1) 0%, rgba(15, 15, 19, 0) 40%),
-                        radial-gradient(circle at 90% 80%, rgba(198, 136, 255, 0.1) 0%, rgba(15, 15, 19, 0) 40%);
+                                radial-gradient(circle at 90% 80%, rgba(198, 136, 255, 0.1) 0%, rgba(15, 15, 19, 0) 40%);
             z-index: -1;
         }
 
@@ -877,7 +877,7 @@
             .games-grid {
                 grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
             }
-             .button-group {
+            .button-group {
                 flex-direction: column;
                 align-items: stretch;
             }
@@ -895,10 +895,9 @@
     </style>
 </head>
 <body>
-   <header>
+    <header>
   <div class="container header-container">
     <div class="flex items-center">
-      <!-- Imagem substituindo o texto -->
       <a href="#" class="logo">
         <img src="https://github.com/Thallys-San/ArtemiScore/blob/main/ArtemiScore%20(2).png?raw=true" 
              alt="ArtemiScore" 
@@ -1052,11 +1051,10 @@
     <footer>
         <div class="footer-content">
             <div class="footer-column">
-                <!-- Imagem substituindo o texto no rodapé -->
                 <a href="#" class="logo" style="margin-bottom: 1rem; display: inline-block;">
                     <img src="https://github.com/Thallys-San/ArtemiScore/blob/main/ArtemiScore%20(2).png?raw=true" 
-                         alt="ArtemiScore" 
-                         class="logo-image">
+                             alt="ArtemiScore" 
+                             class="logo-image">
                 </a>
                 <p style="color: var(--light-gray); font-size: 0.9rem;">Sua plataforma completa para o mundo dos jogos. Descubra, avalie e conecte-se.</p>
                 <div class="social-links">
@@ -1091,43 +1089,58 @@
                 <ul class="footer-links">
                     <li><a href="#"><i class="ri-map-pin-line"></i> Rua Exemplo, 123, Cidade, País</a></li>
                     <li><a href="mailto:contato@artemiscore.com"><i class="ri-mail-line"></i> contato@artemiscore.com</a></li>
-                    <li><a href="tel:+5511987654321"><i class="ri-phone-line"></i> +55 (11) 98765-4321</a></li>
+                    <li><a href="tel:+5511987654321"></a></li>
                 </ul>
             </div>
         </div>
         <div class="copyright">
-            &copy; 2025 ArtemiScore. Todos os direitos reservados.
+            &copy; 2023 ArtemiScore. Todos os direitos reservados.
         </div>
     </footer>
 
     <script>
-        // Optional: JavaScript to handle dropdown menu visibility (if not purely CSS)
-        document.addEventListener('DOMContentLoaded', function() {
-            const userMenuContainer = document.getElementById('userMenuContainer');
-            const userDropdownMenu = document.getElementById('userDropdownMenu');
+        // JavaScript para o dropdown do menu do usuário (se necessário, mova para um arquivo JS externo também)
+        const userMenuButton = document.getElementById('userMenuButton');
+        const userDropdownMenu = document.getElementById('userDropdownMenu');
+        const userMenuContainer = document.getElementById('userMenuContainer'); // Certifique-se de que esta linha exista
 
-            // Example for showing/hiding dropdown on click (if you prefer this over hover)
-            // If using pure CSS hover, this part can be removed.
-            // userMenuContainer.addEventListener('click', function() {
-            //     userDropdownMenu.classList.toggle('show-dropdown'); // You'd need a 'show-dropdown' class
-            // });
+        userMenuButton.addEventListener('click', () => {
+            userDropdownMenu.classList.toggle('active'); // Você pode adicionar uma classe 'active' para controlar a visibilidade
+        });
 
-            // To handle image preview for file input
-            const profileImageInput = document.getElementById('profileImage');
-            const profileImagePreview = document.getElementById('profileImagePreview');
-
-            if (profileImageInput && profileImagePreview) {
-                profileImageInput.addEventListener('change', function(event) {
-                    const file = event.target.files[0];
-                    if (file) {
-                        const reader = new FileReader();
-                        reader.onload = function(e) {
-                            profileImagePreview.src = e.target.result;
-                        };
-                        reader.readAsDataURL(file);
-                    }
-                });
+        // Fechar o dropdown se clicar fora dele
+        document.addEventListener('click', (event) => {
+            if (!userMenuContainer.contains(event.target)) {
+                userDropdownMenu.classList.remove('active');
             }
+        });
+
+        // Preview da imagem de perfil
+        const profileImageInput = document.getElementById('profileImage');
+        const profileImagePreview = document.getElementById('profileImagePreview');
+
+        profileImageInput.addEventListener('change', function(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    profileImagePreview.src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // Adicione o script para garantir que o menu dropdown funciona com hover ou click
+        userMenuContainer.addEventListener('mouseenter', () => {
+            userDropdownMenu.style.opacity = '1';
+            userDropdownMenu.style.visibility = 'visible';
+            userDropdownMenu.style.transform = 'translateY(0)';
+        });
+
+        userMenuContainer.addEventListener('mouseleave', () => {
+            userDropdownMenu.style.opacity = '0';
+            userDropdownMenu.style.visibility = 'hidden';
+            userDropdownMenu.style.transform = 'translateY(-10px)';
         });
     </script>
 </body>
