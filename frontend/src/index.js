@@ -11,12 +11,17 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // ------------ POPULARES ------------
     fetch("http://localhost:8080/api/games/cards")
-        .then(res => res.json())
-        .then(cards => {
-            if (!Array.isArray(cards) || cards.length === 0) {
-                popularContainer.innerHTML = "<p>Nenhum jogo encontrado.</p>";
-                return;
-            }
+    .then(res => res.json())
+    .then(cards => {
+        console.log("RECEBIDO DA API:", cards); // <-- ADICIONE ISSO
+
+        if (!Array.isArray(cards) || cards.length === 0) {
+            popularContainer.innerHTML = "<p>Nenhum jogo encontrado.</p>";
+            return;
+        }
+
+        // resto...
+
 
             popularContainer.innerHTML = "";
 
