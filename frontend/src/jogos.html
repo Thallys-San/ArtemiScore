@@ -5,7 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Jogos - AtermiScore</title>
     <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet"/>
-    <link rel="stylesheet" href="style.css"> <link rel="stylesheet" href="jogos.css"> </head>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="jogos.css">
+</head>
 <body>
 
     <header>
@@ -67,31 +69,69 @@
             <div class="container">
                 <h1 class="section-title">Todos os Jogos</h1>
 
-                <div class="filters">
-                    <select id="genre-filter">
-                        <option value="">Todos os Gêneros</option>
-                        <option value="Ação">Ação</option>
-                        <option value="Aventura">Aventura</option>
-                        <option value="RPG">RPG</option>
-                        <option value="Estratégia">Estratégia</option>
-                        <option value="Esporte">Esporte</option>
-                        <option value="Terror">Terror</option>
-                    </select>
-                    <select id="platform-filter">
-                        <option value="">Todas as Plataformas</option>
-                        <option value="PC">PC</option>
-                        <option value="PlayStation">PlayStation</option>
-                        <option value="Xbox">Xbox</option>
-                        <option value="Nintendo Switch">Nintendo Switch</option>
-                    </select>
-                    <button class="filter-button" id="apply-filters">Aplicar Filtros</button>
+                <div class="filters-container">
+                    <div class="filters">
+                        <div class="filter-group">
+                            <label for="genre-filter" class="filter-label">
+                                <i class="ri-price-tag-3-line"></i> Gênero
+                            </label>
+                            <select id="genre-filter" class="filter-select">
+                                <option value="">Todos os Gêneros</option>
+                                <option value="Ação">Ação</option>
+                                <option value="Aventura">Aventura</option>
+                                <option value="RPG">RPG</option>
+                                <option value="Estratégia">Estratégia</option>
+                                <option value="Esporte">Esporte</option>
+                                <option value="Terror">Terror</option>
+                            </select>
+                        </div>
+                        
+                        <div class="filter-group">
+                            <label for="platform-filter" class="filter-label">
+                                <i class="ri-computer-line"></i> Plataforma
+                            </label>
+                            <select id="platform-filter" class="filter-select">
+                                <option value="">Todas as Plataformas</option>
+                                <option value="PC">PC</option>
+                                <option value="PlayStation">PlayStation</option>
+                                <option value="Xbox">Xbox</option>
+                                <option value="Nintendo Switch">Nintendo Switch</option>
+                            </select>
+                        </div>
+                        
+                        <div class="filter-group">
+                            <label for="sort-by" class="filter-label">
+                                <i class="ri-sort-desc"></i> Ordenar por
+                            </label>
+                            <select id="sort-by" class="filter-select">
+                                <option value="relevance">Relevância</option>
+                                <option value="rating">Melhor Avaliados</option>
+                                <option value="newest">Mais Recentes</option>
+                                <option value="oldest">Mais Antigos</option>
+                            </select>
+                        </div>
+                        
+                        <button class="btn btn-primary filter-button" id="apply-filters">
+                            <i class="ri-filter-line"></i> Aplicar Filtros
+                        </button>
+                        
+                        <button class="btn btn-secondary filter-button" id="reset-filters">
+                            <i class="ri-close-line"></i> Limpar
+                        </button>
+                    </div>
                 </div>
 
                 <div class="game-grid" id="game-list">
-                    </div>
+                    <!-- Os jogos serão carregados aqui via JavaScript -->
+                </div>
             </div>
         </section>
     </main>
+    <div id="game-list">
+    </div>
+<div id="loading-indicator" style="display: none; text-align: center; padding: 20px;">
+    <p>Carregando mais jogos...</p>
+    </div>
 
     <footer>
         <div class="container">
@@ -100,5 +140,6 @@
     </footer>
 
     <script src="main.js"></script>
-    <script src="jogos.js"></script> </body>
+    <script src="jogos.js"></script>
+</body>
 </html>
