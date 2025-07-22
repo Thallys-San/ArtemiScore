@@ -22,11 +22,9 @@ body {
     line-height: 1.7;
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
-    overflow-x: hidden; /* Previne scroll horizontal indesejado */
-    /* Remove padding-top daqui, será compensado pelas seções */
+    overflow-x: hidden;
 }
 
-/* Background gradient overlay para um efeito sutil e imersivo */
 body::after {
     content: '';
     position: fixed;
@@ -41,33 +39,29 @@ body::after {
 
 /* --- Variáveis CSS (Design Tokens) --- */
 :root {
-    /* Paleta de Cores Primárias */
-    --color1: #3217ea; /* Tom mais escuro do primário */
-    --color2: #5733ef; /* Primário base */
-    --color3: #7c50f4; /* Primário médio / Secundário */
-    --color4: #a16cfa; /* Tom mais claro do primário */
-    --color5: #c688ff; /* Acento / Tom mais vibrante */
+    --color1: #3217ea;
+    --color2: #5733ef;
+    --color3: #7c50f4;
+    --color4: #a16cfa;
+    --color5: #c688ff;
 
     --primary: var(--color2);
     --primary-hover: var(--color1);
     --secondary: var(--color3);
     --accent: var(--color5);
     
-    /* Tons de Cinza e Cores Neutras */
-    --dark: #0f0f13; /* Cor de fundo principal */
-    --darker: #0a0a0d; /* Fundo mais escuro, para gradientes ou elementos sobrepostos */
-    --dark-gray: #1e1e24; /* Cinza escuro para componentes, inputs, backgrounds de cards */
-    --medium-gray: #3d3d45; /* Cinza médio para bordas, divisores */
-    --light-gray: #6d6d7a; /* Cinza claro para texto secundário, placeholders */
-    --lighter: #e1e1e1; /* Texto principal claro */
-    --white: #ffffff; /* Branco puro */
+    --dark: #0f0f13;
+    --darker: #0a0a0d;
+    --dark-gray: #1e1e24;
+    --medium-gray: #3d3d45;
+    --light-gray: #6d6d7a;
+    --lighter: #e1e1e1;
+    --white: #ffffff;
 
-    /* Cores de Feedback/Auxiliares */
-    --yellow: #fdcb6e; /* Estrelas, avisos */
-    --green: #00b894; /* Sucesso, positivo */
-    --red: #e74c3c; /* Para erros, alertas */
+    --yellow: #fdcb6e;
+    --green: #00b894;
+    --red: #e74c3c;
 
-    /* Efeitos e Transições */
     --glow: 0 0 15px rgba(87, 51, 239, 0.5);
     --glow-hover: 0 0 25px rgba(124, 80, 244, 0.459);
     --shadow-sm: 0 4px 6px hsla(0, 0%, 0%, 0.1);
@@ -76,10 +70,9 @@ body::after {
     --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
     --transition-slow: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
 
-    /* Gradientes */
     --gradient-primary: linear-gradient(45deg, var(--color2), var(--color5));
     --gradient-dark: linear-gradient(to bottom, var(--dark), var(--darker));
-    --gradient-card-overlay: linear-gradient(to top, rgba(15, 15, 19, 0.8) 0%, transparent 50%); /* Novo */
+    --gradient-card-overlay: linear-gradient(to top, rgba(15, 15, 19, 0.8) 0%, transparent 50%);
 }
 
 /* --- Classes de Utilitário --- */
@@ -103,7 +96,6 @@ h1, h2, h3, h4, h5, h6 {
     line-height: 1.2;
 }
 
-/* Fontes Específicas */
 .font-pacifico {
     font-family: 'Pacifico', cursive;
 }
@@ -136,16 +128,16 @@ h1, h2, h3, h4, h5, h6 {
     box-shadow: var(--shadow-md);
 }
 
-/* --- Header Section (Otimizado) --- */
+/* --- Header Section --- */
 header {
-    background: rgba(15, 15, 19, 0.85); /* Fundo com transparência */
-    backdrop-filter: blur(12px); /* Efeito de desfoque */
+    background: rgba(15, 15, 19, 0.85);
+    backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
     padding: 1rem 0;
-    position: fixed; /* Fixa o cabeçalho no topo */
+    position: fixed;
     width: 100%;
     top: 0;
-    z-index: 1000; /* Z-index alto para ficar acima de tudo */
+    z-index: 1000;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
     border-bottom: 1px solid rgba(87, 51, 239, 0.3);
     transition: var(--transition-slow);
@@ -363,7 +355,7 @@ footer {
     color: var(--light-gray);
     text-align: center;
     padding: 1.5rem 0;
-    margin-top: 4rem; /* Garante espaçamento da main content */
+    margin-top: 4rem;
     border-top: 1px solid var(--medium-gray);
     font-size: 0.9rem;
 }
@@ -384,153 +376,7 @@ footer {
     color: var(--primary);
 }
 
-@media (max-width: 1024px) {
-    .mobile-menu-button {
-        display: block;
-    }
-
-    .header-left .main-nav {
-        display: none;
-    }
-
-    .main-nav {
-        position: fixed;
-        top: 80px; /* Abaixo do cabeçalho fixo */
-        left: 0;
-        width: 100%;
-        background: rgba(10, 10, 13, 0.95);
-        backdrop-filter: blur(8px);
-        -webkit-backdrop-filter: blur(8px);
-        flex-direction: column;
-        align-items: center;
-        padding: 2rem 0;
-        gap: 1.5rem;
-        clip-path: circle(0px at calc(100% - 3rem) 2.5rem);
-        transition: clip-path 0.7s cubic-bezier(0.65, 0, 0.35, 1);
-        pointer-events: none;
-        z-index: 999;
-    }
-
-    .main-nav.open {
-        clip-path: circle(1500px at calc(100% - 3rem) 2.5rem);
-        pointer-events: all;
-    }
-    
-    .main-nav .nav-link {
-        font-size: 1.2rem;
-        padding: 0.75rem 0;
-        width: 80%;
-        text-align: center;
-        border-bottom: 1px solid rgba(87, 51, 239, 0.2);
-    }
-    .main-nav .nav-link:last-child {
-        border-bottom: none;
-    }
-    .main-nav .nav-link::after {
-        display: none;
-    }
-
-    .header-container {
-        padding: 0.75rem 1.5rem;
-    }
-
-    .header-left {
-        flex-grow: 1;
-        justify-content: flex-start;
-        gap: 0;
-    }
-
-    .header-right {
-        gap: 1rem;
-    }
-}
-
-@media (max-width: 768px) {
-    .search-bar {
-        width: 180px;
-    }
-
-    .header-container {
-        flex-wrap: wrap;
-        justify-content: space-between;
-        padding: 0.5rem 1rem;
-        row-gap: 1rem;
-    }
-
-    .header-left {
-        width: auto;
-        margin-bottom: 0;
-    }
-
-    .header-right {
-        order: 3;
-        width: 100%;
-        justify-content: center;
-        margin-top: 0;
-        gap: 1rem;
-    }
-
-    .search-input {
-        width: 100%;
-        max-width: 280px;
-    }
-
-    .user-dropdown {
-        left: auto;
-        right: 0;
-        max-width: 90vw;
-    }
-}
-
-@media (max-width: 480px) {
-    header {
-        padding: 0.5rem 0;
-    }
-    .logo {
-        font-size: 1.5rem;
-    }
-    .mobile-menu-button {
-        font-size: 1.6rem;
-    }
-
-    .header-container {
-        flex-direction: row;
-        justify-content: space-between;
-        align-items: center;
-        padding: 0.5rem 1rem;
-    }
-    
-    .header-left {
-        width: auto;
-        flex-grow: 0;
-        gap: 0;
-    }
-
-    .header-right {
-        order: initial;
-        width: auto;
-        justify-content: flex-end;
-        flex-grow: 1;
-        gap: 0.8rem;
-    }
-    
-    .search-bar {
-        width: 140px;
-    }
-
-    .user-dropdown {
-        left: 50%;
-        transform: translateX(-50%) translateY(10px);
-        right: auto;
-    }
-    .user-dropdown.active {
-        transform: translateX(-50%) translateY(0);
-    }
-}
-
-/* --- Estilos Reutilizáveis de Cards (Mova do jogos.css para cá) --- */
-/* Estes estilos podem ser usados tanto na index.html quanto na jogos.html */
-
+/* --- Estilos Reutilizáveis de Cards --- */
 .section-title {
     font-size: 2.8rem;
     text-align: center;
@@ -544,15 +390,14 @@ footer {
     letter-spacing: -0.05em;
 }
 
-/* Grade de Jogos */
+/* Grade de Jogos - 4 colunas */
 .game-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 2.5rem;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 1.5rem;
     margin-top: 2rem;
 }
 
-/* Estilos para cada Card de Jogo */
 .game-card {
     background-color: var(--dark-gray);
     border-radius: 16px;
@@ -566,10 +411,9 @@ footer {
     transform: translateY(0);
     animation: cardFadeIn 0.5s ease-out forwards;
     opacity: 0;
-    padding-bottom: 45px; /* Espaço para a nova seção de stats na parte inferior */
+    padding-bottom: 45px;
 }
 
-/* Animação para os cards de jogo (delay escalonado via JS ou data-attribute) */
 @keyframes cardFadeIn {
     from { opacity: 0; transform: translateY(20px); }
     to { opacity: 1; transform: translateY(0); }
@@ -583,7 +427,7 @@ footer {
 
 .game-card img {
     width: 100%;
-    height: 200px;
+    height: 160px;
     object-fit: cover;
     display: block;
     transition: transform 0.4s ease-out;
@@ -600,17 +444,16 @@ footer {
     flex-direction: column;
     position: relative;
     z-index: 2;
-    padding-bottom: 1rem; /* Reduz o padding inferior para não empurrar as stats para baixo */
+    padding-bottom: 1rem;
 }
 
-/* Overlay sutil na parte inferior da imagem (para melhorar a legibilidade do título se for sobreposto) */
 .game-card::before {
     content: '';
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
-    height: 100%; /* Aplica na imagem e parte do conteúdo */
+    height: 100%;
     background: var(--gradient-card-overlay);
     opacity: 0.7;
     pointer-events: none;
@@ -685,7 +528,6 @@ footer {
     box-shadow: var(--shadow-md);
 }
 
-/* NOVO: Estilos para a seção de estatísticas (views, likes, comments) */
 .game-card-stats {
     position: absolute;
     bottom: 0;
@@ -752,7 +594,7 @@ footer {
     text-shadow: 0 0 5px var(--primary);
 }
 
-/* --- Hero Section (Destaque - para a index.html) --- */
+/* --- Hero Section --- */
 .hero-section {
     position: relative;
     width: 100%;
@@ -761,9 +603,8 @@ footer {
     align-items: center;
     justify-content: center;
     overflow: hidden;
-    /* Ajuste para que comece logo abaixo do header */
-    padding-top: 80px; /* Altura do header */
-    margin-top: 0; /* Remove margem superior que pode causar espaço */
+    padding-top: 80px;
+    margin-top: 0;
 }
 
 .hero-background {
@@ -772,10 +613,10 @@ footer {
     left: 0;
     width: 100%;
     height: 100%;
-    background-image: url('https://via.placeholder.com/1920x1080?text=Imagem+do+Jogo+em+Destaque'); /* Imagem de fundo padrão */
+    background-image: url('https://via.placeholder.com/1920x1080?text=Imagem+do+Jogo+em+Destaque');
     background-size: cover;
     background-position: center;
-    filter: brightness(0.4) grayscale(0.5); /* Escurece e dessatura a imagem de fundo */
+    filter: brightness(0.4) grayscale(0.5);
     transform: scale(1.05);
     transition: filter 0.5s ease;
     z-index: 0;
@@ -876,7 +717,13 @@ footer {
     box-shadow: var(--glow-hover);
 }
 
-/* --- Responsividade Global (Hero Section, Cards) --- */
+/* --- Responsividade Global --- */
+@media (max-width: 1200px) {
+    .game-grid {
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    }
+}
+
 @media (max-width: 1024px) {
     .hero-section {
         height: 500px;
@@ -902,11 +749,10 @@ footer {
         font-size: 2.2rem;
     }
     .game-grid {
-        grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-        gap: 2rem;
+        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
     }
     .game-card img {
-        height: 180px;
+        height: 140px;
     }
     .game-card-content h3 {
         font-size: 1.4rem;
@@ -940,11 +786,10 @@ footer {
         margin-bottom: 2.5rem;
     }
     .game-grid {
-        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-        gap: 1.5rem;
+        grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
     }
     .game-card img {
-        height: 160px;
+        height: 130px;
     }
     .game-card-content {
         padding: 1.2rem;
@@ -966,7 +811,7 @@ footer {
         padding: 0.6rem 1.2rem;
     }
     .game-card {
-        padding-bottom: 40px; /* Ajuste para telas menores */
+        padding-bottom: 40px;
     }
     .game-card-stats {
         padding: 0.6rem 0.3rem;
@@ -978,6 +823,12 @@ footer {
     }
     .stat-item i {
         font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 600px) {
+    .game-grid {
+        grid-template-columns: repeat(2, 1fr);
     }
 }
 
@@ -1021,16 +872,13 @@ footer {
     }
     .game-grid {
         grid-template-columns: 1fr;
-        gap: 1.2rem;
     }
     .game-card img {
-        height: 140px;
-    }
-    .game-card-content h3 {
-        font-size: 1.2rem;
+        height: 160px;
     }
 }
 
+/* --- Cards de Lançamentos --- */
 .release-card {
     position: relative;
     background-color: #1a1a1a;
@@ -1111,37 +959,131 @@ footer {
 }
 
 .rating-box {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  margin-top: 10px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 10px;
 }
 
 .stars {
-  display: flex;
-  gap: 2px;
+    display: flex;
+    gap: 2px;
 }
 
 .star {
-  width: 18px;
-  height: 18px;
-  background-size: contain;
-  background-repeat: no-repeat;
+    width: 18px;
+    height: 18px;
+    background-size: contain;
+    background-repeat: no-repeat;
 }
 
 .star.full {
-  background-image: url('https://img.icons8.com/fluency/48/star.png');
+    background-image: url('https://img.icons8.com/fluency/48/star.png');
 }
 
 .star.half {
-  background-image: url('https://img.icons8.com/fluency/48/star-half.png');
+    background-image: url('https://img.icons8.com/fluency/48/star-half.png');
 }
 
 .star.empty {
-  background-image: url('https://img.icons8.com/fluency-systems-regular/48/star--v1.png');
+    background-image: url('https://img.icons8.com/fluency-systems-regular/48/star--v1.png');
 }
 
 .score {
-  font-size: 13px;
-  color: #ccc;
+    font-size: 13px;
+    color: #ccc;
+}
+
+/* --- Filtros de Jogos --- */
+.filters-container {
+    margin-bottom: 3rem;
+}
+
+.filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    align-items: flex-end;
+    margin-bottom: 2rem;
+}
+
+.filter-group {
+    display: flex;
+    flex-direction: column;
+    min-width: 180px;
+    flex-grow: 1;
+}
+
+.filter-label {
+    font-size: 0.9rem;
+    color: var(--light-gray);
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.filter-select {
+    padding: 0.8rem 1rem;
+    border-radius: 8px;
+    border: 1px solid var(--medium-gray);
+    background-color: var(--dark-gray);
+    color: var(--white);
+    font-size: 0.95rem;
+    transition: var(--transition);
+    cursor: pointer;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%236d6d7a' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+    background-size: 12px;
+}
+
+.filter-select:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 2px rgba(87, 51, 239, 0.3);
+}
+
+.filter-button {
+    padding: 0.8rem 1.5rem;
+    font-size: 0.95rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    height: 44px;
+}
+
+.btn-secondary {
+    background: var(--dark-gray);
+    color: var(--lighter);
+    border: 1px solid var(--medium-gray);
+}
+
+.btn-secondary:hover {
+    background: var(--medium-gray);
+    color: var(--white);
+    border-color: var(--light-gray);
+}
+
+@media (max-width: 768px) {
+    .filters {
+        flex-direction: column;
+        gap: 1rem;
+    }
+    
+    .filter-group {
+        width: 100%;
+    }
+    
+    .filter-buttons {
+        display: flex;
+        gap: 1rem;
+        width: 100%;
+    }
+    
+    .filter-button {
+        flex-grow: 1;
+        justify-content: center;
+    }
 }
