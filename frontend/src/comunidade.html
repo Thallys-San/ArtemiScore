@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ArtemiScore Community</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Header -->
+   <header>
+  <div class="container header-container">
+    <div class="flex items-center">
+      <!-- Logo substituído pela imagem -->
+      <a href="#" class="logo">
+        <img src="https://raw.githubusercontent.com/Thallys-San/ArtemiScore/refs/heads/main/ArtemiScore%20(1).png" 
+             alt="ArtemiScore Logo" 
+             class="logo-image">
+      </a>
+      <nav class="main-nav">
+        <a href="/" class="nav-link">Início</a>
+        <a href="Jogos.html" class="nav-link">Jogos</a>
+        <a href="rank.html" class="nav-link">Ranking</a>
+        <a href="Lançamentos.html" class="nav-link">Lançamentos</a>
+        <a href="comunidade.html" class="nav-link active">Comunidade</a>
+      </nav>
+    </div>
+    <div class="flex items-center gap-4">
+      <div class="search-bar">
+        <input type="text" placeholder="Buscar jogos..." class="search-input">
+        <div class="search-icon">
+          <i class="ri-search-line"></i>
+        </div>
+      </div>
+      <div class="relative" id="userMenuContainer">
+        <div class="user-menu-button" id="userMenuButton">
+          <i class="ri-user-line user-icon"></i>
+        </div>
+        <div class="user-dropdown" id="userDropdownMenu">
+          <a href="#" class="dropdown-item">
+            <div class="dropdown-icon">
+              <i class="ri-user-3-line"></i>
+            </div>
+            <span>Meu Perfil</span>
+          </a>
+          <a href="#" class="dropdown-item">
+            <div class="dropdown-icon">
+              <i class="ri-star-line"></i>
+            </div>
+            <span>Minhas Avaliações</span>
+          </a>
+          <a href="#" class="dropdown-item">
+            <div class="dropdown-icon">
+              <i class="ri-heart-line"></i>
+            </div>
+            <span>Jogos Favoritos</span>
+          </a>
+          <a href="#" class="dropdown-item">
+            <div class="dropdown-icon">
+              <i class="ri-settings-3-line"></i>
+            </div>
+            <span>Configurações</span>
+          </a>
+          <div class="dropdown-divider"></div>
+          <a href="#" class="dropdown-item">
+            <div class="dropdown-icon">
+              <i class="ri-logout-box-line"></i>
+            </div>
+            <span>Sair</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+    <div class="community-container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="sidebar-section">
+                <h3><i class="fas fa-hashtag"></i> Categorias</h3>
+                <ul class="community-categories">
+                    <li><a href="#" class="active-category"><i class="fas fa-comments"></i> Discussões Gerais</a></li>
+                    <li><a href="#"><i class="fas fa-headset"></i> Suporte Técnico</a></li>
+                    <li><a href="#"><i class="fas fa-users"></i> Encontrar Grupo</a></li>
+                    <li><a href="#"><i class="fas fa-paint-brush"></i> Arte e Conteúdo</a></li>
+                </ul>
+            </div>
+
+            <div class="sidebar-section">
+                <h3><i class="fas fa-users"></i> Membros Online</h3>
+                <div class="members-list">
+                    <div class="member">
+                        <div style="position: relative;">
+                            <img src="" alt="Membro" class="member-avatar">
+                            <div class="online-indicator"></div>
+                        </div>
+                        <span class="member-name"></span>
+                    </div>
+                    <div class="member">
+                        <div style="position: relative;">
+                            <img src="" alt="Membro" class="member-avatar">
+                            <div class="online-indicator"></div>
+                        </div>
+                        <span class="member-name"></span>
+                    </div>
+                    <div class="member">
+                        <div style="position: relative;">
+                            <img src="" alt="Membro" class="member-avatar">
+                            <div class="online-indicator"></div>
+                        </div>
+                        <span class="member-name"></span>
+                    </div>
+                    <div class="member">
+                        <div style="position: relative;">
+                            <img src="" alt="Membro" class="member-avatar">
+                            <div class="online-indicator"></div>
+                        </div>
+                        <span class="member-name"></span>
+                    </div>
+                    <div class="member">
+                        <div style="position: relative;">
+                            <img src="" alt="Membro" class="member-avatar">
+                            <div class="online-indicator"></div>
+                        </div>
+                        <span class="member-name">LaraFT</span>
+                    </div>
+                    <div class="member">
+                        <div style="position: relative;">
+                            <img src="" alt="Membro" class="member-avatar">
+                            <div class="online-indicator"></div>
+                        </div>
+                        <span class="member-name"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sidebar-section">
+                <h3><i class="fas fa-chart-line"></i> Estatísticas</h3>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 1rem;">
+                    <div style="background: rgba(87, 51, 239, 0.15); padding: 0.8rem; border-radius: 8px; text-align: center;">
+                        <div style="font-size: 1.5rem; font-weight: bold; color: var(--accent);">5.2K</div>
+                        <div style="font-size: 0.8rem; color: var(--light-gray);">Membros</div>
+                    </div>
+                    <div style="background: rgba(253, 203, 110, 0.15); padding: 0.8rem; border-radius: 8px; text-align: center;">
+                        <div style="font-size: 1.5rem; font-weight: bold; color: var(--yellow);">1.8K</div>
+                        <div style="font-size: 0.8rem; color: var(--light-gray);">Online</div>
+                    </div>
+                    <div style="background: rgba(0, 204, 150, 0.15); padding: 0.8rem; border-radius: 8px; text-align: center;">
+                        <div style="font-size: 1.5rem; font-weight: bold; color: var(--green);">12.4K</div>
+                        <div style="font-size: 0.8rem; color: var(--light-gray);">Tópicos</div>
+                    </div>
+                    <div style="background: rgba(255, 107, 107, 0.15); padding: 0.8rem; border-radius: 8px; text-align: center;">
+                        <div style="font-size: 1.5rem; font-weight: bold; color: var(--red);">42.7K</div>
+                        <div style="font-size: 0.8rem; color: var(--light-gray);">Respostas</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Conteúdo Principal -->
+        <div class="main-content">
+            <div class="create-post">
+                <div class="create-post-header">
+                    <img src="" alt="Usuário" class="create-post-avatar">
+                    <input type="text" placeholder="O que você quer compartilhar com a comunidade?">
+                </div>
+                <div class="create-post-actions">
+                    <div style="display: flex; gap: 0.5rem;">
+                        <button class="action-btn">
+                            <i class="fas fa-image"></i> Foto
+                        </button>
+                        <button class="action-btn">
+                            <i class="fas fa-video"></i> Vídeo
+                        </button>
+                        <button class="action-btn">
+                            <i class="fas fa-link"></i> Link
+                        </button>
+                    </div>
+                    <button class="post-btn">Publicar</button>
+                </div>
+            </div>
+
+            <div class="posts-container">
+                <!-- Post 1 -->
+                <div class="post">
+                    <div class="post-header">
+                        <div class="post-author">
+                            <img src="" alt="Autor" class="post-author-avatar">
+                            <div class="author-info">
+                                <span class="author-name"></span>
+                                <span class="post-time"></span>
+                            </div>
+                        </div>
+                        <div class="post-category">Discussões Gerais</div>
+                    </div>
+                    <div class="post-content">
+                        <h3></h3>
+                        <p></p>
+                    </div>
+                    <div class="post-stats">
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                    </div>
+                    <div class="post-actions">
+                        <button class="post-action">
+                            <i class="fas fa-thumbs-up"></i> Curtir
+                        </button>
+                        <button class="post-action">
+                            <i class="fas fa-comment"></i> Comentar
+                        </button>
+                        <button class="post-action">
+                            <i class="fas fa-share"></i> Compartilhar
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Post 2 -->
+                <div class="post">
+                    <div class="post-header">
+                        <div class="post-author">
+                            <img src="" alt="Autor" class="post-author-avatar">
+                            <div class="author-info">
+                                <span class="author-name"></span>
+                                <span class="post-time"></span>
+                            </div>
+                        </div>
+                        <div class="post-category">Encontrar Grupo</div>
+                    </div>
+                    <div class="post-content">
+                        <h3></h3>
+                        <p></p>
+                        <p></p>
+                    </div>
+                    <div class="post-stats">
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                    </div>
+                    <div class="post-actions">
+                        <button class="post-action">
+                            <i class="fas fa-thumbs-up"></i> Curtir
+                        </button>
+                        <button class="post-action active">
+                            <i class="fas fa-comment"></i> Comentar
+                        </button>
+                        <button class="post-action">
+                            <i class="fas fa-share"></i> Compartilhar
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Post 3 -->
+                <div class="post">
+                    <div class="post-header">
+                        <div class="post-author">
+                            <img src="" alt="Autor" class="post-author-avatar">
+                            <div class="author-info">
+                                <span class="author-name"></span>
+                                <span class="post-time"></span>
+                            </div>
+                        </div>
+                        <div class="post-category">Arte e Conteúdo</div>
+                    </div>
+                    <div class="post-content">
+                        <h3></h3>
+                        <p></p>
+                        <img src="" alt="Fanart Cyberpunk" class="post-image">
+                    </div>
+                    <div class="post-stats">
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                    </div>
+                    <div class="post-actions">
+                        <button class="post-action active">
+                            <i class="fas fa-thumbs-up"></i> Curtir
+                        </button>
+                        <button class="post-action">
+                            <i class="fas fa-comment"></i> Comentar
+                        </button>
+                        <button class="post-action">
+                            <i class="fas fa-share"></i> Compartilhar
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Post 4 -->
+                <div class="post">
+                    <div class="post-header">
+                        <div class="post-author">
+                            <img src="" alt="Autor" class="post-author-avatar">
+                            <div class="author-info">
+                                <span class="author-name"></span>
+                                <span class="post-time"></span>
+                            </div>
+                        </div>
+                        <div class="post-category">Suporte Técnico</div>
+                    </div>
+                    <div class="post-content">
+                        <h3></h3>
+                        <p></p>
+                        <p></p>
+                    </div>
+                    <div class="post-stats">
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                    </div>
+                    <div class="post-actions">
+                        <button class="post-action">
+                            <i class="fas fa-thumbs-up"></i> Curtir
+                        </button>
+                        <button class="post-action">
+                            <i class="fas fa-comment"></i> Comentar
+                        </button>
+                        <button class="post-action">
+                            <i class="fas fa-share"></i> Compartilhar
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sidebar Direita -->
+        <div class="right-sidebar">
+            <div class="community-events">
+                <h3><i class="fas fa-calendar-alt"></i> Próximos Eventos</h3>
+                <div class="events-list">
+                    <div class="event">
+                        <div class="event-date">
+                            <span class="event-day">15</span>
+                            <span class="event-month">JUL</span>
+                        </div>
+                        <div class="event-info">
+                            <div class="event-title">Torneio de Valorant</div>
+                            <div class="event-details">
+                                <span><i class="fas fa-clock"></i> 19:00</span>
+                                <span><i class="fas fa-users"></i> 32 times</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="event">
+                        <div class="event-date">
+                            <span class="event-day">22</span>
+                            <span class="event-month">JUL</span>
+                        </div>
+                        <div class="event-info">
+                            <div class="event-title">Lançamento Party - Starfield</div>
+                            <div class="event-details">
+                                <span><i class="fas fa-clock"></i> 21:00</span>
+                                <span><i class="fas fa-map-marker-alt"></i> Discord</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="event">
+                        <div class="event-date">
+                            <span class="event-day">05</span>
+                            <span class="event-month">AGO</span>
+                        </div>
+                        <div class="event-info">
+                            <div class="event-title">Concurso de Fanarts</div>
+                            <div class="event-details">
+                                <span><i class="fas fa-clock"></i> 18:00</span>
+                                <span><i class="fas fa-trophy"></i> Prêmios</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <button class="join-btn" style="margin-top: 1rem; width: 100%;">
+                    Ver Todos os Eventos
+                </button>
+            </div>
+
+            <div class="popular-games">
+                <h3><i class="fas fa-fire"></i> Jogos Populares</h3>
+                <div class="games-list">
+                    <div class="game-item">
+                        <img src="" alt="Valorant" class="game-icon">
+                        <div class="game-info">
+                            <div class="game-name">Valorant</div>
+                            <div class="game-stats">
+                                <span><i class="fas fa-users"></i> 1.2K online</span>
+                                <span><i class="fas fa-comments"></i> 342 tópicos</span>
+                            </div>
+                        </div>
+                        <button class="join-btn">Entrar</button>
+                    </div>
+                    <div class="game-item">
+                        <img src="" alt="Baldur's Gate 3" class="game-icon">
+                        <div class="game-info">
+                            <div class="game-name">Baldur's Gate 3</div>
+                            <div class="game-stats">
+                                <span><i class="fas fa-users"></i> 856 online</span>
+                                <span><i class="fas fa-comments"></i> 521 tópicos</span>
+                            </div>
+                        </div>
+                        <button class="join-btn">Entrar</button>
+                    </div>
+                    <div class="game-item">
+                        <img src="" alt="Cyberpunk 2077" class="game-icon">
+                        <div class="game-info">
+                            <div class="game-name">Cyberpunk 2077</div>
+                            <div class="game-stats">
+                                <span><i class="fas fa-users"></i> 723 online</span>
+                                <span><i class="fas fa-comments"></i> 412 tópicos</span>
+                            </div>
+                        </div>
+                        <button class="join-btn">Entrar</button>
+                    </div>
+                    <div class="game-item">
+                        <img src="" alt="Starfield" class="game-icon">
+                        <div class="game-info">
+                            <div class="game-name">Starfield</div>
+                            <div class="game-stats">
+                                <span><i class="fas fa-users"></i> 1.5K online</span>
+                                <span><i class="fas fa-comments"></i> 689 tópicos</span>
+                            </div>
+                        </div>
+                        <button class="join-btn">Entrar</button>
+                    </div>
+                </div>
+                <button class="join-btn" style="margin-top: 1rem; width: 100%;">
+                    Ver Todos os Jogos
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+       <footer>
+        <div class="footer-content">
+            <div class="footer-column">
+                <a href="/" class="logo font-pacifico" style="font-size: 1.5rem; margin-bottom: 1rem; display: flex; align-items: center;">
+                    <img src="https://github.com/Thallys-San/ArtemiScore/blob/main/ArtemiScore%20(1).png?raw=true" alt="ArtemiScore Logo" style="height: 30px; margin-right: 8px;">
+                   
+                </a>
+                <p style="color: var(--light-gray); font-size: 0.9rem;">Sua plataforma completa para o mundo dos jogos. Descubra, avalie e conecte-se.</p>
+                <div class="social-links">
+                    <a href="#" title="Facebook"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" title="Twitter"><i class="fab fa-twitter"></i></a>
+                    <a href="#" title="Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="#" title="YouTube"><i class="fab fa-youtube"></i></a>
+                </div>
+            </div>
+            <div class="footer-column">
+                <h3>Links Úteis</h3>
+                <ul class="footer-links">
+                    <li><a href="#"><i class="ri-arrow-right-s-line"></i> Sobre Nós</a></li>
+                    <li><a href="#"><i class="ri-arrow-right-s-line"></i> Carreira</a></li>
+                    <li><a href="#"><i class="ri-arrow-right-s-line"></i> Termos de Serviço</a></li>
+                    <li><a href="#"><i class="ri-arrow-right-s-line"></i> Política de Privacidade</a></li>
+                    <li><a href="#"><i class="ri-arrow-right-s-line"></i> Ajuda e FAQ</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>Navegar</h3>
+                <ul class="footer-links">
+                    <li><a href="#"><i class="ri-arrow-right-s-line"></i> Todos os Jogos</a></li>
+                    <li><a href="#"><i class="ri-arrow-right-s-line"></i> Próximos Lançamentos</a></li>
+                    <li><a href="#"><i class="ri-arrow-right-s-line"></i> Jogos Populares</a></li>
+                    <li><a href="#"><i class="ri-arrow-right-s-line"></i> Análises Recentes</a></li>
+                    <li><a href="#"><i class="ri-arrow-right-s-line"></i> Fóruns da Comunidade</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>Contato</h3>
+                <ul class="footer-links">
+                    <li><a href="#"><i class="ri-map-pin-line"></i> Rua Exemplo, 123, Cidade, País</a></li>
+                    <li><a href="mailto:contato@artemiscore.com"><i class="ri-mail-line"></i> contato@artemiscore.com</a></li>
+                    <li><a href="tel:+5511987654321"><i class="ri-phone-line"></i> +55 (11) 98765-4321</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="copyright">
+            &copy; 2025 ArtemiScore. Todos os direitos reservados.
+        </div>
+    </footer>
+    <script>
+        // Simples script para o menu de usuário
+        document.getElementById('userMenuButton').addEventListener('click', function() {
+            const dropdown = document.getElementById('userDropdownMenu');
+            dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+        });
+
+        // Fechar o dropdown quando clicar fora
+        window.addEventListener('click', function(event) {
+            if (!event.target.matches('#userMenuButton') && !event.target.closest('#userMenuContainer')) {
+                document.getElementById('userDropdownMenu').style.display = 'none';
+            }
+        });
+    </script>
+</body>
+</html>
