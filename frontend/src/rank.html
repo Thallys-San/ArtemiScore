@@ -1,105 +1,1354 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ranking - AtermiScore</title>
-    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet"/>
-    <link rel="stylesheet" href="style.css"> <link rel="stylesheet" href="rank.css">  </head>
-<body>
+/* style.css */
 
-    <header>
-        <div class="container header-container">
-            <div class="header-left"> 
-                <a href="/" class="logo font-pacifico">AtermiScore</a>
-                <nav class="main-nav">
-                    <a href="index.html" class="nav-link">Início</a>
-                    <a href="jogos.html" class="nav-link">Jogos</a>
-                    <a href="rank.html" class="nav-link active">Ranking</a> 
-                    <a href="lancamentos.html" class="nav-link">Lançamentos</a>
-                    
-                </nav>
-            </div>
+/* --- Base Styles & Global Utilities --- */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Pacifico&family=Poppins:wght@300;400;500;600;700&display=swap');
 
-            <div class="header-right">
-                <div class="search-bar">
-                    <input type="text" placeholder="Buscar jogos..." class="search-input">
-                    <div class="search-icon">
-                        <i class="ri-search-line"></i>
-                    </div>
-                </div>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
 
-                <div class="relative user-menu-wrapper" id="userMenuContainer">
-                    <div class="user-menu-button" id="userMenuButton">
-                        <i class="ri-user-line user-icon"></i>
-                    </div>
-                    <div class="user-dropdown" id="userDropdownMenu">
-                        <a href="#" class="dropdown-item">
-                            <div class="dropdown-icon"><i class="ri-user-3-line"></i></div>
-                            <span>Meu Perfil</span>
-                        </a>
-                        <a href="#" class="dropdown-item">
-                            <div class="dropdown-icon"><i class="ri-star-line"></i></div>
-                            <span>Minhas Avaliações</span>
-                        </a>
-                        <a href="#" class="dropdown-item">
-                            <div class="dropdown-icon"><i class="ri-heart-line"></i></div>
-                            <span>Jogos Favoritos</span>
-                        </a>
-                        <a href="#" class="dropdown-item">
-                            <div class="dropdown-icon"><i class="ri-settings-3-line"></i></div>
-                            <span>Configurações</span>
-                        </a>
-                        <div class="dropdown-divider"></div>
-                        <a href="#" class="dropdown-item">
-                            <div class="dropdown-icon"><i class="ri-logout-box-line"></i></div>
-                            <span>Sair</span>
-                        </a>
-                    </div>
-                </div>
-                <button class="mobile-menu-button" id="mobileMenuButton"><i class="ri-menu-line"></i></button>
-            </div>
-        </div>
-    </header>
+html {
+    scroll-behavior: smooth;
+    font-size: 16px;
+}
 
-    <main>
-        <section class="ranking-section"> <!-- Mudei de rank-section para ranking-section -->
-    <div class="container">
-        <h1 class="section-title">Top 10 Jogos Avaliados</h1>
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: var(--dark);
+    color: var(--lighter);
+    min-height: 100vh;
+    padding-top: 80px; /* Ajusta o padding para compensar o header fixo */
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    overflow-x: hidden; /* Previne scroll horizontal indesejado */
+}
 
-        <div class="ranking-header"> <!-- Adicionei esta div wrapper -->
-            <div class="ranking-filters"> <!-- Mudei de rank-filters para ranking-filters -->
-                <select class="filter-btn" id="rank-metric-filter"> <!-- Adicionei classe filter-btn -->
-                    <option value="rating">Melhor Avaliados</option>
-                    <option value="popularity">Mais Populares</option>
-                    <option value="added">Mais Recentes</option>
-                </select>
-                
-                <select class="filter-btn" id="rank-platform-filter"> <!-- Adicionei classe filter-btn -->
-                    <option value="">Todas as Plataformas</option>
-                    <option value="PC">PC</option>
-                    <option value="PlayStation">PlayStation</option>
-                    <option value="Xbox">Xbox</option>
-                    <option value="Nintendo Switch">Nintendo Switch</option>
-                </select>
-                
-                <button class="filter-btn btn-primary" id="apply-rank-filters">Aplicar Filtros</button> <!-- Adicionei classes -->
-            </div>
-        </div>
+/* Background gradient overlay */
+body::after {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at 20% 30%, rgba(87, 51, 239, 0.15) 0%, transparent 40%);
+    pointer-events: none;
+    z-index: -1;
+}
 
-        <div class="ranking-list" id="rank-list-container"> <!-- Mudei de rank-list para ranking-list -->
-            <!-- Conteúdo será preenchido pelo JavaScript -->
-        </div>
-    </div>
-</section>
-    </main>
+/* --- CSS Variables (Design Tokens) --- */
+:root {
+    /* Primary Color Palette */
+    --color1: #3217ea;
+    --color2: #5733ef;
+    --color3: #7c50f4;
+    --color4: #a16cfa;
+    --color5: #c688ff;
 
-    <footer>
-        <div class="container">
-            <p>&copy; 2025 AtermiScore. Todos os direitos reservados.</p>
-        </div>
-    </footer>
+    --primary: var(--color2);
+    --primary-hover: var(--color1);
+    --secondary: var(--color3);
+    --accent: var(--color5);
+    
+    /* Gray and Neutral Colors */
+    --dark: #0f0f13;
+    --darker: #0a0a0d;
+    --dark-gray: #1e1e24;
+    --medium-gray: #3d3d45;
+    --light-gray: #6d6d7a;
+    --lighter: #e1e1e1;
+    --white: #ffffff;
 
-    <script src="main.js"></script>
-    <script src="rank.js"></script> </body>
-</html>
+    /* Feedback/Auxiliary Colors */
+    --yellow: #fdcb6e;
+    --green: #00b894;
+    --red: #e74c3c;
+
+    /* Effects and Transitions */
+    --glow: 0 0 15px rgba(87, 51, 239, 0.5);
+    --glow-hover: 0 0 25px rgba(124, 80, 244, 0.459);
+    --shadow-sm: 0 4px 6px hsla(0, 0%, 0%, 0.1);
+    --shadow-md: 0 10px 15px rgba(0, 0, 0, 0.2);
+    --shadow-lg: 0 20px 25px rgba(0, 0, 0, 0.3);
+    --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    --transition-slow: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+
+    /* Gradients */
+    --gradient-primary: linear-gradient(45deg, var(--color2), var(--color5));
+    --gradient-dark: linear-gradient(to bottom, var(--dark), var(--darker));
+    --gradient-card-overlay: linear-gradient(to top, rgba(15, 15, 19, 0.8) 0%, transparent 50%);
+}
+
+/* --- Utility Classes --- */
+.container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 2rem;
+}
+
+@media (max-width: 768px) {
+    .container {
+        padding: 0 1.25rem;
+    }
+}
+
+/* Base Typography */
+h1, h2, h3, h4, h5, h6 {
+    font-weight: 700;
+    color: var(--white);
+    line-height: 1.2;
+}
+
+/* Specific Fonts */
+.font-pacifico {
+    font-family: 'Pacifico', cursive;
+}
+.font-montserrat {
+    font-family: 'Montserrat', sans-serif;
+}
+
+/* Generic Buttons */
+.btn {
+    display: inline-block;
+    padding: 0.8rem 1.8rem;
+    border-radius: 8px;
+    font-weight: 600;
+    text-decoration: none;
+    text-align: center;
+    transition: var(--transition);
+    cursor: pointer;
+}
+
+.btn-primary {
+    background: var(--gradient-primary);
+    color: var(--white);
+    border: none;
+    box-shadow: var(--shadow-sm);
+}
+
+.btn-primary:hover {
+    opacity: 0.9;
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+/* --- Header & Navigation Styles --- */
+header {
+    background: rgba(15, 15, 19, 0.85);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    padding: 1rem 0;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    border-bottom: 1px solid rgba(87, 51, 239, 0.3);
+    transition: var(--transition-slow);
+}
+
+/* Scrolled header effect */
+header.scrolled {
+    padding: 0.75rem 0;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+.header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1.5rem; /* Este gap aplica-se ao espaço entre os principais blocos (logo+nav E search+user) */
+}
+
+/* Agrupando elementos à direita do header */
+.header-right { /* Notei que você adicionou esta classe no seu código, mas não vi no HTML que me enviou antes. */
+    display: flex;
+    align-items: center;
+    gap: 1.5rem; /* Espaçamento entre os itens dentro de header-right (ex: barra de busca e menu do usuário) */
+}
+/* Logo with gradient effect - MODIFICADO */
+.logo {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1.8rem;
+    color: var(--white);
+    text-decoration: none;
+    font-weight: 700;
+    background: var(--gradient-primary);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    position: relative;
+    transition: var(--transition);
+    transform: rotate(0deg);
+    transform-origin: left center;
+    white-space: nowrap;
+    margin-right: auto; /* Empurra outros itens para a direita */
+    flex-shrink: 0; /* Impede que a logo encolha demais */
+}
+
+.logo:hover {
+    transform: scale(1.05) rotate(0deg);
+    text-shadow: var(--glow);
+}
+
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: 2rem; /* espaço entre a logo e o menu */
+}
+
+/* Right side elements (search, user) - MODIFICADO */
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    flex-shrink: 0; /* Impede que encolha demais */
+}
+
+/* Main navigation */
+.main-nav {
+    display: flex;
+    gap: 1.5rem;
+}
+
+
+/* Navigation links */
+.nav-link {
+    color: var(--lighter);
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.95rem;
+    transition: var(--transition);
+    position: relative;
+    padding: 0.5rem 0;
+}
+
+.nav-link:hover,
+.nav-link.active {
+    color: var(--white);
+}
+
+/* Animated underline effect */
+.nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: var(--primary);
+    transition: width 0.3s;
+}
+
+.nav-link:hover::after,
+.nav-link.active::after {
+    width: 100%;
+}
+
+/* Search bar */
+.search-bar {
+    position: relative;
+    width: 250px;
+    flex-shrink: 1; /* Permite que encolha quando necessário */
+    min-width: 150px; /* Largura mínima */
+}
+
+.search-input {
+    width: 100%;
+    padding: 0.6rem 1rem 0.6rem 2.5rem;
+    border-radius: 50px;
+    border: none;
+    background-color: var(--dark-gray);
+    color: var(--white);
+    font-size: 0.9rem;
+    transition: var(--transition);
+}
+
+.search-input::placeholder {
+    color: var(--light-gray);
+}
+
+.search-input:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px var(--primary);
+}
+
+.search-icon {
+    position: absolute;
+    left: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--light-gray);
+    font-size: 1rem;
+}
+
+/* User menu (dropdown) */
+#userMenuContainer {
+    position: relative;
+    flex-shrink: 0; /* Impede que encolha */
+}
+
+.user-menu-button {
+    background: var(--dark-gray);
+    border: none;
+    cursor: pointer;
+    color: var(--white);
+    font-size: 1.2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    transition: var(--transition);
+}
+
+.user-menu-button:hover {
+    background: var(--medium-gray);
+    transform: scale(1.05);
+}
+
+.user-dropdown {
+    position: absolute;
+    right: 0;
+    top: 50px;
+    background-color: var(--dark-gray);
+    border-radius: 12px;
+    box-shadow: var(--shadow-lg);
+    width: 240px;
+    padding: 0.5rem 0;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease, top 0.3s ease;
+    z-index: 100;
+    border: 1px solid var(--medium-gray);
+    backdrop-filter: blur(10px);
+}
+
+/* Show dropdown on hover or with JS class */
+#userMenuContainer:hover .user-dropdown,
+.user-dropdown.show-dropdown {
+    opacity: 1;
+    visibility: visible;
+    top: 45px;
+}
+
+/* Dropdown items */
+.dropdown-item {
+    display: flex;
+    align-items: center;
+    padding: 0.75rem 1.5rem;
+    color: var(--lighter);
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: var(--transition);
+}
+
+.dropdown-item:hover {
+    background-color: var(--medium-gray);
+    color: var(--white);
+    padding-left: 1.75rem;
+}
+
+.dropdown-icon {
+    margin-right: 1rem;
+    color: var(--light-gray);
+    font-size: 1.1rem;
+    width: 20px;
+    text-align: center;
+}
+
+.dropdown-divider {
+    height: 1px;
+    background-color: var(--medium-gray);
+    margin: 0.5rem 0;
+}
+
+/* Mobile menu - hidden by default */
+.mobile-menu-button {
+    display: none;
+    background: none;
+    border: none;
+    color: var(--white);
+    font-size: 1.8rem;
+    cursor: pointer;
+    transition: var(--transition);
+    margin-left: 1rem; /* Espaço entre logo e botão */
+    flex-shrink: 0; /* Impede que encolha */
+}
+
+.mobile-menu-button:hover {
+    color: var(--primary);
+}
+
+/* Responsiveness - MODIFICADO */
+@media (max-width: 1024px) {
+    .mobile-menu-button {
+        display: block;
+    }
+
+    .main-nav {
+        position: fixed;
+        top: 80px;
+        left: 0;
+        width: 100%;
+        background: var(--darker);
+        flex-direction: column;
+        align-items: center;
+        padding: 2rem 0;
+        gap: 2rem;
+        clip-path: circle(0px at 90% -10%);
+        transition: clip-path 0.7s ease-out;
+        pointer-events: none;
+        z-index: 999;
+    }
+
+    .main-nav.open {
+        clip-path: circle(1500px at 90% -10%);
+        pointer-events: all;
+    }
+
+    .search-bar {
+        width: 200px;
+    }
+}
+
+@media (max-width: 768px) {
+    .header-container {
+        padding: 0.5rem 1rem;
+        flex-wrap: nowrap; /* Garante que fique em linha */
+    }
+
+    .logo {
+        font-size: 1.5rem; /* Reduz tamanho da logo */
+        margin-right: 0; /* Ajuste para layout compacto */
+    }
+
+    .mobile-menu-button {
+        font-size: 1.5rem;
+        margin-left: 0.5rem;
+    }
+
+    .header-right {
+        margin-left: auto; /* Alinha à direita */
+        gap: 1rem;
+    }
+
+    .search-bar {
+        display: none; /* Oculta a barra de pesquisa por padrão */
+    }
+
+    .search-bar.mobile-visible {
+        display: block;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        padding: 0.5rem 1rem;
+        background: var(--darker);
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+}
+
+@media (max-width: 480px) {
+    .logo {
+        font-size: 1.3rem; /* Tamanho menor para telas muito pequenas */
+    }
+
+    .mobile-menu-button {
+        font-size: 1.3rem;
+    }
+
+    .user-menu-button {
+        width: 35px;
+        height: 35px;
+        font-size: 1rem;
+    }
+}
+
+/* ... (restante do seu CSS permanece igual) ... */
+
+/* --- Footer Section --- */
+footer {
+    background-color: var(--darker);
+    color: var(--light-gray);
+    text-align: center;
+    padding: 1.5rem 0;
+    margin-top: 4rem;
+    border-top: 1px solid var(--medium-gray);
+    font-size: 0.9rem;
+}
+
+/* --- Reusable Card Styles --- */
+.section-title {
+    font-size: 2.8rem;
+    text-align: center;
+    margin-bottom: 3.5rem;
+    background: var(--gradient-primary);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 800;
+    letter-spacing: -0.05em;
+}
+
+/* Game Grid */
+.game-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 2.5rem;
+    margin-top: 2rem;
+}
+
+/* Game Card Styles */
+.game-card {
+    background-color: var(--dark-gray);
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: var(--shadow-md);
+    transition: var(--transition);
+    display: flex;
+    flex-direction: column;
+    border: 1px solid var(--medium-gray);
+    position: relative;
+    transform: translateY(0);
+    animation: cardFadeIn 0.5s ease-out forwards;
+    opacity: 0;
+    padding-bottom: 45px;
+}
+
+/* Animation for game cards (staggered delay via JS or data-attribute) */
+@keyframes cardFadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.game-card:hover {
+    transform: translateY(-10px);
+    box-shadow: var(--shadow-lg), var(--glow);
+    border-color: var(--primary);
+}
+
+.game-card img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.4s ease-out;
+}
+
+.game-card:hover img {
+    transform: scale(1.05);
+}
+
+.game-card-content {
+    padding: 1.5rem;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    z-index: 2;
+    padding-bottom: 1rem;
+}
+
+/* Subtle overlay on image bottom */
+.game-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--gradient-card-overlay);
+    opacity: 0.7;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.game-card-content h3 {
+    font-size: 1.6rem;
+    margin-bottom: 0.75rem;
+    color: var(--white);
+    line-height: 1.3;
+    flex-grow: 1;
+    font-weight: 600;
+}
+
+.game-meta {
+    font-size: 0.95rem;
+    color: var(--light-gray);
+    margin-bottom: 0.6rem;
+}
+
+.game-rating {
+    display: flex;
+    align-items: center;
+    margin-top: 0.75rem;
+    color: var(--yellow);
+}
+
+.game-rating i {
+    font-size: 1.2rem;
+    margin-right: 0.25rem;
+}
+
+.game-rating span {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--lighter);
+    margin-left: 0.2rem;
+}
+
+.game-genre-platform {
+    font-size: 0.9rem;
+    color: var(--light-gray);
+    margin-top: 0.5rem;
+}
+
+.descricao {
+    font-size: 0.95rem;
+    color: var(--light-gray);
+    margin-top: 0.8rem;
+    margin-bottom: 1.2rem;
+    line-height: 1.6;
+}
+
+.game-card .btn-details {
+    display: inline-block;
+    padding: 0.8rem 1.6rem;
+    background: var(--primary);
+    color: var(--white);
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: 600;
+    text-align: center;
+    transition: var(--transition);
+    align-self: flex-start;
+    box-shadow: var(--shadow-sm);
+}
+
+.game-card .btn-details:hover {
+    background: var(--primary-hover);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+/* NEW: Stats section (views, likes, comments) */
+.game-card-stats {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 0.7rem 0.5rem;
+    background-color: var(--darker);
+    border-top: 1px solid var(--medium-gray);
+    border-bottom-left-radius: 16px;
+    border-bottom-right-radius: 16px;
+    z-index: 3;
+    font-size: 0.85rem;
+    color: var(--light-gray);
+    box-shadow: inset 0 3px 6px rgba(0, 0, 0, 0.3);
+}
+
+.stat-item {
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+    padding: 0.2rem 0.5rem;
+    border-radius: 5px;
+    transition: var(--transition);
+    cursor: default;
+    white-space: nowrap;
+}
+
+.stat-item i {
+    font-size: 1rem;
+    transition: var(--transition);
+}
+
+.stat-item span {
+    font-weight: 600;
+}
+
+.stat-item.views i {
+    color: var(--green);
+}
+.stat-item.likes i {
+    color: var(--red);
+}
+.stat-item.comments i {
+    color: var(--light-gray);
+}
+
+.stat-item:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+    transform: translateY(-2px);
+}
+.stat-item.views:hover i {
+    color: var(--green);
+    text-shadow: 0 0 5px var(--green);
+}
+.stat-item.likes:hover i {
+    color: var(--red);
+    text-shadow: 0 0 5px var(--red);
+}
+.stat-item.comments:hover i {
+    color: var(--primary);
+    text-shadow: 0 0 5px var(--primary);
+}
+
+/* --- Hero Section (Featured - for index.html) --- */
+.hero-section {
+    position: relative;
+    width: 100%;
+    height: 600px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    padding-top: 80px;
+    margin-top: 0;
+}
+
+.hero-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('https://via.placeholder.com/1920x1080?text=Imagem+do+Jogo+em+Destaque');
+    background-size: cover;
+    background-position: center;
+    filter: brightness(0.4) grayscale(0.5);
+    transform: scale(1.05);
+    transition: filter 0.5s ease;
+    z-index: 0;
+}
+
+.hero-background::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to top, var(--darker) 0%, transparent 60%);
+    opacity: 0.9;
+}
+
+.hero-content {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    color: var(--white);
+    max-width: 800px;
+    padding: 0 20px;
+    transform: translateY(0);
+    opacity: 0;
+    animation: slideInUp 0.8s ease-out forwards 0.3s;
+}
+
+@keyframes slideInUp {
+    from { opacity: 0; transform: translateY(50px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.hero-badge {
+    background-color: var(--primary);
+    color: var(--white);
+    padding: 0.4rem 1rem;
+    border-radius: 5px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+    display: inline-block;
+    box-shadow: var(--shadow-sm);
+}
+
+.hero-title {
+    font-size: 4.5rem;
+    font-weight: 800;
+    margin-bottom: 1rem;
+    line-height: 1.1;
+    text-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+    background: linear-gradient(90deg, var(--color4), var(--white), var(--color4));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+.hero-rating {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--yellow);
+    font-size: 1.6rem;
+    margin-bottom: 1.5rem;
+}
+
+.hero-rating i {
+    margin: 0 0.2rem;
+}
+
+.hero-rating span {
+    font-size: 1.2rem;
+    color: var(--lighter);
+    font-weight: 500;
+    margin-left: 0.8rem;
+}
+
+.hero-description {
+    font-size: 1.1rem;
+    color: var(--light-gray);
+    margin-bottom: 2.5rem;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.hero-button {
+    font-size: 1.1rem;
+    padding: 1rem 2.5rem;
+    border-radius: 10px;
+    box-shadow: var(--glow);
+}
+
+.hero-button:hover {
+    transform: translateY(-5px) scale(1.02);
+    box-shadow: var(--glow-hover);
+}
+
+/* --- Global Responsiveness (Hero Section, Cards) --- */
+@media (max-width: 1024px) {
+    .hero-section {
+        height: 500px;
+    }
+    .hero-title {
+        font-size: 3.5rem;
+    }
+    .hero-description {
+        font-size: 1rem;
+    }
+    .hero-rating {
+        font-size: 1.4rem;
+    }
+    .hero-rating span {
+        font-size: 1.1rem;
+    }
+    .hero-button {
+        padding: 0.9rem 2.2rem;
+        font-size: 1rem;
+    }
+
+    .section-title {
+        font-size: 2.2rem;
+    }
+    .game-grid {
+        grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+        gap: 2rem;
+    }
+    .game-card img {
+        height: 180px;
+    }
+    .game-card-content h3 {
+        font-size: 1.4rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .hero-section {
+        height: 450px;
+        padding-top: 60px;
+    }
+    .hero-content {
+        padding: 0 15px;
+    }
+    .hero-title {
+        font-size: 2.8rem;
+    }
+    .hero-rating {
+        font-size: 1.2rem;
+    }
+    .hero-rating span {
+        font-size: 1rem;
+    }
+    .hero-description {
+        font-size: 0.95rem;
+        margin-bottom: 2rem;
+    }
+
+    .section-title {
+        font-size: 2rem;
+        margin-bottom: 2.5rem;
+    }
+    .game-grid {
+        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+        gap: 1.5rem;
+    }
+    .game-card img {
+        height: 160px;
+    }
+    .game-card-content {
+        padding: 1.2rem;
+    }
+    .game-card-content h3 {
+        font-size: 1.3rem;
+    }
+    .game-rating i {
+        font-size: 1rem;
+    }
+    .game-rating span {
+        font-size: 1rem;
+    }
+    .descricao {
+        font-size: 0.9rem;
+    }
+    .game-card .btn-details {
+        font-size: 0.9rem;
+        padding: 0.6rem 1.2rem;
+    }
+    .game-card {
+        padding-bottom: 40px;
+    }
+    .game-card-stats {
+        padding: 0.6rem 0.3rem;
+        font-size: 0.8rem;
+    }
+    .stat-item {
+        gap: 0.2rem;
+        padding: 0.1rem 0.3rem;
+    }
+    .stat-item i {
+        font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .hero-section {
+        height: 400px;
+        padding-top: 50px;
+    }
+    .hero-badge {
+        font-size: 0.75rem;
+        padding: 0.3rem 0.8rem;
+    }
+    .hero-title {
+        font-size: 2rem;
+        margin-bottom: 0.8rem;
+    }
+    .hero-rating {
+        font-size: 1rem;
+    }
+    .hero-rating i {
+        margin: 0 0.1rem;
+    }
+    .hero-rating span {
+        font-size: 0.9rem;
+    }
+    .hero-description {
+        font-size: 0.85rem;
+        margin-bottom: 1.5rem;
+    }
+    .hero-button {
+        padding: 0.8rem 1.8rem;
+        font-size: 0.9rem;
+    }
+
+    .games-section {
+        padding: 2.5rem 0;
+    }
+    .section-title {
+        font-size: 1.7rem;
+        margin-bottom: 2rem;
+    }
+    .game-grid {
+        grid-template-columns: 1fr;
+        gap: 1.2rem;
+    }
+    .game-card img {
+        height: 140px;
+    }
+    .game-card-content h3 {
+        font-size: 1.2rem;
+    }
+}
+
+/* --- Ranking Section Styles --- */
+.ranking-section {
+    padding: 4rem 0;
+    background-color: var(--dark);
+    position: relative;
+    overflow: hidden;
+}
+
+.ranking-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at 70% 20%, rgba(87, 51, 239, 0.1) 0%, transparent 30%);
+    pointer-events: none;
+    z-index: 0;
+}
+
+.ranking-container {
+    position: relative;
+    z-index: 1;
+}
+
+.ranking-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.ranking-title {
+    font-size: 2.5rem;
+    margin: 0;
+    background: var(--gradient-primary);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 800;
+}
+
+.ranking-filters {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+}
+
+.filter-btn {
+    padding: 0.6rem 1.2rem;
+    border-radius: 8px;
+    background-color: var(--dark-gray);
+    color: var(--lighter);
+    border: 1px solid var(--medium-gray);
+    font-weight: 500;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.filter-btn.active {
+    background: var(--gradient-primary);
+    color: var(--white);
+    border-color: transparent;
+    box-shadow: var(--shadow-sm);
+}
+
+.filter-btn:hover:not(.active) {
+    background-color: var(--medium-gray);
+    color: var(--white);
+}
+
+.ranking-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    background-color: var(--dark-gray);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: var(--shadow-md);
+}
+
+.ranking-table thead {
+    background: var(--gradient-primary);
+}
+
+.ranking-table th {
+    padding: 1.2rem 1.5rem;
+    text-align: left;
+    color: var(--white);
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    letter-spacing: 0.05em;
+}
+
+.ranking-table th:first-child {
+    width: 60px;
+    text-align: center;
+}
+
+.ranking-table th:nth-child(2) {
+    width: 300px;
+}
+
+.ranking-table tbody tr {
+    transition: var(--transition);
+    border-bottom: 1px solid var(--medium-gray);
+}
+
+.ranking-table tbody tr:last-child {
+    border-bottom: none;
+}
+
+.ranking-table tbody tr:hover {
+    background-color: rgba(87, 51, 239, 0.1);
+}
+
+.ranking-table td {
+    padding: 1.2rem 1.5rem;
+    color: var(--lighter);
+    vertical-align: middle;
+}
+
+.ranking-table td:first-child {
+    text-align: center;
+    font-weight: 700;
+    font-size: 1.2rem;
+    color: var(--white);
+}
+
+.ranking-position-1 {
+    color: var(--yellow) !important;
+    text-shadow: 0 0 8px rgba(253, 203, 110, 0.3);
+}
+
+.ranking-position-2 {
+    color: #bdc3c7 !important;
+}
+
+.ranking-position-3 {
+    color: #cd7f32 !important;
+}
+
+.ranking-game {
+    display: flex;
+    align-items: center;
+    gap: 1.2rem;
+}
+
+.ranking-game-cover {
+    width: 60px;
+    height: 80px;
+    border-radius: 8px;
+    object-fit: cover;
+    box-shadow: var(--shadow-sm);
+    transition: var(--transition);
+}
+
+.ranking-game:hover .ranking-game-cover {
+    transform: scale(1.05);
+    box-shadow: var(--shadow-md);
+}
+
+.ranking-game-info h4 {
+    font-size: 1.1rem;
+    color: var(--white);
+    margin-bottom: 0.3rem;
+    font-weight: 600;
+}
+
+.ranking-game-info p {
+    font-size: 0.85rem;
+    color: var(--light-gray);
+    margin: 0;
+}
+
+.ranking-score {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 600;
+}
+
+.ranking-score i {
+    color: var(--yellow);
+    font-size: 1.1rem;
+}
+
+.ranking-platforms {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.platform-icon {
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--medium-gray);
+    border-radius: 4px;
+    color: var(--lighter);
+    font-size: 0.8rem;
+    transition: var(--transition);
+}
+
+.platform-icon:hover {
+    background-color: var(--primary);
+    color: var(--white);
+    transform: translateY(-2px);
+}
+
+.ranking-release {
+    font-size: 0.9rem;
+    color: var(--light-gray);
+}
+
+.ranking-actions {
+    display: flex;
+    gap: 0.8rem;
+}
+
+.action-btn {
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--medium-gray);
+    border-radius: 50%;
+    color: var(--lighter);
+    cursor: pointer;
+    transition: var(--transition);
+    border: none;
+    font-size: 1rem;
+}
+
+.action-btn:hover {
+    background-color: var(--primary);
+    color: var(--white);
+    transform: translateY(-2px);
+}
+
+.ranking-pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 2.5rem;
+    gap: 0.5rem;
+}
+
+.page-btn {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    background-color: var(--dark-gray);
+    color: var(--lighter);
+    border: 1px solid var(--medium-gray);
+    cursor: pointer;
+    transition: var(--transition);
+    font-weight: 500;
+}
+
+.page-btn.active {
+    background: var(--gradient-primary);
+    color: var(--white);
+    border-color: transparent;
+}
+
+.page-btn:hover:not(.active) {
+    background-color: var(--medium-gray);
+    color: var(--white);
+}
+
+.page-btn i {
+    font-size: 1rem;
+}
+
+/* Table responsiveness */
+@media (max-width: 1024px) {
+    .ranking-table th:nth-child(2) {
+        width: auto;
+    }
+    
+    .ranking-table th:nth-child(5),
+    .ranking-table td:nth-child(5),
+    .ranking-table th:nth-child(6),
+    .ranking-table td:nth-child(6) {
+        display: none;
+    }
+}
+
+@media (max-width: 768px) {
+    .ranking-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .ranking-filters {
+        width: 100%;
+        overflow-x: auto;
+        padding-bottom: 0.5rem;
+    }
+    
+    .ranking-table th:nth-child(4),
+    .ranking-table td:nth-child(4) {
+        display: none;
+    }
+
+    .ranking-game {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.8rem;
+    }
+
+    .ranking-game-cover {
+        width: 50px;
+        height: 70px;
+    }
+}
+
+@media (max-width: 480px) {
+    .ranking-title {
+        font-size: 2rem;
+    }
+
+    .ranking-table th,
+    .ranking-table td {
+        padding: 0.8rem;
+    }
+
+    .ranking-table th:nth-child(3),
+    .ranking-table td:nth-child(3) {
+        display: none;
+    }
+
+    .ranking-game-info h4 {
+        font-size: 1rem;
+    }
+
+    .ranking-score {
+        font-size: 0.9rem;
+    }
+
+    .ranking-actions {
+        gap: 0.5rem;
+    }
+
+    .action-btn {
+        width: 30px;
+        height: 30px;
+        font-size: 0.9rem;
+    }
+
+    .page-btn {
+        width: 35px;
+        height: 35px;
+        font-size: 0.9rem;
+    }
+}
+.main-nav {
+    display: flex;
+    gap: 1rem;
+}
