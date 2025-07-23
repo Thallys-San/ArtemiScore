@@ -13,10 +13,11 @@
             <div class="header-left"> 
                 <a href="/" class="logo font-pacifico">AtermiScore</a>
                 <nav class="main-nav">
-                    <a href="/" class="nav-link">Início</a>
+                    <a href="index.html" class="nav-link">Início</a>
                     <a href="jogos.html" class="nav-link">Jogos</a>
-                    <a href="rank.html" class="nav-link active">Ranking</a> <a href="lancamentos.html" class="nav-link">Lançamentos</a>
-                    <a href="comunidade.html" class="nav-link">Comunidade</a>
+                    <a href="rank.html" class="nav-link active">Ranking</a> 
+                    <a href="lancamentos.html" class="nav-link">Lançamentos</a>
+                    
                 </nav>
             </div>
 
@@ -62,30 +63,35 @@
     </header>
 
     <main>
-        <section class="rank-section">
-            <div class="container">
-                <h1 class="section-title">Top 10 Jogos Avaliados</h1>
+        <section class="ranking-section"> <!-- Mudei de rank-section para ranking-section -->
+    <div class="container">
+        <h1 class="section-title">Top 10 Jogos Avaliados</h1>
 
-                <div class="rank-filters">
-                    <select id="rank-metric-filter">
-                        <option value="rating">Melhor Avaliados</option>
-                        <option value="popularity">Mais Populares</option>
-                        <option value="added">Mais Recentes</option>
-                    </select>
-                    <select id="rank-platform-filter">
-                        <option value="">Todas as Plataformas</option>
-                        <option value="PC">PC</option>
-                        <option value="PlayStation">PlayStation</option>
-                        <option value="Xbox">Xbox</option>
-                        <option value="Nintendo Switch">Nintendo Switch</option>
-                    </select>
-                    <button class="filter-button" id="apply-rank-filters">Aplicar Filtros</button>
-                </div>
-
-                <div class="rank-list" id="rank-list-container">
-                    </div>
+        <div class="ranking-header"> <!-- Adicionei esta div wrapper -->
+            <div class="ranking-filters"> <!-- Mudei de rank-filters para ranking-filters -->
+                <select class="filter-btn" id="rank-metric-filter"> <!-- Adicionei classe filter-btn -->
+                    <option value="rating">Melhor Avaliados</option>
+                    <option value="popularity">Mais Populares</option>
+                    <option value="added">Mais Recentes</option>
+                </select>
+                
+                <select class="filter-btn" id="rank-platform-filter"> <!-- Adicionei classe filter-btn -->
+                    <option value="">Todas as Plataformas</option>
+                    <option value="PC">PC</option>
+                    <option value="PlayStation">PlayStation</option>
+                    <option value="Xbox">Xbox</option>
+                    <option value="Nintendo Switch">Nintendo Switch</option>
+                </select>
+                
+                <button class="filter-btn btn-primary" id="apply-rank-filters">Aplicar Filtros</button> <!-- Adicionei classes -->
             </div>
-        </section>
+        </div>
+
+        <div class="ranking-list" id="rank-list-container"> <!-- Mudei de rank-list para ranking-list -->
+            <!-- Conteúdo será preenchido pelo JavaScript -->
+        </div>
+    </div>
+</section>
     </main>
 
     <footer>
