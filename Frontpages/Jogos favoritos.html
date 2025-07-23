@@ -87,19 +87,18 @@
         }
 
         .logo {
-            font-size: 1.8rem;
+            font-size: 1.8rem; /* Kept for consistency if text were present */
             font-weight: 700;
-            background: linear-gradient(45deg, var(--primary), var(--accent));
-            -webkit-background-clip: text;
-            color: transparent;
+            /* Removed background clip for text since text is gone */
+            color: transparent; /* Kept, but effectively no impact */
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 8px; /* Removed, not needed without text */
         }
 
         .logo-img {
             height: 40px;
-            margin-right: 10px;
+            margin-right: 0; /* Changed to 0 as there's no text next to it */
         }
 
         .flex {
@@ -492,10 +491,9 @@
     <header>
         <div class="container header-container">
             <div class="flex items-center">
-                <a href="/" class="logo font-pacifico">
-                    <img src="https://github.com/Thallys-San/ArtemiScore/blob/main/ArtemiScore%20(2).png?raw=true">
-                    
-                </a>
+                <a href="/" class="logo">
+                    <img src="https://github.com/Thallys-San/ArtemiScore/blob/main/ArtemiScore%20(2).png?raw=true" alt="ArtemiScore Logo" class="logo-img">
+                    </a>
                 <nav class="main-nav">
                     <a href="/" class="nav-link">Início</a>
                     <a href="Jogos.html" class="nav-link">Jogos</a>
@@ -609,9 +607,9 @@
     <footer>
         <div class="footer-content">
             <div class="footer-column">
-                <a href="/" class="logo font-pacifico" style="font-size: 1.5rem; margin-bottom: 1rem; display: flex; align-items: center;">
+                <a href="/" class="logo" style="font-size: 1.5rem; margin-bottom: 1rem; display: flex; align-items: center;">
                     <img src="https://github.com/Thallys-San/ArtemiScore/blob/main/ArtemiScore%20(2).png?raw=true" alt="ArtemiScore Logo" style="height: 30px; margin-right: 8px;">
-            
+                    <span class="font-pacifico" style="background: linear-gradient(45deg, var(--primary), var(--accent)); -webkit-background-clip: text; color: transparent;">ArtemiScore</span>
                 </a>
                 <p style="color: var(--light-gray); font-size: 0.9rem;">Sua plataforma completa para o mundo dos jogos. Descubra, avalie e conecte-se.</p>
                 <div class="social-links">
@@ -660,7 +658,19 @@
             const userMenuContainer = document.getElementById('userMenuContainer');
             const userDropdown = document.getElementById('userDropdownMenu');
 
-         
+            // The existing HTML provides hover functionality via CSS
+            // If you wanted to toggle with a click, you would uncomment/add the following:
+            // const userMenuButton = document.getElementById('userMenuButton');
+            // userMenuButton.addEventListener('click', function() {
+            //     userDropdown.classList.toggle('active-dropdown'); // You'd need to define 'active-dropdown' in CSS
+            // });
+
+            // Close dropdown if clicked outside
+            // document.addEventListener('click', function(event) {
+            //     if (!userMenuContainer.contains(event.target) && userDropdown.classList.contains('active-dropdown')) {
+            //         userDropdown.classList.remove('active-dropdown');
+            //     }
+            // });
         });
     </script>
 </body>
