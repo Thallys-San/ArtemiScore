@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 package com.artemiscore.artemiscore.model;
 
 
@@ -54,3 +55,61 @@ public class AvaliacaoModel {
     @Column
     private LocalDate data_avaliacao;
 }
+=======
+package com.artemiscore.artemiscore.model;
+
+
+
+
+import java.time.LocalDate;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import jakarta.validation.constraints.DecimalMax;
+import jakarta.validation.constraints.DecimalMin;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+
+
+@Entity
+@Table(name = "avaliacoes")
+@Getter
+@Setter
+
+@NoArgsConstructor
+public class AvaliacaoModel {
+
+    @Id
+    @GeneratedValue (strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column (nullable = false )
+    private Long usuario_id;
+
+    @Column (nullable = false)
+    private Long jogo_id;
+
+    @DecimalMin(value = "1.0", inclusive = true)
+    @DecimalMax(value = "5.0", inclusive = true)
+    @Column (nullable = false)
+    private Double nota;
+
+    @Column
+    private Integer tempoDeJogo;
+
+    @Column(nullable = false, length = 255)
+    private String plataforma;
+
+    @Column
+    private String comentario;
+
+    @Column
+    private LocalDate data_avaliacao;
+}
+>>>>>>> b4e1ade8e278a2882918ea5fbbdc3f3bb2e43e60

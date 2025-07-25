@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 /* perfil.css */
 * {
     margin: 0;
@@ -348,3 +349,247 @@ nav ul input:focus {
         width: 100%;
     }
 }
+=======
+/* perfil.css - EXATAMENTE IGUAL AO ORIGINAL, SEM ALTERAÇÕES */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Inter', sans-serif;
+}
+
+:root {
+    --primary: #5733ef;
+    --primary-dark: #4625c9;
+    --accent: #c688ff;
+    --dark: #0f0f13;
+    --darker: #0a0a0d;
+    --gray: #1e1e24;
+    --gray-light: #2a2a35;
+    --light-gray: #6d6d7a;
+    --yellow: #fdcb6e;
+    --green: #00cc96;
+    --red: #ff6b6b;
+}
+
+body {
+    background: linear-gradient(135deg, var(--darker) 0%, var(--dark) 100%);
+    color: #e1e1e1;
+    min-height: 100vh;
+    padding-top: 80px;
+}
+
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at 10% 20%, rgba(87, 51, 239, 0.1) 0%, rgba(15, 15, 19, 0) 40%),
+                radial-gradient(circle at 90% 80%, rgba(198, 136, 255, 0.1) 0%, rgba(15, 15, 19, 0) 40%);
+    z-index: -1;
+}
+
+/* Profile Section */
+.profile {
+    max-width: 1400px;
+    margin: 2rem auto;
+    padding: 0 2rem;
+    display: grid;
+    grid-template-columns: 1fr 300px;
+    gap: 2rem;
+}
+
+.profile-header {
+    display: flex;
+    gap: 2rem;
+    margin-bottom: 2rem;
+    grid-column: 1 / -1;
+}
+
+.avatar {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 4px solid var(--primary);
+}
+
+.profile-info h2 {
+    font-size: 1.8rem;
+    color: white;
+    margin-bottom: 0.5rem;
+}
+
+.profile-info .data {
+    color: var(--light-gray);
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+}
+
+.profile-info p {
+    margin-bottom: 1.5rem;
+    line-height: 1.6;
+}
+
+.profile-info button {
+    padding: 0.6rem 1.2rem;
+    border-radius: 6px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: 0.3s;
+    margin-right: 1rem;
+}
+
+.profile-info .edit {
+    background: var(--primary);
+    color: white;
+    border: none;
+}
+
+.profile-info .edit:hover {
+    background: var(--primary-dark);
+}
+
+.profile-info .share {
+    background: var(--gray-light);
+    color: white;
+    border: none;
+}
+
+.profile-info .share:hover {
+    background: var(--gray);
+}
+
+.metrics {
+    display: flex;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+    grid-column: 1 / -1;
+}
+
+.metrics .card {
+    background: rgba(30, 30, 36, 0.7);
+    backdrop-filter: blur(10px);
+    border-radius: 12px;
+    padding: 1.5rem;
+    border: 1px solid var(--gray-light);
+    flex: 1;
+}
+
+.metrics .card strong {
+    font-size: 1.5rem;
+    color: var(--accent);
+}
+
+.reviews {
+    background: rgba(30, 30, 36, 0.7);
+    backdrop-filter: blur(10px);
+    border-radius: 12px;
+    padding: 1.5rem;
+    border: 1px solid var(--gray-light);
+}
+
+.reviews h3 {
+    font-size: 1.25rem;
+    color: white;
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--gray-light);
+}
+
+.review {
+    margin-bottom: 1.5rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--gray-light);
+}
+
+.review:last-child {
+    margin-bottom: 0;
+    padding-bottom: 0;
+    border-bottom: none;
+}
+
+.review h4 {
+    font-size: 1.1rem;
+    color: white;
+    margin-bottom: 0.5rem;
+    display: flex;
+    justify-content: space-between;
+}
+
+.review h4 span {
+    color: var(--yellow);
+    font-weight: 700;
+}
+
+.review p {
+    color: var(--light-gray);
+    line-height: 1.6;
+}
+
+.sidebar > div {
+    background: rgba(30, 30, 36, 0.7);
+    backdrop-filter: blur(10px);
+    border-radius: 12px;
+    padding: 1.5rem;
+    border: 1px solid var(--gray-light);
+    margin-bottom: 1.5rem;
+}
+
+.sidebar h4 {
+    font-size: 1.1rem;
+    color: white;
+    margin-bottom: 1rem;
+}
+
+.sidebar ul {
+    list-style: none;
+}
+
+.sidebar ul li {
+    margin-bottom: 0.5rem;
+    color: var(--light-gray);
+}
+
+.sidebar p {
+    color: var(--light-gray);
+    line-height: 1.6;
+}
+
+/* Responsividade */
+@media (max-width: 1024px) {
+    .profile {
+        grid-template-columns: 1fr;
+    }
+    
+    .sidebar {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.5rem;
+    }
+    
+    .sidebar > div {
+        margin-bottom: 0;
+    }
+}
+
+@media (max-width: 768px) {
+    .profile-header {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+    
+    .metrics {
+        flex-direction: column;
+    }
+}
+
+@media (max-width: 480px) {
+    .sidebar {
+        grid-template-columns: 1fr;
+    }
+}
+>>>>>>> b4e1ade8e278a2882918ea5fbbdc3f3bb2e43e60
