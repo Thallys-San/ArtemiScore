@@ -1,6 +1,6 @@
 package com.artemiscore.artemiscore.model;
 
-
+import java.time.LocalDate;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -32,8 +32,17 @@ public class UsuariosModel {
     private String senha;
 
     @Column
-    private String descricao;
+    private String bio;
 
     @Column
     private String foto_perfil;
+
+    @Column(nullable=false)
+    private LocalDate data_criacao;
+
+    @Column
+    private String preferencias_jogos;
+
+    @Column
+    private String plataformas_utilizadas;
 }

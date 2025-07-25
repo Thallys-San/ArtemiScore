@@ -14,7 +14,7 @@
     <link rel="preload" href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" as="style">
 
     <link rel="stylesheet" href="cadastro.css">
-    <link rel="stylesheet" href="login.css"> <link rel="stylesheet" href="cadastro.css"> <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css">
+    <link rel="stylesheet" href="cadastro.css"> <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css">
 
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800;900&family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
@@ -39,7 +39,23 @@
 
         <form class="form" id="registerForm" action="#" method="POST" autocomplete="on">
             <fieldset>
-                <legend class="visually-hidden">Informações de Acesso</legend>
+                
+                
+                <div class="input-group profile-picture-container">
+                    <label>Foto de Perfil</label>
+                    <div class="avatar-upload">
+                        <div class="avatar-edit">
+                            <input type="file" id="avatarUpload" accept=".png, .jpg, .jpeg" />
+                            <label for="avatarUpload"></label>
+                        </div>
+                        <div class="avatar-preview">
+                            <div id="avatarPreview" style="background-image: url('https://raw.githubusercontent.com/Thallys-San/ArtemiScore/main/profile_pic.png');">
+                         </div>
+                    </div>
+                    </div>
+                    <small class="form-text-hint">Formatos suportados: JPG, PNG, JPEG (Máx. 2MB)</small>
+                </div>
+
                 <div class="input-group">
                     <label for="username">Nome de Usuário</label>
                     <input type="text" name="username" id="username" placeholder="Seu nome de usuário" required autocomplete="username">
@@ -47,7 +63,7 @@
                 </div>
 
                 <div class="input-group">
-                    <label for="email">Email</label>
+                    <label for="email">E-mail</label>
                     <input type="email" name="email" id="email" placeholder="seuemail@exemplo.com" required autocomplete="email">
                     <p class="error-message" id="email-error"></p>
                 </div>
@@ -64,15 +80,25 @@
                     <input type="password" name="confirm_password" id="confirm-password" placeholder="Repita sua senha" required minlength="8" autocomplete="new-password">
                     <p class="error-message" id="confirm-password-error"></p>
                 </div>
+
+                <div class="input-group">
+                    <label for="bio">Biografia (opcional)<span id="charCount">(0/400)</span></label>
+                    <textarea name="bio" id="bio" rows="4" placeholder="Conte um pouco sobre você..." maxlength="300"></textarea>
+                </div>
             </fieldset>
 
             <fieldset>
                 <legend class="visually-hidden">Preferências de Jogo</legend>
+                <br>
                 <div class="input-group">
-                    <label for="favorite-genres">Gêneros Favoritos (Opcional)</label>
+                    <label for="favorite-genres">Gêneros Favoritos (selecione até 5 - opcional)</label>
                     <input type="text" name="favorite_genres" id="favorite-genres" placeholder="Ex: RPG, Ação, Estratégia" list="game-genres">
                     <datalist id="game-genres">
                         <option value="Ação"></option>
+                        <option value="FPS"></option>
+                        <option value="Battle royale"></option>
+                        <option value="PVP"></option>
+                        <option value="Super-herói"></option>
                         <option value="Aventura"></option>
                         <option value="RPG"></option>
                         <option value="Estratégia"></option>
@@ -84,10 +110,11 @@
                         <option value="Terror"></option>
                         <option value="Puzzle"></option>
                     </datalist>
+                    <small id="genre-warning" style="color: red; display: none;">Você pode selecionar no máximo 5 gêneros.</small>
                 </div>
 
                 <div class="input-group">
-                    <label for="preferred-platforms">Plataformas Preferidas (Opcional)</label>
+                    <label for="preferred-platforms">Plataformas Preferidas (selecione até 3 - opcional)</label>
                     <input type="text" name="preferred_platforms" id="preferred-platforms" placeholder="Ex: PC, PlayStation, Xbox, Switch" list="game-platforms">
                     <datalist id="game-platforms">
                         <option value="PC"></option>
@@ -99,6 +126,7 @@
                         <option value="Mobile"></option>
                         <option value="Nenhuma específica"></option>
                     </datalist>
+                    <small id="platform-warning" style="color: red; display: none;">Você pode selecionar no máximo 3 plataformas.</small>
                 </div>
             </fieldset>
 
@@ -132,142 +160,6 @@
             <a rel="noopener noreferrer" href="login.html" class="">Faça Login</a>
         </p>
     </div>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const registerForm = document.getElementById('registerForm');
-            const usernameInput = document.getElementById('username');
-            const emailInput = document.getElementById('email');
-            const passwordInput = document.getElementById('password');
-            const confirmPasswordInput = document.getElementById('confirm-password');
-            const generalErrorMessage = document.getElementById('generalErrorMessage');
-
-            // Funções para mostrar/esconder mensagens de erro
-            function showError(element, message) {
-                const errorDisplay = document.getElementById(element.id + '-error');
-                if (errorDisplay) {
-                    errorDisplay.textContent = message;
-                    errorDisplay.style.display = 'block';
-                    element.classList.add('is-invalid');
-                }
-            }
-
-            function hideError(element) {
-                const errorDisplay = document.getElementById(element.id + '-error');
-                if (errorDisplay) {
-                    errorDisplay.textContent = '';
-                    errorDisplay.style.display = 'none';
-                    element.classList.remove('is-invalid');
-                }
-            }
-
-            function showGeneralError(message) {
-                generalErrorMessage.textContent = message;
-                generalErrorMessage.style.display = 'block';
-            }
-
-            function hideGeneralError() {
-                generalErrorMessage.textContent = '';
-                generalErrorMessage.style.display = 'none';
-            }
-
-            // Validação de senhas
-            function validatePasswords() {
-                if (passwordInput.value !== confirmPasswordInput.value) {
-                    showError(confirmPasswordInput, "As senhas não coincidem.");
-                    return false;
-                } else {
-                    hideError(confirmPasswordInput);
-                    return true;
-                }
-            }
-
-            // Adiciona listeners para feedback em tempo real
-            usernameInput.addEventListener('input', () => {
-                if (usernameInput.value.length < 3) {
-                    showError(usernameInput, "Nome de usuário deve ter pelo menos 3 caracteres.");
-                } else {
-                    hideError(usernameInput);
-                }
-            });
-
-            emailInput.addEventListener('input', () => {
-                // Regex simples para validação de email. Pode ser mais complexo.
-                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-                if (!emailRegex.test(emailInput.value)) {
-                    showError(emailInput, "Por favor, insira um email válido.");
-                } else {
-                    hideError(emailInput);
-                }
-            });
-
-            passwordInput.addEventListener('input', () => {
-                if (passwordInput.value.length < 8) {
-                    showError(passwordInput, "A senha deve ter pelo menos 8 caracteres.");
-                } else {
-                    hideError(passwordInput);
-                }
-                validatePasswords(); // Valida a confirmação da senha também
-            });
-
-            confirmPasswordInput.addEventListener('input', validatePasswords);
-
-            // Listener para o submit do formulário
-            registerForm.addEventListener('submit', function(event) {
-                event.preventDefault(); // Impede o envio padrão do formulário
-
-                hideGeneralError(); // Esconde mensagens de erro anteriores
-                // Limpa todos os erros de campos individuais antes de revalidar
-                [usernameInput, emailInput, passwordInput, confirmPasswordInput].forEach(hideError);
-
-                let isValid = true;
-
-                // Re-executa todas as validações no submit
-                if (usernameInput.value.length < 3) {
-                    showError(usernameInput, "Nome de usuário deve ter pelo menos 3 caracteres.");
-                    isValid = false;
-                }
-                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-                if (!emailRegex.test(emailInput.value)) {
-                    showError(emailInput, "Por favor, insira um email válido.");
-                    isValid = false;
-                }
-                if (passwordInput.value.length < 8) {
-                    showError(passwordInput, "A senha deve ter pelo menos 8 caracteres.");
-                    isValid = false;
-                }
-                if (!validatePasswords()) { // Chama a validação de senhas
-                    isValid = false;
-                }
-
-                if (isValid) {
-                    // Se tudo estiver válido, simula o envio do formulário
-                    console.log('Formulário enviado com sucesso!', {
-                        username: usernameInput.value,
-                        email: emailInput.value,
-                        // Não envie a senha para o console em produção!
-                    });
-                    // Aqui você faria uma requisição AJAX/Fetch para o seu backend
-                    // Ex: fetch('/api/register', { method: 'POST', body: new FormData(registerForm) })
-                    //     .then(response => response.json())
-                    //     .then(data => { /* handle success or error from server */ })
-                    //     .catch(error => { showGeneralError('Ocorreu um erro ao registrar. Tente novamente.'); });
-
-                    // Simulação de sucesso para demonstração
-                    alert('Cadastro realizado com sucesso! Redirecionando para a página de login...');
-                    // Redireciona para a página de login após o sucesso
-                    // window.location.href = 'login.html';
-                } else {
-                    showGeneralError("Por favor, corrija os erros no formulário.");
-                    // Opcional: focar no primeiro campo inválido
-                    const firstInvalidField = registerForm.querySelector('.is-invalid');
-                    if (firstInvalidField) {
-                        firstInvalidField.focus();
-                        firstInvalidField.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                    }
-                }
-            });
-        });
-    </script>
+    <script src="..\frontend\src\cadastro.js"></script>
 </body>
 </html>

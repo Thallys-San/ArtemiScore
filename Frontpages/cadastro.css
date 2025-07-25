@@ -290,3 +290,122 @@ datalist option {
 datalist option:hover {
     background: var(--primary);
 }
+
+textarea {
+    width: 100%;
+    padding: 0.8rem 1.2rem;
+    background: var(--gray);
+    border: 1px solid var(--gray-light);
+    border-radius: 8px;
+    color: white;
+    font-size: 1rem;
+    outline: none;
+    transition: all 0.3s;
+    resize: vertical;
+    min-height: 120px;
+    margin-top: 0.5rem;
+    font-family: 'Poppins', sans-serif;
+}
+
+textarea:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(87, 51, 239, 0.2);
+    background: var(--gray-light);
+}
+
+textarea::placeholder {
+    color: var(--light-gray);
+    opacity: 0.7;
+}
+
+/* Estilo para o contador de caracteres */
+#charCount {
+    font-size: 0.8em;
+    font-weight: normal;
+    color: var(--light-gray);
+    margin-left: 5px;
+}
+
+#charCount.warning {
+    color: var(--yellow);
+}
+
+#charCount.error {
+    color: var(--red);
+}
+
+textarea:disabled {
+    opacity: 0.7;
+    background: var(--darker);
+}
+
+
+/* Estilos para upload de avatar */
+.profile-picture-container {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.avatar-upload {
+    position: relative;
+    max-width: 150px;
+    margin: 0 auto 1rem;
+}
+
+.avatar-edit {
+    position: absolute;
+    right: 10px;
+    bottom: 10px;
+    z-index: 1;
+}
+
+.avatar-edit input {
+    display: none;
+}
+
+.avatar-edit label {
+    display: inline-block;
+    width: 36px;
+    height: 36px;
+    background: var(--primary);
+    border-radius: 50%;
+    border: 2px solid white;
+    cursor: pointer;
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.avatar-edit label:hover {
+    background: var(--primary-dark);
+    transform: scale(1.1);
+}
+
+.avatar-edit label:after {
+    content: "✎";
+    color: white;
+    font-size: 16px;
+}
+
+.avatar-preview {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    border: 3px solid var(--gray-light);
+    overflow: hidden;
+    transition: all 0.3s;
+}
+
+.avatar-preview:hover {
+    border-color: var(--primary);
+    transform: scale(1.05);
+}
+
+#avatarPreview {
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
