@@ -23,7 +23,7 @@ import com.artemiscore.artemiscore.service.UsuariosService;
 
 @RestController
 @RequestMapping("/usuarios")
-@CrossOrigin(origins ="*")
+@CrossOrigin(origins ="http://127.0.0.1:5500")
 public class UsuariosController {
 
     @Autowired
