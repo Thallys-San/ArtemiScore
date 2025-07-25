@@ -8,7 +8,13 @@ CREATE TABLE IF NOT EXISTS usuarios (
    senha VARCHAR(255) NOT NULL,
    descricao VARCHAR(300),
    foto_perfil VARCHAR(600),
+<<<<<<< HEAD
    data_criacao DATETIME DEFAULT CURRENT_TIMESTAMP
+=======
+   data_criacao DATETIME DEFAULT CURRENT_TIMESTAMP,
+   preferencias_jogos VARCHAR(800),
+   plataformas_utilizadas VARCHAR(800)
+>>>>>>> b4e1ade8e278a2882918ea5fbbdc3f3bb2e43e60
 );
 
 

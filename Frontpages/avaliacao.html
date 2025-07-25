@@ -1,3 +1,4 @@
+<<<<<<< HEAD
     <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -153,3 +154,811 @@
     </script>
 </body>
 </html>
+=======
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Avaliação - ArtemiScore</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css">
+    <style>
+        /* --- Header Adaptado --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        :root {
+            --primary: #5733ef;
+            --primary-dark: #4625c9;
+            --accent: #c688ff;
+            --dark: #0f0f13;
+            --darker: #0a0a0d;
+            --gray: #1e1e24;
+            --gray-light: #2a2a35;
+            --light-gray: #6d6d7a;
+            --yellow: #fdcb6e;
+            --green: #00cc96;
+            --red: #ff6b6b;
+        }
+
+        header.top-bar {
+            background: rgba(15, 15, 19, 0.95);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            padding: 1rem 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            border-bottom: 1px solid rgba(87, 51, 239, 0.3);
+            transition: all 0.4s ease;
+        }
+
+        header.top-bar.scrolled {
+            padding: 0.75rem 0;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+        }
+
+        .flex {
+            display: flex;
+        }
+
+        .items-center {
+            align-items: center;
+        }
+
+        .gap-4 {
+            gap: 1rem;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            background: linear-gradient(45deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            color: transparent;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+        }
+
+        .logo-image {
+            height: 40px;
+            width: auto;
+            display: block;
+        }
+
+        .main-nav {
+            display: flex;
+            margin-left: 2rem;
+        }
+
+        .nav-link {
+            margin-left: 1.5rem;
+            font-weight: 500;
+            color: var(--light-gray);
+            transition: 0.3s;
+            position: relative;
+            text-decoration: none;
+            font-size: 0.95rem;
+            padding: 0.5rem 0;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            color: white;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background-color: var(--primary);
+            transition: width 0.3s;
+        }
+
+        .nav-link:hover::after, .nav-link.active::after {
+            width: 100%;
+        }
+
+        .search-bar {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .search-input {
+            background: var(--gray);
+            border: 1px solid var(--gray-light);
+            border-radius: 20px;
+            padding: 0.6rem 1rem 0.6rem 2.5rem;
+            color: white;
+            outline: none;
+            transition: all 0.3s;
+            width: 200px;
+            font-size: 0.9rem;
+        }
+
+        .search-input:focus {
+            border-color: var(--primary);
+            width: 250px;
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 12px;
+            color: var(--light-gray);
+        }
+
+        .user-menu-button {
+            background: var(--gray);
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .user-menu-button:hover {
+            background: var(--primary);
+        }
+
+        .user-icon {
+            font-size: 1.2rem;
+        }
+
+        .relative {
+            position: relative;
+        }
+
+        .user-dropdown {
+            position: absolute;
+            right: 0;
+            top: 50px;
+            background: var(--gray);
+            border-radius: 8px;
+            padding: 0.5rem 0;
+            min-width: 200px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            border: 1px solid var(--gray-light);
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.3s;
+            z-index: 100;
+        }
+
+        #userMenuContainer:hover .user-dropdown {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .dropdown-item {
+            display: flex;
+            align-items: center;
+            padding: 0.5rem 1rem;
+            color: var(--light-gray);
+            text-decoration: none;
+            transition: all 0.3s;
+            font-size: 0.9rem;
+        }
+
+        .dropdown-item:hover {
+            background: rgba(87, 51, 239, 0.1);
+            color: white;
+        }
+
+        .dropdown-icon {
+            margin-right: 0.75rem;
+            width: 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .dropdown-divider {
+            height: 1px;
+            background: var(--gray-light);
+            margin: 0.5rem 0;
+        }
+
+        .mobile-menu-button {
+            display: none;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.8rem;
+            cursor: pointer;
+        }
+
+        /* Responsividade */
+        @media (max-width: 1024px) {
+            .mobile-menu-button {
+                display: block;
+            }
+
+            .main-nav {
+                position: fixed;
+                top: 80px;
+                left: 0;
+                width: 100%;
+                background: var(--darker);
+                flex-direction: column;
+                align-items: center;
+                padding: 2rem 0;
+                gap: 2rem;
+                clip-path: circle(0px at 90% -10%);
+                transition: clip-path 0.7s ease-out;
+                pointer-events: none;
+                z-index: 999;
+                margin-left: 0;
+            }
+
+            .main-nav.open {
+                clip-path: circle(1500px at 90% -10%);
+                pointer-events: all;
+            }
+
+            .nav-link {
+                margin-left: 0;
+            }
+
+            .search-input {
+                display: none;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                flex-wrap: wrap;
+                padding: 0.5rem 1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .search-bar {
+                width: 100%;
+                margin-top: 1rem;
+            }
+            
+            .search-input {
+                width: 100%;
+            }
+        }
+
+        /* Main Content (original do avaliacao.css) */
+        body {
+            background: linear-gradient(135deg, var(--darker) 0%, var(--dark) 100%);
+            color: #e1e1e1;
+            min-height: 100vh;
+            padding-top: 80px;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 10% 20%, rgba(87, 51, 239, 0.1) 0%, rgba(15, 15, 19, 0) 40%),
+                        radial-gradient(circle at 90% 80%, rgba(198, 136, 255, 0.1) 0%, rgba(15, 15, 19, 0) 40%);
+            z-index: -1;
+        }
+
+        .game-review {
+            max-width: 1400px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+            display: grid;
+            grid-template-columns: 1fr 300px;
+            gap: 2rem;
+        }
+
+        .review-content {
+            background: rgba(30, 30, 36, 0.7);
+            backdrop-filter: blur(10px);
+            border-radius: 12px;
+            padding: 2rem;
+            border: 1px solid var(--gray-light);
+        }
+
+        .game-header {
+            display: flex;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .game-cover {
+            width: 200px;
+            height: 250px;
+            object-fit: cover;
+            border-radius: 8px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+        }
+
+        .game-info h2 {
+            font-size: 2rem;
+            color: white;
+            margin-bottom: 1rem;
+        }
+
+        .game-meta {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--light-gray);
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .rating {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--yellow);
+            background: rgba(253, 203, 110, 0.1);
+            display: inline-block;
+            padding: 0.5rem 1.5rem;
+            border-radius: 8px;
+        }
+
+        .review-form h3 {
+            font-size: 1.5rem;
+            color: white;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 1px solid var(--gray-light);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: white;
+            font-weight: 500;
+        }
+
+        .rating-stars {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .rating-stars .star {
+            font-size: 1.8rem;
+            color: var(--light-gray);
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .rating-stars .star.active {
+            color: var(--yellow);
+        }
+
+        .rating-stars .star:hover {
+            transform: scale(1.2);
+        }
+
+        .form-group input[type="text"],
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            background: var(--gray);
+            border: 1px solid var(--gray-light);
+            border-radius: 8px;
+            color: white;
+            font-size: 1rem;
+            outline: none;
+            transition: all 0.3s;
+        }
+
+        .form-group textarea {
+            min-height: 150px;
+            resize: vertical;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(87, 51, 239, 0.2);
+        }
+
+        .submit-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 0.8rem 2rem;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: 0.3s;
+            width: 100%;
+        }
+
+        .submit-btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        /* Sidebar */
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .sidebar-card {
+            background: rgba(30, 30, 36, 0.7);
+            backdrop-filter: blur(10px);
+            border-radius: 12px;
+            padding: 1.5rem;
+            border: 1px solid var(--gray-light);
+        }
+
+        .sidebar-card h3 {
+            font-size: 1.25rem;
+            color: white;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid var(--gray-light);
+        }
+
+        .sidebar-card p {
+            margin-bottom: 0.8rem;
+            color: var(--light-gray);
+            line-height: 1.6;
+        }
+
+        .sidebar-card p strong {
+            color: white;
+        }
+
+        .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .tag {
+            background: rgba(87, 51, 239, 0.2);
+            color: var(--accent);
+            padding: 0.4rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+        }
+
+        .similar-games {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .similar-game {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .similar-game img {
+            width: 60px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 4px;
+        }
+
+        .similar-game-info h4 {
+            font-size: 0.95rem;
+            color: white;
+            margin-bottom: 0.2rem;
+        }
+
+        .similar-game-info p {
+            font-size: 0.8rem;
+            color: var(--light-gray);
+            margin-bottom: 0;
+        }
+
+        /* Responsividade */
+        @media (max-width: 1024px) {
+            .game-review {
+                grid-template-columns: 1fr;
+            }
+            
+            .game-header {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+            
+            .game-meta {
+                justify-content: center;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .game-cover {
+                width: 150px;
+                height: 200px;
+            }
+            
+            .game-info h2 {
+                font-size: 1.5rem;
+            }
+            
+            .rating {
+                font-size: 2rem;
+            }
+            
+            .review-content,
+            .sidebar-card {
+                padding: 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="top-bar">
+        <div class="container header-container">
+            <div class="flex items-center">
+                <a href="#" class="logo">
+                    <img src="https://github.com/Thallys-San/ArtemiScore/blob/main/ArtemiScore%20(2).png?raw=true" 
+                         alt="ArtemiScore" 
+                         class="logo-image">
+                </a>
+                <nav class="main-nav">
+                    <a href="#" class="nav-link">Início</a>
+                    <a href="#" class="nav-link">Jogos</a>
+                    <a href="#" class="nav-link">Ranking</a>
+                    <a href="#" class="nav-link">Lançamentos</a>
+                    <a href="#" class="nav-link">Comunidade</a>
+                </nav>
+            </div>
+            <div class="flex items-center gap-4">
+                <div class="search-bar">
+                    <input type="text" placeholder="Buscar jogos..." class="search-input">
+                    <div class="search-icon">
+                        <i class="ri-search-line"></i>
+                    </div>
+                </div>
+                <div class="relative" id="userMenuContainer">
+                    <div class="user-menu-button" id="userMenuButton">
+                        <i class="ri-user-line user-icon"></i>
+                    </div>
+                    <div class="user-dropdown" id="userDropdownMenu">
+                        <a href="#" class="dropdown-item">
+                            <div class="dropdown-icon">
+                                <i class="ri-user-3-line"></i>
+                            </div>
+                            <span>Meu Perfil</span>
+                        </a>
+                        <a href="#" class="dropdown-item">
+                            <div class="dropdown-icon">
+                                <i class="ri-star-line"></i>
+                            </div>
+                            <span>Minhas Avaliações</span>
+                        </a>
+                        <a href="#" class="dropdown-item">
+                            <div class="dropdown-icon">
+                                <i class="ri-heart-line"></i>
+                            </div>
+                            <span>Jogos Favoritos</span>
+                        </a>
+                        <a href="#" class="dropdown-item">
+                            <div class="dropdown-icon">
+                                <i class="ri-settings-3-line"></i>
+                            </div>
+                            <span>Configurações</span>
+                        </a>
+                        <div class="dropdown-divider"></div>
+                        <a href="#" class="dropdown-item">
+                            <div class="dropdown-icon">
+                                <i class="ri-logout-box-line"></i>
+                            </div>
+                            <span>Sair</span>
+                        </a>
+                    </div>
+                </div>
+                <button class="mobile-menu-button" id="mobileMenuButton">
+                    <i class="ri-menu-line"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="game-review">
+        <section class="review-content">
+            <div class="game-header">
+                <img src="https://via.placeholder.com/200x250" alt="Capa do Jogo" class="game-cover">
+                <div class="game-info">
+                    <h2>Elden Ring: Shadow of the Erdtree</h2>
+                    <div class="game-meta">
+                        <span>FromSoftware</span>
+                        <span>•</span>
+                        <span>RPG, Ação</span>
+                        <span>•</span>
+                        <span>PS5, Xbox, PC</span>
+                    </div>
+                    <div class="rating">9.3</div>
+                </div>
+            </div>
+            
+            <div class="review-form">
+                <h3>Sua Avaliação</h3>
+                <form>
+                    <div class="form-group">
+                        <label>Sua nota</label>
+                        <div class="rating-stars">
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="review-title">Título da avaliação</label>
+                        <input type="text" id="review-title" placeholder="Dê um título para sua avaliação">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="review-text">Sua avaliação</label>
+                        <textarea id="review-text" placeholder="Descreva sua experiência com o jogo..."></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="playtime">Tempo jogado</label>
+                        <input type="text" id="playtime" placeholder="Ex: 50 horas">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="platform">Plataforma jogada</label>
+                        <select id="platform">
+                            <option value="">Selecione</option>
+                            <option value="pc">PC</option>
+                            <option value="ps5">PlayStation 5</option>
+                            <option value="xbox">Xbox Series X/S</option>
+                            <option value="switch">Nintendo Switch</option>
+                        </select>
+                    </div>
+                    
+                    <button type="submit" class="submit-btn">Publicar Avaliação</button>
+                </form>
+            </div>
+        </section>
+        
+        <aside class="sidebar">
+            <div class="sidebar-card">
+                <h3>Detalhes do Jogo</h3>
+                <p><strong>Lançamento:</strong> 21/06/2024</p>
+                <p><strong>Desenvolvedor:</strong> FromSoftware</p>
+                <p><strong>Publicador:</strong> Bandai Namco</p>
+                <p><strong>Modos:</strong> Single-player, Multiplayer</p>
+            </div>
+            
+            <div class="sidebar-card">
+                <h3>Tags</h3>
+                <div class="tags">
+                    <span class="tag">RPG</span>
+                    <span class="tag">Ação</span>
+                    <span class="tag">Mundo Aberto</span>
+                    <span class="tag">Soulslike</span>
+                    <span class="tag">Fantasia Sombria</span>
+                </div>
+            </div>
+            
+            <div class="sidebar-card">
+                <h3>Jogos Similares</h3>
+                <div class="similar-games">
+                    <div class="similar-game">
+                        <img src="https://via.placeholder.com/60x80" alt="Dark Souls">
+                        <div class="similar-game-info">
+                            <h4>Dark Souls III</h4>
+                            <p>FromSoftware • 2016</p>
+                        </div>
+                    </div>
+                    <div class="similar-game">
+                        <img src="https://via.placeholder.com/60x80" alt="Sekiro">
+                        <div class="similar-game-info">
+                            <h4>Sekiro: Shadows Die Twice</h4>
+                            <p>FromSoftware • 2019</p>
+                        </div>
+                    </div>
+                    <div class="similar-game">
+                        <img src="https://via.placeholder.com/60x80" alt="Bloodborne">
+                        <div class="similar-game-info">
+                            <h4>Bloodborne</h4>
+                            <p>FromSoftware • 2015</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </aside>
+    </main>
+
+    <script>
+        // Script para as estrelas de avaliação
+        const stars = document.querySelectorAll('.star');
+        
+        stars.forEach((star, index) => {
+            star.addEventListener('click', () => {
+                // Remove a classe 'active' de todas as estrelas
+                stars.forEach(s => s.classList.remove('active'));
+                
+                // Adiciona a classe 'active' até a estrela clicada
+                for(let i = 0; i <= index; i++) {
+                    stars[i].classList.add('active');
+                }
+            });
+        });
+
+        // Menu mobile
+        const mobileMenuButton = document.getElementById('mobileMenuButton');
+        const mainNav = document.querySelector('.main-nav');
+        
+        if (mobileMenuButton && mainNav) {
+            mobileMenuButton.addEventListener('click', function() {
+                mainNav.classList.toggle('open');
+            });
+        }
+
+        // Adiciona classe quando scrollar
+        window.addEventListener('scroll', function() {
+            const header = document.querySelector('header.top-bar');
+            if (window.scrollY > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+
+        // Dropdown do usuário
+        const userMenuContainer = document.getElementById('userMenuContainer');
+        const userDropdownMenu = document.getElementById('userDropdownMenu');
+        
+        // Fechar dropdown ao clicar fora
+        document.addEventListener('click', (event) => {
+            if (!userMenuContainer.contains(event.target)) {
+                userDropdownMenu.style.opacity = '0';
+                userDropdownMenu.style.visibility = 'hidden';
+                userDropdownMenu.style.transform = 'translateY(-10px)';
+            }
+        });
+    </script>
+</body>
+</html>
+>>>>>>> b4e1ade8e278a2882918ea5fbbdc3f3bb2e43e60
