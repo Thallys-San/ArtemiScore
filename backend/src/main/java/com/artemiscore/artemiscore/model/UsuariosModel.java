@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 package com.artemiscore.artemiscore.model;
 
 import java.time.LocalDate;
@@ -47,44 +46,3 @@ public class UsuariosModel {
     @Column
     private String plataformas_utilizadas;
 }
-=======
-package com.artemiscore.artemiscore.model;
-
-
-
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-
-@Entity
-@Table(name="usuarios")
-@Getter
-@Setter
-@NoArgsConstructor
-public class UsuariosModel {
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
-    @Id
-    private Long id;
-
-    @Column(nullable=false)
-    private String nome;
-
-    @Column(nullable=false, unique = true)
-    private String email;
-
-    @Column(nullable=false)
-    private String senha;
-
-    @Column
-    private String descricao;
-
-    @Column
-    private String foto_perfil;
-}
->>>>>>> b4e1ade8e278a2882918ea5fbbdc3f3bb2e43e60
