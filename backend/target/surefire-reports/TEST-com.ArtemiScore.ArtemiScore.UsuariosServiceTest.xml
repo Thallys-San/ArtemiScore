@@ -61,7 +61,6 @@
   <testcase name="deveDeletarPorId" classname="com.ArtemiScore.ArtemiScore.UsuariosServiceTest" time="0.282"/>
   <testcase name="deveListarPorId" classname="com.ArtemiScore.ArtemiScore.UsuariosServiceTest" time="0.009"/>
   <testcase name="deveListarTodos" classname="com.ArtemiScore.ArtemiScore.UsuariosServiceTest" time="0.021">
-<<<<<<< HEAD
     <failure message="expected: &lt;2&gt; but was: &lt;1&gt;" type="org.opentest4j.AssertionFailedError"><![CDATA[org.opentest4j.AssertionFailedError: expected: <2> but was: <1>
 	at org.junit.jupiter.api.AssertionFailureBuilder.build(AssertionFailureBuilder.java:151)
 	at org.junit.jupiter.api.AssertionFailureBuilder.buildAndThrow(AssertionFailureBuilder.java:132)
@@ -82,28 +81,6 @@
 	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
 	at java.base/java.util.ArrayList.forEach(ArrayList.java:1597)
 	at java.base/java.util.ArrayList.forEach(ArrayList.java:1597)
-=======
-    <failure message="expected: &lt;2&gt; but was: &lt;1&gt;" type="org.opentest4j.AssertionFailedError"><![CDATA[org.opentest4j.AssertionFailedError: expected: <2> but was: <1>
-	at org.junit.jupiter.api.AssertionFailureBuilder.build(AssertionFailureBuilder.java:151)
-	at org.junit.jupiter.api.AssertionFailureBuilder.buildAndThrow(AssertionFailureBuilder.java:132)
-	at org.junit.jupiter.api.AssertEquals.failNotEqual(AssertEquals.java:197)
-	at org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:150)
-	at org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:145)
-	at org.junit.jupiter.api.Assertions.assertEquals(Assertions.java:531)
-	at com.ArtemiScore.ArtemiScore.UsuariosServiceTest.deveListarTodos(UsuariosServiceTest.java:44)
-	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
-	at java.base/java.util.ArrayList.forEach(ArrayList.java:1597)
-	at java.base/java.util.ArrayList.forEach(ArrayList.java:1597)
-]]></failure>
-  </testcase>
-  <testcase name="deveSalvarUsuario" classname="com.ArtemiScore.ArtemiScore.UsuariosServiceTest" time="0.013">
-    <error message="Cannot invoke &quot;org.springframework.security.crypto.password.PasswordEncoder.encode(java.lang.CharSequence)&quot; because &quot;this.passwordEncoder&quot; is null" type="java.lang.NullPointerException"><![CDATA[java.lang.NullPointerException: Cannot invoke "org.springframework.security.crypto.password.PasswordEncoder.encode(java.lang.CharSequence)" because "this.passwordEncoder" is null
-	at com.artemiscore.artemiscore.service.UsuariosService.salvar(UsuariosService.java:37)
-	at com.ArtemiScore.ArtemiScore.UsuariosServiceTest.deveSalvarUsuario(UsuariosServiceTest.java:67)
-	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
-	at java.base/java.util.ArrayList.forEach(ArrayList.java:1597)
-	at java.base/java.util.ArrayList.forEach(ArrayList.java:1597)
->>>>>>> b4e1ade8e278a2882918ea5fbbdc3f3bb2e43e60
 ]]></error>
   </testcase>
 </testsuite>
