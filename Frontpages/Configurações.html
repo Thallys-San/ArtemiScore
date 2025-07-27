@@ -4,14 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Configurações - ArtemiScore</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css">
     <style>
-        /* All your existing CSS goes here. Copy everything from your provided <style> block. */
         * {
             margin: 0;
             padding: 0;
@@ -31,6 +26,15 @@
             --yellow: #fdcb6e;
             --green: #00cc96;
             --red: #ff6b6b;
+            --white: #ffffff;
+            --lighter: #e1e1e1;
+            --dark-gray: #1e1e24;
+            --medium-gray: #2a2a35;
+            --gradient-primary: linear-gradient(45deg, var(--primary), var(--accent));
+            --transition: all 0.3s ease;
+            --transition-slow: all 0.5s ease;
+            --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.3);
+            --glow: 0 0 15px rgba(135, 90, 255, 0.5);
         }
 
         body {
@@ -50,576 +54,249 @@
             width: 100%;
             height: 100%;
             background: radial-gradient(circle at 10% 20%, rgba(87, 51, 239, 0.1) 0%, rgba(15, 15, 19, 0) 40%),
-                                radial-gradient(circle at 90% 80%, rgba(198, 136, 255, 0.1) 0%, rgba(15, 15, 19, 0) 40%);
+                        radial-gradient(circle at 90% 80%, rgba(198, 136, 255, 0.1) 0%, rgba(15, 15, 19, 0) 40%);
             z-index: -1;
         }
 
-        /* Header */
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 0 2rem;
+        /* Header Styles */
+        header {
+            background: rgba(15, 15, 19, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            padding: 1rem 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            border-bottom: 1px solid rgba(87, 51, 239, 0.3);
+            transition: var(--transition-slow);
         }
-        
+
+        /* Efeito quando o header é rolado */
+        header.scrolled {
+            padding: 0.75rem 0;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Container principal do header */
         .header-container {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            width: 100%;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
         }
-        
-        header {
-            position: fixed;
-            top: 0; 
-            left: 0;
-            width: 100%;
-            background: rgba(15,15,19,0.95);
-            backdrop-filter: blur(8px);
-            padding: 1rem 0;
-            z-index: 1000;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-            border-bottom: 1px solid var(--primary);
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 0;
         }
-        
-        .font-pacifico {
-            font-family: 'Pacifico', cursive;
-        }
-        
+
+        /* Logo - Estilo especial com gradiente */
         .logo {
+            font-family: 'Montserrat', sans-serif;
             font-size: 1.8rem;
+            color: var(--white);
+            text-decoration: none;
             font-weight: 700;
-            background: linear-gradient(45deg, var(--primary), var(--accent));
+            background: var(--gradient-primary);
             -webkit-background-clip: text;
+            background-clip: text;
             color: transparent;
+            position: relative;
+            transition: var(--transition);
+            transform: rotate(0deg);
+            transform-origin: left center;
+            white-space: nowrap;
             display: flex;
             align-items: center;
-            gap: 8px;
+            padding-right: 0;
         }
-        
-        .flex {
+
+        .logo:hover {
+            transform: scale(1.05) rotate(0deg);
+            text-shadow: var(--glow);
+        }
+
+        /* Grupo de elementos à direita (busca, usuário) */
+        .header-right {
             display: flex;
-        }
-        
-        .items-center {
             align-items: center;
+            gap: 1.5rem;
         }
-        
-        .gap-4 {
-            gap: 1rem;
-        }
-        
+
+        /* Navegação principal */
         .main-nav {
             display: flex;
-            margin-left: 2rem;
+            margin-left: 40px;
         }
-        
+
+        /* Links de navegação */
         .nav-link {
-            margin-left: 1.5rem;
-            font-weight: 500;
-            color: var(--light-gray);
-            transition: 0.3s;
-            position: relative;
+            color: var(--lighter);
             text-decoration: none;
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: var(--transition);
+            position: relative;
+            padding: 0.5rem 0;
+            margin: 0 15px;
         }
-        
-        .nav-link:hover, .nav-link.active {
-            color: white;
+
+        .nav-link:hover,
+        .nav-link.active {
+            color: var(--white);
         }
-        
+
+        /* Efeito de sublinhado animado */
         .nav-link::after {
             content: '';
             position: absolute;
+            bottom: 0;
+            left: 0;
             width: 0;
             height: 2px;
-            bottom: -4px;
-            left: 0;
-            background-color: var(--primary);
+            background: var(--primary);
             transition: width 0.3s;
         }
-        
-        .nav-link:hover::after, .nav-link.active::after {
+
+        .nav-link:hover::after,
+        .nav-link.active::after {
             width: 100%;
         }
-        
+
+        /* Barra de busca */
         .search-bar {
             position: relative;
-            display: flex;
-            align-items: center;
-        }
-        
-        .search-input {
-            background: var(--gray);
-            border: 1px solid #2a2a35;
-            border-radius: 20px;
-            padding: 0.5rem 1rem 0.5rem 2.5rem;
-            color: white;
-            outline: none;
-            transition: all 0.3s;
-            width: 200px;
-        }
-        
-        .search-input:focus {
-            border-color: var(--primary);
             width: 250px;
         }
-        
-        .search-icon {
-            position: absolute;
-            left: 12px;
+
+        .search-input {
+            width: 100%;
+            padding: 0.6rem 1rem 0.6rem 2.5rem;
+            border-radius: 50px;
+            border: none;
+            background-color: var(--dark-gray);
+            color: var(--white);
+            font-size: 0.9rem;
+            transition: var(--transition);
+        }
+
+        .search-input::placeholder {
             color: var(--light-gray);
         }
-        
+
+        .search-input:focus {
+            outline: none;
+            box-shadow: 0 0 0 2px var(--primary);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--light-gray);
+            font-size: 1rem;
+        }
+
+        /* Menu do usuário (dropdown) */
+        #userMenuContainer {
+            position: relative;
+        }
+
         .user-menu-button {
-            background: var(--gray);
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
+            background: var(--dark-gray);
+            border: none;
+            cursor: pointer;
+            color: var(--white);
+            font-size: 1.2rem;
             display: flex;
             align-items: center;
             justify-content: center;
-            cursor: pointer;
-            transition: all 0.3s;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            transition: var(--transition);
         }
-        
+
         .user-menu-button:hover {
-            background: var(--primary);
+            background: var(--medium-gray);
+            transform: scale(1.05);
         }
-        
-        .user-icon {
-            font-size: 1.2rem;
-        }
-        
-        .relative {
-            position: relative;
-        }
-        
+
         .user-dropdown {
             position: absolute;
             right: 0;
             top: 50px;
-            background: var(--gray);
-            border-radius: 8px;
+            background-color: var(--dark-gray);
+            border-radius: 12px;
+            box-shadow: var(--shadow-lg);
+            width: 240px;
             padding: 0.5rem 0;
-            min-width: 200px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-            border: 1px solid #2a2a35;
             opacity: 0;
             visibility: hidden;
-            transform: translateY(-10px);
-            transition: all 0.3s;
+            transition: opacity 0.3s ease, visibility 0.3s ease, top 0.3s ease;
             z-index: 100;
+            border: 1px solid var(--medium-gray);
+            backdrop-filter: blur(10px);
         }
-        
-        #userMenuContainer:hover .user-dropdown {
+
+        /* Mostrar dropdown quando hover ou com classe JS */
+        #userMenuContainer:hover .user-dropdown,
+        .user-dropdown.show-dropdown {
             opacity: 1;
             visibility: visible;
-            transform: translateY(0);
+            top: 45px;
         }
-        
+
+        /* Itens do dropdown */
         .dropdown-item {
             display: flex;
             align-items: center;
-            padding: 0.5rem 1rem;
-            color: var(--light-gray);
-            transition: all 0.3s;
+            padding: 0.75rem 1.5rem;
+            color: var(--lighter);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: var(--transition);
         }
-        
+
         .dropdown-item:hover {
-            background: rgba(87, 51, 239, 0.1);
-            color: white;
+            background-color: var(--medium-gray);
+            color: var(--white);
+            padding-left: 1.75rem;
         }
-        
+
         .dropdown-icon {
-            margin-right: 0.75rem;
+            margin-right: 1rem;
+            color: var(--light-gray);
+            font-size: 1.1rem;
             width: 20px;
-            display: flex;
-            justify-content: center;
+            text-align: center;
         }
-        
+
         .dropdown-divider {
             height: 1px;
-            background: #2a2a35;
+            background-color: var(--medium-gray);
             margin: 0.5rem 0;
         }
 
-        /* Profile Page */
-        .profile-container {
-            max-width: 1400px;
-            margin: 2rem auto;
-            padding: 0 1rem;
-            display: grid;
-            grid-template-columns: 280px 1fr;
-            gap: 1.5rem;
-        }
-
-        .profile-sidebar {
-            background: rgba(30, 30, 36, 0.7);
-            backdrop-filter: blur(10px);
-            border-radius: 12px;
-            padding: 1.5rem;
-            border: 1px solid var(--gray-light);
-            height: fit-content;
-        }
-
-        .profile-header {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-align: center;
-            margin-bottom: 1.5rem;
-        }
-
-        .profile-avatar {
-            width: 120px;
-            height: 120px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 4px solid var(--primary);
-            margin-bottom: 1rem;
-        }
-
-        .profile-name {
-            font-size: 1.5rem;
-            font-weight: 600;
-            color: white;
-            margin-bottom: 0.25rem;
-        }
-
-        .profile-username {
-            color: var(--accent);
-            font-size: 0.9rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .profile-bio {
-            color: var(--light-gray);
-            font-size: 0.9rem;
-            line-height: 1.5;
-            margin-bottom: 1rem;
-        }
-
-        .profile-stats {
-            display: flex;
-            justify-content: center;
-            gap: 1.5rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .stat-item {
-            text-align: center;
-        }
-
-        .stat-number {
-            font-size: 1.2rem;
-            font-weight: 600;
-            color: white;
-        }
-
-        .stat-label {
-            font-size: 0.8rem;
-            color: var(--light-gray);
-        }
-
-        .profile-actions {
-            display: flex;
-            flex-direction: column;
-            gap: 0.75rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .profile-btn {
-            background: var(--primary);
-            color: white;
+        /* Menu mobile - escondido por padrão */
+        .mobile-menu-button {
+            display: none;
+            background: none;
             border: none;
-            padding: 0.6rem;
-            border-radius: 6px;
+            color: var(--white);
+            font-size: 1.8rem;
             cursor: pointer;
-            font-weight: 500;
-            transition: 0.3s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.5rem;
+            transition: var(--transition);
         }
 
-        .profile-btn:hover {
-            background: var(--primary-dark);
-        }
-
-        .profile-btn.secondary {
-            background: var(--gray-light);
-        }
-
-        .profile-btn.secondary:hover {
-            background: var(--gray);
-        }
-
-        .profile-details {
-            margin-top: 1.5rem;
-        }
-
-        .detail-item {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            margin-bottom: 1rem;
-            color: var(--light-gray);
-            font-size: 0.9rem;
-        }
-
-        .detail-item i {
-            color: var(--accent);
-            width: 20px;
-            text-align: center;
-        }
-
-        .profile-content {
-            display: flex;
-            flex-direction: column;
-            gap: 1.5rem;
-        }
-
-        .profile-section {
-            background: rgba(30, 30, 36, 0.7);
-            backdrop-filter: blur(10px);
-            border-radius: 12px;
-            padding: 1.5rem;
-            border: 1px solid var(--gray-light);
-        }
-
-        .section-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1.5rem;
-        }
-
-        .section-title {
-            font-size: 1.25rem;
-            color: white;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .section-title i {
-            color: var(--accent);
-        }
-
-        .section-tabs {
-            display: flex;
-            border-bottom: 1px solid var(--gray-light);
-            margin-bottom: 1.5rem;
-        }
-
-        .tab {
-            padding: 0.5rem 1rem;
-            cursor: pointer;
-            color: var(--light-gray);
-            font-weight: 500;
-            position: relative;
-        }
-
-        .tab.active {
-            color: var(--accent);
-        }
-
-        .tab.active::after {
-            content: '';
-            position: absolute;
-            bottom: -1px;
-            left: 0;
-            width: 100%;
-            height: 2px;
-            background: var(--accent);
-        }
-
-        .games-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-            gap: 1rem;
-        }
-
-        .game-card {
-            background: var(--gray-light);
-            border-radius: 8px;
-            overflow: hidden;
-            transition: 0.3s;
-        }
-
-        .game-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 16px rgba(0,0,0,0.3);
-        }
-
-        .game-cover {
-            width: 100%;
-            height: 180px;
-            object-fit: cover;
-        }
-
-        .game-info {
-            padding: 0.75rem;
-        }
-
-        .game-title {
-            font-size: 0.9rem;
-            font-weight: 600;
-            color: white;
-            margin-bottom: 0.25rem;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        .game-rating {
-            display: flex;
-            align-items: center;
-            gap: 0.25rem;
-            font-size: 0.8rem;
-            color: var(--yellow);
-        }
-
-        .posts-container {
-            display: flex;
-            flex-direction: column;
-            gap: 1.5rem;
-        }
-
-        .post {
-            background: rgba(30, 30, 36, 0.7);
-            backdrop-filter: blur(10px);
-            border-radius: 12px;
-            padding: 1.5rem;
-            border: 1px solid var(--gray-light);
-            transition: 0.3s;
-        }
-
-        .post:hover {
-            border-color: var(--primary);
-        }
-
-        .post-header {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 1rem;
-        }
-
-        .post-author {
-            display: flex;
-            align-items: center;
-            gap: 0.8rem;
-        }
-
-        .post-author-avatar {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            object-fit: cover;
-        }
-
-        .author-info {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .author-name {
-            font-weight: 600;
-            color: white;
-        }
-
-        .post-time {
-            font-size: 0.8rem;
-            color: var(--light-gray);
-        }
-
-        .post-category {
-            background: rgba(87, 51, 239, 0.2);
-            color: var(--accent);
-            padding: 0.3rem 0.8rem;
-            border-radius: 30px;
-            font-size: 0.8rem;
-        }
-
-        .post-content {
-            margin-bottom: 1.5rem;
-        }
-
-        .post-content h3 {
-            color: white;
-            margin-bottom: 0.8rem;
-        }
-
-        .post-content p {
-            line-height: 1.6;
-            color: #ccc;
-        }
-
-        .post-image {
-            width: 100%;
-            border-radius: 8px;
-            margin: 1rem 0;
-            max-height: 400px;
-            object-fit: cover;
-        }
-
-        .post-stats {
-            display: flex;
-            justify-content: space-between;
-            color: var(--light-gray);
-            font-size: 0.9rem;
-            padding: 0.8rem 0;
-            border-top: 1px solid var(--gray-light);
-            border-bottom: 1px solid var(--gray-light);
-            margin-bottom: 1rem;
-        }
-
-        .post-actions {
-            display: flex;
-            gap: 1rem;
-        }
-
-        .post-action {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            background: transparent;
-            border: none;
-            color: var(--light-gray);
-            cursor: pointer;
-            padding: 0.5rem 1rem;
-            border-radius: 30px;
-            transition: 0.3s;
-        }
-
-        .post-action:hover {
-            background: rgba(255,255,255,0.1);
-            color: white;
-        }
-
-        .post-action.active {
-            color: var(--accent);
-        }
-
-        .badges-container {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.75rem;
-            margin-top: 1rem;
-        }
-
-        .badge {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            background: rgba(198, 136, 255, 0.1);
-            padding: 0.5rem 0.8rem;
-            border-radius: 30px;
-            font-size: 0.85rem;
-        }
-
-        .badge i {
-            color: var(--yellow);
+        .mobile-menu-button:hover {
+            color: var(--primary);
         }
 
         /* Settings Page Specific Styles */
@@ -636,6 +313,12 @@
             padding: 2rem;
             border: 1px solid var(--gray-light);
             margin-bottom: 1.5rem;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .settings-section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
         }
 
         .settings-section h2 {
@@ -696,13 +379,23 @@
             display: flex;
             align-items: center;
             margin-bottom: 1rem;
+            transition: all 0.2s;
+        }
+
+        .checkbox-group:hover {
+            transform: translateX(5px);
         }
 
         .checkbox-group input[type="checkbox"] {
             margin-right: 0.75rem;
             width: 18px;
             height: 18px;
-            accent-color: var(--primary); /* Styles the checkbox */
+            accent-color: var(--primary);
+            cursor: pointer;
+        }
+
+        .checkbox-group label {
+            cursor: pointer;
         }
 
         .button-group {
@@ -712,10 +405,43 @@
             justify-content: flex-end;
         }
 
-        .button-group .profile-btn {
+        .profile-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
             padding: 0.8rem 1.5rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
             font-size: 1rem;
             min-width: 120px;
+        }
+
+        .profile-btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(87, 51, 239, 0.4);
+        }
+
+        .profile-btn.secondary {
+            background: var(--gray-light);
+        }
+
+        .profile-btn.secondary:hover {
+            background: var(--gray);
+        }
+
+        .profile-btn.red {
+            background: var(--red);
+        }
+
+        .profile-btn.red:hover {
+            background: #e55a5a;
         }
 
         /* Profile image upload specific */
@@ -732,10 +458,16 @@
             border-radius: 50%;
             object-fit: cover;
             border: 3px solid var(--primary);
+            transition: transform 0.3s, border-color 0.3s;
+        }
+
+        .profile-image-upload img:hover {
+            transform: scale(1.05);
+            border-color: var(--accent);
         }
 
         .profile-image-upload input[type="file"] {
-            display: none; /* Hide default input */
+            display: none;
         }
 
         .custom-file-upload {
@@ -744,7 +476,7 @@
             padding: 0.6rem 1.2rem;
             border-radius: 6px;
             cursor: pointer;
-            transition: 0.3s;
+            transition: all 0.3s;
             font-size: 0.9rem;
             display: inline-flex;
             align-items: center;
@@ -753,6 +485,7 @@
 
         .custom-file-upload:hover {
             background: var(--gray);
+            transform: translateY(-2px);
         }
 
         /* Footer */
@@ -809,6 +542,7 @@
 
         .footer-links a:hover {
             color: var(--accent);
+            transform: translateX(5px);
         }
 
         .social-links {
@@ -826,7 +560,7 @@
             background: var(--gray);
             border-radius: 50%;
             color: white;
-            transition: 0.3s;
+            transition: all 0.3s;
             text-decoration: none;
         }
 
@@ -845,137 +579,195 @@
         }
 
         /* Responsividade */
-        @media (max-width: 900px) {
-            .profile-container {
-                grid-template-columns: 1fr;
+        @media (max-width: 1024px) {
+            .mobile-menu-button {
+                display: block;
             }
+
             .main-nav {
-                display: none;
+                position: fixed;
+                top: 80px;
+                left: 0;
+                width: 100%;
+                background: var(--darker);
+                flex-direction: column;
+                align-items: center;
+                padding: 2rem 0;
+                gap: 2rem;
+                clip-path: circle(0px at 90% -10%);
+                transition: clip-path 0.7s ease-out;
+                pointer-events: none;
+                z-index: 999;
+                margin-left: 0;
             }
-            .search-input {
-                display: none;
-            }
-            .search-icon {
-                position: static;
-                margin-left: 0.5rem;
+
+            .main-nav.open {
+                clip-path: circle(1500px at 90% -10%);
+                pointer-events: all;
             }
         }
 
-        @media (max-width: 600px) {
-            .profile-stats {
+        @media (max-width: 768px) {
+            .search-bar {
+                width: 180px;
+            }
+
+            .header-container {
+                flex-wrap: wrap;
+                padding: 0.5rem 1rem;
+            }
+
+            .logo {
+                margin-right: auto;
+            }
+
+            .header-right {
+                order: 3;
+                width: 100%;
+                justify-content: center;
+                margin-top: 0.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .search-bar {
+                width: 100%;
+            }
+
+            .header-right {
                 flex-direction: column;
                 gap: 0.5rem;
             }
-            .section-header {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 1rem;
+            
+            .settings-section {
+                padding: 1.5rem;
             }
-            .logo {
-                font-size: 1.5rem;
-            }
-            .games-grid {
-                grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-            }
+            
             .button-group {
                 flex-direction: column;
-                align-items: stretch;
             }
+            
             .button-group .profile-btn {
                 width: 100%;
             }
         }
         
-        /* Novo estilo para a imagem do logo */
+        /* Logo image */
         .logo-image {
             height: 40px;
             width: auto;
             display: block;
+            transition: transform 0.3s;
+        }
+        
+        .logo-image:hover {
+            transform: scale(1.05);
+        }
+
+        .artemiscore-title {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 800;
+            font-size: 1.5rem;
+            letter-spacing: 1px;
+            background: linear-gradient(45deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            padding-right: 10px;
         }
     </style>
 </head>
 <body>
     <header>
-  <div class="container header-container">
-    <div class="flex items-center">
-      <a href="#" class="logo">
-        <img src="https://github.com/Thallys-San/ArtemiScore/blob/main/ArtemiScore%20(2).png?raw=true" 
-             alt="ArtemiScore" 
-             class="logo-image">
-      </a>
-      <nav class="main-nav">
-        <a href="/" class="nav-link active">Início</a>
-        <a href="Jogos.html" class="nav-link">Jogos</a>
-        <a href="rank.html" class="nav-link">Ranking</a>
-        <a href="Lançamentos.html" class="nav-link">Lançamentos</a>
-      </nav>
-    </div>
-    <div class="flex items-center gap-4">
-      <div class="search-bar">
-        <input type="text" placeholder="Buscar jogos..." class="search-input">
-        <div class="search-icon">
-          <i class="ri-search-line"></i>
+        <div class="header-container">
+            <div class="header-left">
+                <a href="#" class="logo">
+                    <img src="https://github.com/Thallys-San/ArtemiScore/blob/main/ArtemiScore%20(2).png?raw=true" 
+                         alt="ArtemiScore" 
+                         class="logo-image">
+                    <span class="artemiscore-title"></span>
+                </a>
+                
+                <nav class="main-nav">
+                    <a href="/" class="nav-link">Início</a>
+                    <a href="Jogos.html" class="nav-link">Jogos</a>
+                    <a href="rank.html" class="nav-link">Ranking</a>
+                    <a href="Lançamentos.html" class="nav-link active">Lançamentos</a>
+                </nav>
+            </div>
+            
+            <div class="header-right">
+                <div class="search-bar">
+                    <input type="text" placeholder="Buscar jogos..." class="search-input">
+                    <div class="search-icon">
+                        <i class="ri-search-line"></i>
+                    </div>
+                </div>
+                
+                <div id="userMenuContainer">
+                    <div class="user-menu-button">
+                        <i class="ri-user-line"></i>
+                    </div>
+                    <div class="user-dropdown">
+                        <a href="#" class="dropdown-item">
+                            <div class="dropdown-icon">
+                                <i class="ri-user-3-line"></i>
+                            </div>
+                            <span>Meu Perfil</span>
+                        </a>
+                        <a href="#" class="dropdown-item">
+                            <div class="dropdown-icon">
+                                <i class="ri-star-line"></i>
+                            </div>
+                            <span>Minhas Avaliações</span>
+                        </a>
+                        <a href="#" class="dropdown-item">
+                            <div class="dropdown-icon">
+                                <i class="ri-heart-line"></i>
+                            </div>
+                            <span>Jogos Favoritos</span>
+                        </a>
+                        <a href="#" class="dropdown-item">
+                            <div class="dropdown-icon">
+                                <i class="ri-settings-3-line"></i>
+                            </div>
+                            <span>Configurações</span>
+                        </a>
+                        <div class="dropdown-divider"></div>
+                        <a href="#" class="dropdown-item">
+                            <div class="dropdown-icon">
+                                <i class="ri-logout-box-line"></i>
+                            </div>
+                            <span>Sair</span>
+                        </a>
+                    </div>
+                </div>
+                
+                <button class="mobile-menu-button">
+                    <i class="ri-menu-line"></i>
+                </button>
+            </div>
         </div>
-      </div>
-      <div class="relative" id="userMenuContainer">
-        <div class="user-menu-button" id="userMenuButton">
-          <i class="ri-user-line user-icon"></i>
-        </div>
-        <div class="user-dropdown" id="userDropdownMenu">
-          <a href="#" class="dropdown-item">
-            <div class="dropdown-icon">
-              <i class="ri-user-3-line"></i>
-            </div>
-            <span>Meu Perfil</span>
-          </a>
-          <a href="#" class="dropdown-item">
-            <div class="dropdown-icon">
-              <i class="ri-star-line"></i>
-            </div>
-            <span>Minhas Avaliações</span>
-          </a>
-          <a href="#" class="dropdown-item">
-            <div class="dropdown-icon">
-              <i class="ri-heart-line"></i>
-            </div>
-            <span>Jogos Favoritos</span>
-          </a>
-          <a href="#" class="dropdown-item">
-            <div class="dropdown-icon">
-              <i class="ri-settings-3-line"></i>
-            </div>
-            <span>Configurações</span>
-          </a>
-          <div class="dropdown-divider"></div>
-          <a href="#" class="dropdown-item">
-            <div class="dropdown-icon">
-              <i class="ri-logout-box-line"></i>
-            </div>
-            <span>Sair</span>
-          </a>
-        </div>
-      </div>
-    </div>
-  </div>
-</header>
+    </header>
+    
     <main class="settings-container">
         <div class="settings-section">
             <h2><i class="ri-user-settings-line"></i> Configurações da Conta</h2>
             <form>
                 <div class="form-group">
                     <label for="username">Nome de Usuário</label>
-                    <input type="text" id="username" value="" placeholder="Seu nome de usuário">
+                    <input type="text" id="username" placeholder="Seu nome de usuário">
                 </div>
                 <div class="form-group">
                     <label for="email">Email</label>
-                    <input type="email" id="email" value="" placeholder="Seu email">
+                    <input type="email" id="email" placeholder="Seu email">
                 </div>
                 <div class="form-group">
                     <label for="bio">Bio</label>
                     <textarea id="bio" placeholder="Fale um pouco sobre você..."></textarea>
                 </div>
                 <div class="profile-image-upload">
-                    <img id="profileImagePreview" src="" alt="Avatar do Usuário">
+                    <img id="profileImagePreview" src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png" alt="Avatar do Usuário">
                     <div>
                         <label for="profileImage" class="custom-file-upload">
                             <i class="ri-upload-cloud-line"></i> Alterar Imagem de Perfil
@@ -1026,6 +818,10 @@
                     <input type="checkbox" id="forumActivity">
                     <label for="forumActivity">Notificações de atividade no fórum</label>
                 </div>
+                <div class="checkbox-group">
+                    <input type="checkbox" id="gameRecommendations" checked>
+                    <label for="gameRecommendations">Recomendações de jogos personalizadas</label>
+                </div>
                 <div class="button-group">
                     <button type="submit" class="profile-btn">Salvar Preferências</button>
                 </div>
@@ -1039,7 +835,7 @@
                     Aqui você pode gerenciar sua conta, incluindo a opção de desativá-la.
                 </p>
                 <div class="button-group">
-                    <button type="button" class="profile-btn" style="background: var(--red);">
+                    <button type="button" class="profile-btn red">
                         <i class="ri-close-circle-line"></i> Desativar Conta
                     </button>
                 </div>
@@ -1052,8 +848,9 @@
             <div class="footer-column">
                 <a href="#" class="logo" style="margin-bottom: 1rem; display: inline-block;">
                     <img src="https://github.com/Thallys-San/ArtemiScore/blob/main/ArtemiScore%20(2).png?raw=true" 
-                             alt="ArtemiScore" 
-                             class="logo-image">
+                         alt="ArtemiScore" 
+                         class="logo-image">
+                    <span class="artemiscore-title" style="font-size: 1.2rem;"></span>
                 </a>
                 <p style="color: var(--light-gray); font-size: 0.9rem;">Sua plataforma completa para o mundo dos jogos. Descubra, avalie e conecte-se.</p>
                 <div class="social-links">
@@ -1088,7 +885,7 @@
                 <ul class="footer-links">
                     <li><a href="#"><i class="ri-map-pin-line"></i> Rua Exemplo, 123, Cidade, País</a></li>
                     <li><a href="mailto:contato@artemiscore.com"><i class="ri-mail-line"></i> contato@artemiscore.com</a></li>
-                    <li><a href="tel:+5511987654321"></a></li>
+                    <li><a href="tel:+5511987654321"><i class="ri-phone-line"></i> +55 11 98765-4321</a></li>
                 </ul>
             </div>
         </div>
@@ -1098,20 +895,22 @@
     </footer>
 
     <script>
-        // JavaScript para o dropdown do menu do usuário (se necessário, mova para um arquivo JS externo também)
-        const userMenuButton = document.getElementById('userMenuButton');
-        const userDropdownMenu = document.getElementById('userDropdownMenu');
-        const userMenuContainer = document.getElementById('userMenuContainer'); // Certifique-se de que esta linha exista
-
-        userMenuButton.addEventListener('click', () => {
-            userDropdownMenu.classList.toggle('active'); // Você pode adicionar uma classe 'active' para controlar a visibilidade
+        // Header scroll effect
+        window.addEventListener('scroll', () => {
+            const header = document.querySelector('header');
+            if (window.scrollY > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
         });
 
-        // Fechar o dropdown se clicar fora dele
-        document.addEventListener('click', (event) => {
-            if (!userMenuContainer.contains(event.target)) {
-                userDropdownMenu.classList.remove('active');
-            }
+        // Mobile menu toggle
+        const mobileMenuButton = document.querySelector('.mobile-menu-button');
+        const mainNav = document.querySelector('.main-nav');
+        
+        mobileMenuButton.addEventListener('click', () => {
+            mainNav.classList.toggle('open');
         });
 
         // Preview da imagem de perfil
@@ -1129,17 +928,26 @@
             }
         });
 
-        // Adicione o script para garantir que o menu dropdown funciona com hover ou click
-        userMenuContainer.addEventListener('mouseenter', () => {
-            userDropdownMenu.style.opacity = '1';
-            userDropdownMenu.style.visibility = 'visible';
-            userDropdownMenu.style.transform = 'translateY(0)';
+        // Adicionar efeito hover nos elementos do menu dropdown
+        const dropdownItems = document.querySelectorAll('.dropdown-item');
+        dropdownItems.forEach(item => {
+            item.addEventListener('mouseenter', () => {
+                item.style.transform = 'translateX(5px)';
+            });
+            item.addEventListener('mouseleave', () => {
+                item.style.transform = 'translateX(0)';
+            });
         });
 
-        userMenuContainer.addEventListener('mouseleave', () => {
-            userDropdownMenu.style.opacity = '0';
-            userDropdownMenu.style.visibility = 'hidden';
-            userDropdownMenu.style.transform = 'translateY(-10px)';
+        // Adicionar efeito hover nos botões
+        const buttons = document.querySelectorAll('.profile-btn');
+        buttons.forEach(button => {
+            button.addEventListener('mouseenter', () => {
+                button.style.transform = 'translateY(-3px)';
+            });
+            button.addEventListener('mouseleave', () => {
+                button.style.transform = 'translateY(0)';
+            });
         });
     </script>
 </body>
