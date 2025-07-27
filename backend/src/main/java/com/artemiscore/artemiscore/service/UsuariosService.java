@@ -2,6 +2,7 @@ package com.artemiscore.artemiscore.service;
 
 
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -32,6 +33,9 @@ public class UsuariosService {
     public UsuariosModel salvar(UsuariosModel usuariosModel){
         String senha=usuariosModel.getSenha();
 
+        if (usuariosModel.getData_criacao() == null) {
+        usuariosModel.setData_criacao(LocalDate.now());
+    }
         if (senha!= null && !senha.matches("^\\$2[abyx]\\$.{56}$")) {
          // Hasheia a senha antes de salvar
         String criptografia=passwordEncoder.encode(usuariosModel.getSenha());

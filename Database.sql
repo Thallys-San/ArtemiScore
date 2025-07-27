@@ -6,8 +6,8 @@ CREATE TABLE IF NOT EXISTS usuarios (
    nome VARCHAR(255) NOT NULL,
    email VARCHAR(255) UNIQUE NOT NULL,
    senha VARCHAR(255) NOT NULL,
-   descricao VARCHAR(300),
-   foto_perfil VARCHAR(600),
+   bio VARCHAR(300),
+   foto_perfil LONGTEXT,
    data_criacao DATETIME DEFAULT CURRENT_TIMESTAMP,
    preferencias_jogos VARCHAR(800),
    plataformas_utilizadas VARCHAR(800)

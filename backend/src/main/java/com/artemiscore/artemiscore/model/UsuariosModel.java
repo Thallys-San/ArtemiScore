@@ -1,8 +1,10 @@
 package com.artemiscore.artemiscore.model;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -34,15 +36,15 @@ public class UsuariosModel {
     @Column
     private String bio;
 
-    @Column
+    @Column(columnDefinition = "LONGTEXT")
     private String foto_perfil;
 
     @Column(nullable=false)
     private LocalDate data_criacao;
 
-    @Column
-    private String preferencias_jogos;
+    @ElementCollection
+    private List<String> preferencias_jogos;
 
-    @Column
-    private String plataformas_utilizadas;
+    @ElementCollection
+    private List<String> plataformas_utilizadas;
 }

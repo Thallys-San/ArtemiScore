@@ -409,3 +409,143 @@ textarea:disabled {
     background-position: center;
     background-repeat: no-repeat;
 }
+/* Estilização aprimorada para selects múltiplos */
+select[multiple] {
+  width: 100%;
+  min-height: 120px;
+  max-height: 180px;
+  background-color: var(--gray);
+  color: var(--light-gray);
+  border: 1px solid var(--gray-light);
+  border-radius: 8px;
+  padding: 12px;
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.95rem;
+  transition: all 0.3s ease;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  margin-top: 8px;
+}
+
+select[multiple]:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(87, 51, 239, 0.3),
+              inset 0 1px 3px rgba(0, 0, 0, 0.2);
+  background-color: var(--gray-light);
+}
+
+select[multiple]:hover {
+  border-color: var(--primary);
+}
+
+select[multiple] option {
+  padding: 10px 12px;
+  margin: 4px 0;
+  background-color: var(--gray);
+  color: white;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+select[multiple] option:hover {
+  background-color: var(--primary-dark);
+  transform: translateX(2px);
+}
+
+select[multiple] option:checked {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+  color: white;
+  font-weight: 500;
+  position: relative;
+}
+
+select[multiple] option:checked::after {
+  content: "✓";
+  position: absolute;
+  right: 12px;
+  font-weight: bold;
+}
+
+/* Custom scrollbar */
+select[multiple]::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+select[multiple]::-webkit-scrollbar-track {
+  background: var(--gray-light);
+  border-radius: 10px;
+}
+
+select[multiple]::-webkit-scrollbar-thumb {
+  background: var(--primary);
+  border-radius: 10px;
+  border: 2px solid var(--gray-light);
+}
+
+select[multiple]::-webkit-scrollbar-thumb:hover {
+  background: var(--primary-dark);
+}
+
+/* Estilo quando atinge o limite de seleção */
+select[multiple].limit-reached {
+  border-color: var(--red);
+  animation: shake 0.5s ease;
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  20%, 60% { transform: translateX(-3px); }
+  40%, 80% { transform: translateX(3px); }
+}
+
+/* Tooltip para itens selecionados */
+.select-selected-count {
+  display: inline-block;
+  margin-left: 8px;
+  font-size: 0.8em;
+  color: var(--accent);
+  background: rgba(198, 136, 255, 0.1);
+  padding: 2px 8px;
+  border-radius: 12px;
+}
+
+/* Estilização melhorada para selects múltiplos */
+select[multiple] option {
+    padding: 8px 12px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+select[multiple] option:hover {
+    background-color: rgba(87, 51, 239, 0.1);
+}
+
+select[multiple] option:checked {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+    color: white;
+    position: relative;
+}
+
+select[multiple] option:checked::after {
+    content: "✓";
+    position: absolute;
+    right: 10px;
+    font-weight: bold;
+}
+
+.error-message {
+    display: none;
+    color: var(--red);
+    font-size: 0.85rem;
+    margin-top: 0.5rem;
+}
+
+#genre-warning, #platform-warning {
+    display: inline;
+    color: var(--yellow);
+    font-size: 0.85rem;
+    margin-left: 0.5rem;
+}
