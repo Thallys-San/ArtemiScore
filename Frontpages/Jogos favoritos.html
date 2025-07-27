@@ -4,18 +4,35 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Jogos Favoritos - ArtemiScore</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css">
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
             font-family: 'Poppins', sans-serif;
+        }
+
+        :root {
+            --primary: #5733ef;
+            --primary-dark: #4625c9;
+            --accent: #c688ff;
+            --dark: #0f0f13;
+            --darker: #0a0a0d;
+            --gray: #1e1e24;
+            --gray-light: #2a2a35;
+            --light-gray: #6d6d7a;
+            --yellow: #fdcb6e;
+            --white: #ffffff;
+            --lighter: #e1e1e1;
+            --dark-gray: #1e1e24;
+            --medium-gray: #2a2a35;
+            --gradient-primary: linear-gradient(45deg, var(--primary), var(--accent));
+            --transition: all 0.3s ease;
+            --transition-slow: all 0.5s ease;
+            --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.3);
+            --glow: 0 0 15px rgba(135, 90, 255, 0.5);
         }
 
         body {
@@ -39,215 +56,248 @@
             z-index: -1;
         }
 
-        a {
-            color: inherit;
-            text-decoration: none;
+        /* Header Styles */
+        header {
+            background: rgba(15, 15, 19, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            padding: 1rem 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            border-bottom: 1px solid rgba(87, 51, 239, 0.3);
+            transition: var(--transition-slow);
         }
 
-        :root {
-            --primary: #5733ef;
-            --primary-dark: #4625c9;
-            --accent: #c688ff;
-            --dark: #0f0f13;
-            --darker: #0a0a0d;
-            --gray: #1e1e24;
-            --gray-light: #2a2a35;
-            --light-gray: #6d6d7a;
-            --yellow: #fdcb6e;
+        /* Efeito quando o header é rolado */
+        header.scrolled {
+            padding: 0.75rem 0;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
         }
 
-        .container {
+        /* Container principal do header */
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             max-width: 1400px;
             margin: 0 auto;
             padding: 0 2rem;
         }
 
-        .header-container {
+        .header-left {
             display: flex;
-            justify-content: space-between;
             align-items: center;
-            width: 100%;
+            gap: 0;
         }
 
-        header {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            background: rgba(15,15,19,0.95);
-            backdrop-filter: blur(8px);
-            padding: 1rem 0;
-            z-index: 1000;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-            border-bottom: 1px solid var(--primary);
-        }
-
-        .font-pacifico {
-            font-family: 'Pacifico', cursive;
-        }
-
+        /* Logo - Estilo especial com gradiente */
         .logo {
-            font-size: 1.8rem; /* Kept for consistency if text were present */
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.8rem;
+            color: var(--white);
+            text-decoration: none;
             font-weight: 700;
-            /* Removed background clip for text since text is gone */
-            color: transparent; /* Kept, but effectively no impact */
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            position: relative;
+            transition: var(--transition);
+            transform: rotate(0deg);
+            transform-origin: left center;
+            white-space: nowrap;
             display: flex;
             align-items: center;
-            gap: 8px; /* Removed, not needed without text */
+            padding-right: 0;
         }
 
-        .logo-img {
-            height: 40px;
-            margin-right: 0; /* Changed to 0 as there's no text next to it */
+        .logo:hover {
+            transform: scale(1.05) rotate(0deg);
+            text-shadow: var(--glow);
         }
 
-        .flex {
+        /* Grupo de elementos à direita (busca, usuário) */
+        .header-right {
             display: flex;
-        }
-
-        .items-center {
             align-items: center;
+            gap: 1.5rem;
         }
 
-        .gap-4 {
-            gap: 1rem;
-        }
-
+        /* Navegação principal */
         .main-nav {
             display: flex;
-            margin-left: 2rem;
+            margin-left: 40px;
         }
 
+        /* Links de navegação */
         .nav-link {
-            margin-left: 1.5rem;
-            font-weight: 500;
-            color: var(--light-gray);
-            transition: 0.3s;
-            position: relative;
+            color: var(--lighter);
             text-decoration: none;
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: var(--transition);
+            position: relative;
+            padding: 0.5rem 0;
+            margin: 0 15px;
         }
 
-        .nav-link:hover, .nav-link.active {
-            color: white;
+        .nav-link:hover,
+        .nav-link.active {
+            color: var(--white);
         }
 
+        /* Efeito de sublinhado animado */
         .nav-link::after {
             content: '';
             position: absolute;
+            bottom: 0;
+            left: 0;
             width: 0;
             height: 2px;
-            bottom: -4px;
-            left: 0;
-            background-color: var(--primary);
+            background: var(--primary);
             transition: width 0.3s;
         }
 
-        .nav-link:hover::after, .nav-link.active::after {
+        .nav-link:hover::after,
+        .nav-link.active::after {
             width: 100%;
         }
 
+        /* Barra de busca */
         .search-bar {
             position: relative;
-            display: flex;
-            align-items: center;
+            width: 250px;
         }
 
         .search-input {
-            background: var(--gray);
-            border: 1px solid #2a2a35;
-            border-radius: 20px;
-            padding: 0.5rem 1rem 0.5rem 2.5rem;
-            color: white;
-            outline: none;
-            transition: all 0.3s;
-            width: 200px;
+            width: 100%;
+            padding: 0.6rem 1rem 0.6rem 2.5rem;
+            border-radius: 50px;
+            border: none;
+            background-color: var(--dark-gray);
+            color: var(--white);
+            font-size: 0.9rem;
+            transition: var(--transition);
+        }
+
+        .search-input::placeholder {
+            color: var(--light-gray);
         }
 
         .search-input:focus {
-            border-color: var(--primary);
-            width: 250px;
+            outline: none;
+            box-shadow: 0 0 0 2px var(--primary);
         }
 
         .search-icon {
             position: absolute;
-            left: 12px;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
             color: var(--light-gray);
+            font-size: 1rem;
+        }
+
+        /* Menu do usuário (dropdown) */
+        #userMenuContainer {
+            position: relative;
         }
 
         .user-menu-button {
-            background: var(--gray);
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
+            background: var(--dark-gray);
+            border: none;
+            cursor: pointer;
+            color: var(--white);
+            font-size: 1.2rem;
             display: flex;
             align-items: center;
             justify-content: center;
-            cursor: pointer;
-            transition: all 0.3s;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            transition: var(--transition);
         }
 
         .user-menu-button:hover {
-            background: var(--primary);
-        }
-
-        .user-icon {
-            font-size: 1.2rem;
-        }
-
-        .relative {
-            position: relative;
+            background: var(--medium-gray);
+            transform: scale(1.05);
         }
 
         .user-dropdown {
             position: absolute;
             right: 0;
             top: 50px;
-            background: var(--gray);
-            border-radius: 8px;
+            background-color: var(--dark-gray);
+            border-radius: 12px;
+            box-shadow: var(--shadow-lg);
+            width: 240px;
             padding: 0.5rem 0;
-            min-width: 200px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-            border: 1px solid #2a2a35;
             opacity: 0;
             visibility: hidden;
-            transform: translateY(-10px);
-            transition: all 0.3s;
+            transition: opacity 0.3s ease, visibility 0.3s ease, top 0.3s ease;
             z-index: 100;
+            border: 1px solid var(--medium-gray);
+            backdrop-filter: blur(10px);
         }
 
-        #userMenuContainer:hover .user-dropdown {
+        /* Mostrar dropdown quando hover ou com classe JS */
+        #userMenuContainer:hover .user-dropdown,
+        .user-dropdown.show-dropdown {
             opacity: 1;
             visibility: visible;
-            transform: translateY(0);
+            top: 45px;
         }
 
+        /* Itens do dropdown */
         .dropdown-item {
             display: flex;
             align-items: center;
-            padding: 0.5rem 1rem;
-            color: var(--light-gray);
-            transition: all 0.3s;
+            padding: 0.75rem 1.5rem;
+            color: var(--lighter);
             text-decoration: none;
+            font-size: 0.9rem;
+            transition: var(--transition);
         }
 
         .dropdown-item:hover {
-            background: rgba(87, 51, 239, 0.1);
-            color: white;
+            background-color: var(--medium-gray);
+            color: var(--white);
+            padding-left: 1.75rem;
         }
 
         .dropdown-icon {
-            margin-right: 0.75rem;
+            margin-right: 1rem;
+            color: var(--light-gray);
+            font-size: 1.1rem;
             width: 20px;
-            display: flex;
-            justify-content: center;
+            text-align: center;
         }
 
         .dropdown-divider {
             height: 1px;
-            background: #2a2a35;
+            background-color: var(--medium-gray);
             margin: 0.5rem 0;
         }
 
+        /* Menu mobile - escondido por padrão */
+        .mobile-menu-button {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--white);
+            font-size: 1.8rem;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .mobile-menu-button:hover {
+            color: var(--primary);
+        }
+
+        /* Section Styles */
         .section {
             padding: 3rem 2rem;
             max-width: 1400px;
@@ -280,11 +330,12 @@
         }
 
         .game-card {
-            background: var(--gray);
+            background: rgba(30, 30, 36, 0.7);
+            backdrop-filter: blur(10px);
             border-radius: 12px;
             overflow: hidden;
-            border: 1px solid #2a2a35;
-            transition: 0.3s;
+            border: 1px solid var(--gray-light);
+            transition: transform 0.3s, box-shadow 0.3s;
             display: flex;
             flex-direction: column;
         }
@@ -298,12 +349,12 @@
         .game-image {
             width: 100%;
             height: 160px;
-            object-fit: cover;
-            transition: transform 0.3s;
-        }
-
-        .game-card:hover .game-image {
-            transform: scale(1.05);
+            background-color: var(--gray);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--light-gray);
+            font-size: 0.9rem;
         }
 
         .game-info {
@@ -321,6 +372,9 @@
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
+            height: 24px;
+            background-color: var(--gray);
+            width: 80%;
         }
 
         .rating {
@@ -329,17 +383,41 @@
             margin-top: auto;
             display: flex;
             align-items: center;
+            height: 20px;
+            width: 70px;
+            background-color: var(--gray);
         }
 
-        .rating i {
-            margin-right: 4px;
-            font-size: 1.2rem;
+        .favorite-actions {
+            display: flex;
+            justify-content: center;
+            margin-top: 1rem;
+        }
+
+        .remove-favorite {
+            background: var(--red);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .remove-favorite:hover {
+            background: #e55a5a;
+            transform: translateY(-2px);
         }
 
         .no-favorites-message {
             text-align: center;
             padding: 3rem;
-            background: var(--gray);
+            background: rgba(30, 30, 36, 0.7);
+            backdrop-filter: blur(10px);
             border-radius: 12px;
             border: 1px solid var(--gray-light);
             margin-top: 2rem;
@@ -357,6 +435,7 @@
             color: var(--accent);
         }
 
+        /* Footer Styles */
         footer {
             background: var(--darker);
             padding: 2rem 0;
@@ -410,6 +489,7 @@
 
         .footer-links a:hover {
             color: var(--accent);
+            transform: translateX(5px);
         }
 
         .social-links {
@@ -427,7 +507,7 @@
             background: var(--gray);
             border-radius: 50%;
             color: white;
-            transition: 0.3s;
+            transition: all 0.3s;
             text-decoration: none;
         }
 
@@ -445,93 +525,153 @@
             font-size: 0.9rem;
         }
 
-        @media (max-width: 900px) {
+        /* Logo image */
+        .logo-image {
+            height: 40px;
+            width: auto;
+            display: block;
+            transition: transform 0.3s;
+        }
+        
+        .logo-image:hover {
+            transform: scale(1.05);
+        }
+
+        .artemiscore-title {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 800;
+            font-size: 1.5rem;
+            letter-spacing: 1px;
+            background: linear-gradient(45deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            padding-right: 10px;
+        }
+
+        /* Responsividade */
+        @media (max-width: 1024px) {
+            .mobile-menu-button {
+                display: block;
+            }
+
             .main-nav {
-                display: none;
+                position: fixed;
+                top: 80px;
+                left: 0;
+                width: 100%;
+                background: var(--darker);
+                flex-direction: column;
+                align-items: center;
+                padding: 2rem 0;
+                gap: 2rem;
+                clip-path: circle(0px at 90% -10%);
+                transition: clip-path 0.7s ease-out;
+                pointer-events: none;
+                z-index: 999;
+                margin-left: 0;
             }
 
-            .search-input {
-                width: 150px;
+            .main-nav.open {
+                clip-path: circle(1500px at 90% -10%);
+                pointer-events: all;
             }
+        }
 
-            .search-input:focus {
+        @media (max-width: 900px) {
+            .games-grid {
+                grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            }
+        }
+
+        @media (max-width: 768px) {
+            .search-bar {
                 width: 180px;
+            }
+
+            .header-container {
+                flex-wrap: wrap;
+                padding: 0.5rem 1rem;
+            }
+
+            .logo {
+                margin-right: auto;
+            }
+
+            .header-right {
+                order: 3;
+                width: 100%;
+                justify-content: center;
+                margin-top: 0.5rem;
             }
         }
 
         @media (max-width: 600px) {
-            .header-container {
-                padding: 0 1rem;
-            }
-
-            .logo {
-                font-size: 1.5rem;
-            }
-
-            .logo-img {
-                height: 30px;
-            }
-
-            .search-input {
-                display: none;
-            }
-
-            .search-icon {
-                position: static;
-                margin-left: 0.5rem;
-            }
-
             .games-grid {
-                grid-template-columns: 1fr;
+                grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            }
+            
+            .search-bar {
+                width: 100%;
+            }
+
+            .header-right {
+                flex-direction: column;
+                gap: 0.5rem;
             }
         }
     </style>
 </head>
 <body>
     <header>
-        <div class="container header-container">
-            <div class="flex items-center">
-                <a href="/" class="logo">
-                    <img src="https://github.com/Thallys-San/ArtemiScore/blob/main/ArtemiScore%20(2).png?raw=true" alt="ArtemiScore Logo" class="logo-img">
-                    </a>
+        <div class="header-container">
+            <div class="header-left">
+                <a href="#" class="logo">
+                    <img src="https://github.com/Thallys-San/ArtemiScore/blob/main/ArtemiScore%20(2).png?raw=true" 
+                         alt="ArtemiScore" 
+                         class="logo-image">
+                </a>
+                
                 <nav class="main-nav">
                     <a href="/" class="nav-link">Início</a>
                     <a href="Jogos.html" class="nav-link">Jogos</a>
-                    <a href="Lançamentos.html" class="nav-link">Ranking</a>
-                    <a href="comunidade.html" class="nav-link">Lançamentos</a>
+                    <a href="rank.html" class="nav-link">Ranking</a>
+                    <a href="Lançamentos.html" class="nav-link">Lançamentos</a>
                 </nav>
             </div>
-            <div class="flex items-center gap-4">
+            
+            <div class="header-right">
                 <div class="search-bar">
                     <input type="text" placeholder="Buscar jogos..." class="search-input">
                     <div class="search-icon">
                         <i class="ri-search-line"></i>
                     </div>
                 </div>
-                <div class="relative" id="userMenuContainer">
-                    <div class="user-menu-button" id="userMenuButton">
-                        <img src="" alt="Usuário" style="width: 36px; height: 36px; border-radius: 50%; object-fit: cover;">
+                
+                <div id="userMenuContainer">
+                    <div class="user-menu-button">
+                        <i class="ri-user-line"></i>
                     </div>
-                    <div class="user-dropdown" id="userDropdownMenu">
-                        <a href="perfil.html" class="dropdown-item">
+                    <div class="user-dropdown">
+                        <a href="#" class="dropdown-item">
                             <div class="dropdown-icon">
                                 <i class="ri-user-3-line"></i>
                             </div>
                             <span>Meu Perfil</span>
                         </a>
-                        <a href="minhas-avaliacoes.html" class="dropdown-item">
+                        <a href="#" class="dropdown-item">
                             <div class="dropdown-icon">
                                 <i class="ri-star-line"></i>
                             </div>
                             <span>Minhas Avaliações</span>
                         </a>
-                        <a href="jogos-favoritos.html" class="dropdown-item active">
+                        <a href="#" class="dropdown-item active">
                             <div class="dropdown-icon">
                                 <i class="ri-heart-line"></i>
                             </div>
                             <span>Jogos Favoritos</span>
                         </a>
-                        <a href="settings.html" class="dropdown-item">
+                        <a href="#" class="dropdown-item">
                             <div class="dropdown-icon">
                                 <i class="ri-settings-3-line"></i>
                             </div>
@@ -546,58 +686,92 @@
                         </a>
                     </div>
                 </div>
+                
+                <button class="mobile-menu-button">
+                    <i class="ri-menu-line"></i>
+                </button>
             </div>
         </div>
     </header>
-
+    
     <main class="section">
         <h2>Seus Jogos Favoritos</h2>
         <div class="games-grid">
             <div class="game-card">
-                <img src="" class="game-image" alt=" " />
+                <div class="game-image">  </div>
                 <div class="game-info">
-                    <div class="game-title"> </div>
-                    <div class="rating"><i class="fas fa-star"></i></div>
-                </div>
-            </div>
-
-            <div class="game-card">
-                <img src="" class="game-image" alt="" />
-                <div class="game-info">
-                    <div class="game-title"> 3</div>
+                    <div class="game-title">  </div>
                     <div class="rating"><i class="fas fa-star"></i> </div>
+                    <div class="favorite-actions">
+                        <button class="remove-favorite">
+                            <i class="ri-heart-fill"></i> Remover dos Favoritos
+                        </button>
+                    </div>
                 </div>
             </div>
 
             <div class="game-card">
-                <img src="" class="game-image" alt=" " />
+                <div class="game-image">  </div>
                 <div class="game-info">
                     <div class="game-title"> </div>
-                    <div class="rating"><i class="fas fa-star"></i></div>
+                    <div class="rating"><i class="fas fa-star"></i> </div>
+                    <div class="favorite-actions">
+                        <button class="remove-favorite">
+                            <i class="ri-heart-fill"></i> Remover dos Favoritos
+                        </button>
+                    </div>
                 </div>
             </div>
 
             <div class="game-card">
-                <img src="" class="game-image" alt="" />
+                <div class="game-image">  </div>
+                <div class="game-info">
+                    <div class="game-title">  </div>
+                    <div class="rating"><i class="fas fa-star"></i> </div>
+                    <div class="favorite-actions">
+                        <button class="remove-favorite">
+                            <i class="ri-heart-fill"></i> Remover dos Favoritos
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="game-card">
+                <div class="game-image"></div>
                 <div class="game-info">
                     <div class="game-title"></div>
                     <div class="rating"><i class="fas fa-star"></i> </div>
+                    <div class="favorite-actions">
+                        <button class="remove-favorite">
+                            <i class="ri-heart-fill"></i> Remover dos Favoritos
+                        </button>
+                    </div>
                 </div>
             </div>
 
             <div class="game-card">
-                <img src="" class="game-image" alt="" />
+                <div class="game-image">  </div>
                 <div class="game-info">
-                    <div class="game-title"></div>
+                    <div class="game-title">  </div>
                     <div class="rating"><i class="fas fa-star"></i> </div>
+                    <div class="favorite-actions">
+                        <button class="remove-favorite">
+                            <i class="ri-heart-fill"></i> Remover dos Favoritos
+                        </button>
+                    </div>
                 </div>
             </div>
             
             <div class="game-card">
-                <img src="" class="game-image" alt="" />
+                <div class="game-image">  </div>
                 <div class="game-info">
-                    <div class="game-title"></div>
+                    <div class="game-title">  </div>
                     <div class="rating"><i class="fas fa-star"></i> </div>
+                    <div class="favorite-actions">
+                        <button class="remove-favorite">
+                            <i class="ri-heart-fill"></i> Remover dos Favoritos
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -606,9 +780,10 @@
     <footer>
         <div class="footer-content">
             <div class="footer-column">
-                <a href="/" class="logo" style="font-size: 1.5rem; margin-bottom: 1rem; display: flex; align-items: center;">
-                    <img src="https://github.com/Thallys-San/ArtemiScore/blob/main/ArtemiScore%20(2).png?raw=true" alt="" style="height: 30px; margin-right: 8px;">
-                    <span class="font-pacifico" style="background: linear-gradient(45deg, var(--primary), var(--accent)); -webkit-background-clip: text; color: transparent;"></span>
+                <a href="/" class="logo" style="margin-bottom: 1rem; display: inline-block;">
+                    <img src="https://github.com/Thallys-San/ArtemiScore/blob/main/ArtemiScore%20(2).png?raw=true" 
+                         alt="ArtemiScore" 
+                         class="logo-image">
                 </a>
                 <p style="color: var(--light-gray); font-size: 0.9rem;">Sua plataforma completa para o mundo dos jogos. Descubra, avalie e conecte-se.</p>
                 <div class="social-links">
@@ -653,24 +828,82 @@
     </footer>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const userMenuContainer = document.getElementById('userMenuContainer');
-            const userDropdown = document.getElementById('userDropdownMenu');
-
-            // The existing HTML provides hover functionality via CSS
-            // If you wanted to toggle with a click, you would uncomment/add the following:
-            // const userMenuButton = document.getElementById('userMenuButton');
-            // userMenuButton.addEventListener('click', function() {
-            //     userDropdown.classList.toggle('active-dropdown'); // You'd need to define 'active-dropdown' in CSS
-            // });
-
-            // Close dropdown if clicked outside
-            // document.addEventListener('click', function(event) {
-            //     if (!userMenuContainer.contains(event.target) && userDropdown.classList.contains('active-dropdown')) {
-            //         userDropdown.classList.remove('active-dropdown');
-            //     }
-            // });
+        // Header scroll effect
+        window.addEventListener('scroll', () => {
+            const header = document.querySelector('header');
+            if (window.scrollY > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
         });
+
+        // Mobile menu toggle
+        const mobileMenuButton = document.querySelector('.mobile-menu-button');
+        const mainNav = document.querySelector('.main-nav');
+        
+        mobileMenuButton.addEventListener('click', () => {
+            mainNav.classList.toggle('open');
+        });
+
+        // Remover jogo dos favoritos
+        const removeButtons = document.querySelectorAll('.remove-favorite');
+        removeButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const card = this.closest('.game-card');
+                card.style.animation = 'fadeOut 0.5s forwards';
+                
+                setTimeout(() => {
+                    card.remove();
+                    
+                    // Verificar se não há mais favoritos
+                    const remainingCards = document.querySelectorAll('.game-card');
+                    if (remainingCards.length === 0) {
+                        const section = document.querySelector('main .section');
+                        const message = document.createElement('div');
+                        message.className = 'no-favorites-message';
+                        message.innerHTML = `
+                            <h3>Você ainda não tem jogos favoritos</h3>
+                            <p>Explore nossa biblioteca e adicione seus jogos favoritos!</p>
+                            <a href="Jogos.html">Ver todos os jogos</a>
+                        `;
+                        section.appendChild(message);
+                    }
+                }, 500);
+            });
+        });
+
+        // Adicionar efeito hover nos elementos do menu dropdown
+        const dropdownItems = document.querySelectorAll('.dropdown-item');
+        dropdownItems.forEach(item => {
+            item.addEventListener('mouseenter', () => {
+                item.style.transform = 'translateX(5px)';
+            });
+            item.addEventListener('mouseleave', () => {
+                item.style.transform = 'translateX(0)';
+            });
+        });
+
+        // Adicionar efeito hover nos cards de jogos
+        const gameCards = document.querySelectorAll('.game-card');
+        gameCards.forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                card.style.transform = 'translateY(-6px)';
+            });
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'translateY(0)';
+            });
+        });
+
+        // Criar animação para remoção
+        const style = document.createElement('style');
+        style.innerHTML = `
+            @keyframes fadeOut {
+                from { opacity: 1; transform: translateY(0) scale(1); }
+                to { opacity: 0; transform: translateY(20px) scale(0.95); }
+            }
+        `;
+        document.head.appendChild(style);
     </script>
 </body>
 </html>
