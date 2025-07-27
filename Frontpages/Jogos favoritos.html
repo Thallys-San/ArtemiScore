@@ -6,6 +6,8 @@
     <title>Jogos Favoritos - ArtemiScore</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800;900&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -24,6 +26,7 @@
             --gray-light: #2a2a35;
             --light-gray: #6d6d7a;
             --yellow: #fdcb6e;
+            --red: #ff5757;
             --white: #ffffff;
             --lighter: #e1e1e1;
             --dark-gray: #1e1e24;
@@ -33,6 +36,7 @@
             --transition-slow: all 0.5s ease;
             --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.3);
             --glow: 0 0 15px rgba(135, 90, 255, 0.5);
+            --card-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
         }
 
         body {
@@ -325,10 +329,11 @@
 
         .games-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
             gap: 2rem;
         }
 
+        /* CARDS AJUSTADOS PARA COMBINAR COM A PÁGINA INICIAL */
         .game-card {
             background: rgba(30, 30, 36, 0.7);
             backdrop-filter: blur(10px);
@@ -338,43 +343,67 @@
             transition: transform 0.3s, box-shadow 0.3s;
             display: flex;
             flex-direction: column;
+            height: 340px; /* Altura fixa para consistência */
+            box-shadow: var(--card-shadow);
         }
 
         .game-card:hover {
-            transform: translateY(-6px);
+            transform: translateY(-8px);
             border-color: var(--primary);
-            box-shadow: 0 10px 20px rgba(87, 51, 239, 0.2);
+            box-shadow: 0 15px 30px rgba(87, 51, 239, 0.3);
         }
 
         .game-image {
             width: 100%;
-            height: 160px;
-            background-color: var(--gray);
+            height: 180px; /* Altura igual à página inicial */
             display: flex;
             align-items: center;
             justify-content: center;
-            color: var(--light-gray);
-            font-size: 0.9rem;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .game-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .game-card:hover .game-image img {
+            transform: scale(1.05);
         }
 
         .game-info {
-            padding: 1rem;
+            padding: 1.2rem;
             flex-grow: 1;
             display: flex;
             flex-direction: column;
         }
 
         .game-title {
-            font-size: 1rem;
+            font-size: 1.1rem;
             font-weight: 600;
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.8rem;
             color: white;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
-            height: 24px;
-            background-color: var(--gray);
-            width: 80%;
+        }
+
+        .game-platforms {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 0.8rem;
+            font-size: 0.8rem;
+            color: var(--accent);
+            flex-wrap: wrap;
+        }
+
+        .game-platform {
+            background: rgba(198, 136, 255, 0.15);
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
         }
 
         .rating {
@@ -383,9 +412,7 @@
             margin-top: auto;
             display: flex;
             align-items: center;
-            height: 20px;
-            width: 70px;
-            background-color: var(--gray);
+            gap: 0.3rem;
         }
 
         .favorite-actions {
@@ -395,21 +422,22 @@
         }
 
         .remove-favorite {
-            background: var(--red);
-            color: white;
-            border: none;
-            padding: 0.5rem 1rem;
-            border-radius: 6px;
+            background: rgba(255, 87, 87, 0.15);
+            color: #ff5757;
+            border: 1px solid rgba(255, 87, 87, 0.3);
+            padding: 0.6rem 1.2rem;
+            border-radius: 8px;
             cursor: pointer;
             font-weight: 500;
             transition: all 0.3s;
             display: flex;
             align-items: center;
             gap: 0.5rem;
+            font-size: 0.9rem;
         }
 
         .remove-favorite:hover {
-            background: #e55a5a;
+            background: rgba(255, 87, 87, 0.25);
             transform: translateY(-2px);
         }
 
@@ -425,14 +453,33 @@
             font-size: 1.1rem;
         }
 
+        .no-favorites-message h3 {
+            font-family: 'Montserrat', sans-serif;
+            margin-bottom: 1rem;
+            color: var(--white);
+        }
+
+        .no-favorites-message p {
+            margin-bottom: 1.5rem;
+        }
+
         .no-favorites-message a {
             color: var(--primary);
             font-weight: 600;
-            text-decoration: underline;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.8rem 1.5rem;
+            background: rgba(87, 51, 239, 0.15);
+            border-radius: 8px;
+            transition: all 0.3s;
         }
 
         .no-favorites-message a:hover {
+            background: rgba(87, 51, 239, 0.25);
             color: var(--accent);
+            transform: translateY(-2px);
         }
 
         /* Footer Styles */
@@ -580,7 +627,7 @@
 
         @media (max-width: 900px) {
             .games-grid {
-                grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+                grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
             }
         }
 
@@ -608,7 +655,7 @@
 
         @media (max-width: 600px) {
             .games-grid {
-                grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+                grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
             }
             
             .search-bar {
@@ -697,79 +744,132 @@
     <main class="section">
         <h2>Seus Jogos Favoritos</h2>
         <div class="games-grid">
+            <!-- Cards atualizados com imagens e informações completas -->
             <div class="game-card">
-                <div class="game-image">  </div>
-                <div class="game-info">
-                    <div class="game-title">  </div>
-                    <div class="rating"><i class="fas fa-star"></i> </div>
-                    <div class="favorite-actions">
-                        <button class="remove-favorite">
-                            <i class="ri-heart-fill"></i> Remover dos Favoritos
-                        </button>
-                    </div>
+                <div class="game-image">
+                    <img src="" alt="">
                 </div>
-            </div>
-
-            <div class="game-card">
-                <div class="game-image">  </div>
-                <div class="game-info">
-                    <div class="game-title"> </div>
-                    <div class="rating"><i class="fas fa-star"></i> </div>
-                    <div class="favorite-actions">
-                        <button class="remove-favorite">
-                            <i class="ri-heart-fill"></i> Remover dos Favoritos
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="game-card">
-                <div class="game-image">  </div>
-                <div class="game-info">
-                    <div class="game-title">  </div>
-                    <div class="rating"><i class="fas fa-star"></i> </div>
-                    <div class="favorite-actions">
-                        <button class="remove-favorite">
-                            <i class="ri-heart-fill"></i> Remover dos Favoritos
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="game-card">
-                <div class="game-image"></div>
                 <div class="game-info">
                     <div class="game-title"></div>
-                    <div class="rating"><i class="fas fa-star"></i> </div>
+                    <div class="game-platforms">
+                        <span class="game-platform"></span>
+                        <span class="game-platform"></span>
+                        <span class="game-platform"></span>
+                    </div>
+                    <div class="rating">
+                        <i class="fas fa-star"></i> 
+                    </div>
                     <div class="favorite-actions">
                         <button class="remove-favorite">
-                            <i class="ri-heart-fill"></i> Remover dos Favoritos
+                            <i class="ri-heart-fill"></i> Remover
                         </button>
                     </div>
                 </div>
             </div>
 
             <div class="game-card">
-                <div class="game-image">  </div>
+                <div class="game-image">
+                    <img src="" alt="">
+                </div>
                 <div class="game-info">
-                    <div class="game-title">  </div>
-                    <div class="rating"><i class="fas fa-star"></i> </div>
+                    <div class="game-title"></div>
+                    <div class="game-platforms">
+                        <span class="game-platform"></span>
+                        <span class="game-platform"></span>
+                        <span class="game-platform"></span>
+                    </div>
+                    <div class="rating">
+                        <i class="fas fa-star"></i> 
+                    </div>
                     <div class="favorite-actions">
                         <button class="remove-favorite">
-                            <i class="ri-heart-fill"></i> Remover dos Favoritos
+                            <i class="ri-heart-fill"></i> Remover
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="game-card">
+                <div class="game-image">
+                    <img src="" alt="">
+                </div>
+                <div class="game-info">
+                    <div class="game-title">  </div>
+                    <div class="game-platforms">
+                        <span class="game-platform"></span>
+                        <span class="game-platform"></span>
+                    </div>
+                    <div class="rating">
+                        <i class="fas fa-star"></i> 
+                    </div>
+                    <div class="favorite-actions">
+                        <button class="remove-favorite">
+                            <i class="ri-heart-fill"></i> Remover
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="game-card">
+                <div class="game-image">
+                    <img src="" alt=" ">
+                </div>
+                <div class="game-info">
+                    <div class="game-title"> </div>
+                    <div class="game-platforms">
+                        <span class="game-platform"></span>
+                        <span class="game-platform"></span>
+                        <span class="game-platform"></span>
+                    </div>
+                    <div class="rating">
+                        <i class="fas fa-star"></i> 
+                    </div>
+                    <div class="favorite-actions">
+                        <button class="remove-favorite">
+                            <i class="ri-heart-fill"></i> Remover
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="game-card">
+                <div class="game-image">
+                    <img src="" alt="">
+                </div>
+                <div class="game-info">
+                    <div class="game-title"></div>
+                    <div class="game-platforms">
+                        <span class="game-platform"></span>
+                        <span class="game-platform"></span>
+                    </div>
+                    <div class="rating">
+                        <i class="fas fa-star"></i> 
+                    </div>
+                    <div class="favorite-actions">
+                        <button class="remove-favorite">
+                            <i class="ri-heart-fill"></i> Remover
                         </button>
                     </div>
                 </div>
             </div>
             
             <div class="game-card">
-                <div class="game-image">  </div>
+                <div class="game-image">
+                    <img src="" alt="">
+                </div>
                 <div class="game-info">
-                    <div class="game-title">  </div>
-                    <div class="rating"><i class="fas fa-star"></i> </div>
+                    <div class="game-title"> </div>
+                    <div class="game-platforms">
+                        <span class="game-platform"></span>
+                        <span class="game-platform"></span>
+                        <span class="game-platform"></span>
+                    </div>
+                    <div class="rating">
+                        <i class="fas fa-star"></i> 
+                    </div>
                     <div class="favorite-actions">
                         <button class="remove-favorite">
-                            <i class="ri-heart-fill"></i> Remover dos Favoritos
+                            <i class="ri-heart-fill"></i> Remover
                         </button>
                     </div>
                 </div>
@@ -865,7 +965,7 @@
                         message.innerHTML = `
                             <h3>Você ainda não tem jogos favoritos</h3>
                             <p>Explore nossa biblioteca e adicione seus jogos favoritos!</p>
-                            <a href="Jogos.html">Ver todos os jogos</a>
+                            <a href="Jogos.html"><i class="ri-gamepad-line"></i> Ver todos os jogos</a>
                         `;
                         section.appendChild(message);
                     }
@@ -888,7 +988,7 @@
         const gameCards = document.querySelectorAll('.game-card');
         gameCards.forEach(card => {
             card.addEventListener('mouseenter', () => {
-                card.style.transform = 'translateY(-6px)';
+                card.style.transform = 'translateY(-8px)';
             });
             card.addEventListener('mouseleave', () => {
                 card.style.transform = 'translateY(0)';
