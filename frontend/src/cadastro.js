@@ -58,22 +58,42 @@ document.addEventListener("DOMContentLoaded", async function() {
 
     // Converte imagem carregada localmente para Base64
     avatarInput.addEventListener("change", () => {
-        const file = avatarInput.files[0];
+    const file = avatarInput.files[0];
+    if (!file || !file.type.startsWith("image/")) {
+        alert("Arquivo inválido.");
+        return;
+    }
 
-        if (file && file.size <= 2 * 1024 * 1024) {
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                profilePicBase64 = e.target.result;
-                document.getElementById("avatarPreview").style.backgroundImage = `url('${profilePicBase64}')`;
-            };
-            reader.readAsDataURL(file);
-        } else {
-            alert("Imagem inválida ou maior que 2MB.");
-            avatarInput.value = "";
-            profilePicBase64 = DEFAULT_PROFILE_PIC;
-            document.getElementById("avatarPreview").style.backgroundImage = `url('${DEFAULT_PROFILE_PIC}')`;
-        }
-    });
+    if (file.size > 2 * 1024 * 1024) { // Máximo 2MB (bruto)
+        alert("Imagem maior que 2MB.");
+        avatarInput.value = "";
+        profilePicBase64 = DEFAULT_PROFILE_PIC;
+        document.getElementById("avatarPreview").style.backgroundImage = `url('${DEFAULT_PROFILE_PIC}')`;
+        return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        const img = new Image();
+        img.onload = function() {
+            const canvas = document.createElement("canvas");
+            const maxSize = 128; // tamanho padrão reduzido
+            canvas.width = maxSize;
+            canvas.height = maxSize;
+
+            const ctx = canvas.getContext("2d");
+            ctx.drawImage(img, 0, 0, maxSize, maxSize);
+
+            const compressedBase64 = canvas.toDataURL("image/jpeg", 0.7); // JPEG com qualidade 70%
+            profilePicBase64 = compressedBase64;
+
+            document.getElementById("avatarPreview").style.backgroundImage = `url('${profilePicBase64}')`;
+        };
+        img.src = e.target.result;
+    };
+    reader.readAsDataURL(file);
+});
+
 
     // Quando o formulário for enviado
     form.addEventListener("submit", async (event) => {
