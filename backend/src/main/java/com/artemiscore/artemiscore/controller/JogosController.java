@@ -1,5 +1,7 @@
+
 package com.artemiscore.artemiscore.controller;
 
+import java.util.Collections;
 import java.util.List;
 
 import org.springframework.http.HttpStatus;
@@ -22,7 +24,7 @@ import com.artemiscore.artemiscore.service.RawgService;
 
 @RestController
 @RequestMapping("/api/games")
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "http://localhost:5500", allowCredentials = "true")
 public class JogosController {
 
     private final RawgService rawgService;
@@ -90,26 +92,39 @@ public class JogosController {
     }
 
     // --------------------- Buscar Jogos por Nome ---------------------
-    @GetMapping
-public ResponseEntity<?> searchGames(@RequestParam(required = false) String nome) {
+@GetMapping("/search")
+public ResponseEntity<?> searchGames(
+    @RequestParam(required = false) String nome,
+    @RequestParam(defaultValue = "0") int offset,
+    @RequestParam(defaultValue = "10") int limit
+) {
     try {
-        List<GameDTO> games = rawgService.searchGames(nome);
-        // Se não passar nome, retorna todos os jogos
-        if (nome == null || nome.trim().isEmpty()) {
-            return ResponseEntity.ok(games);
-        }
-        // Se passar nome e a lista estiver vazia
+        if (limit <= 0) limit = 10;
+        if (offset < 0) offset = 0;
+
+        // Convertendo offset para página (RAWG usa 1-based)
+        int page = (offset / limit) + 1;
+
+        List<GameDTO> games = rawgService.searchGames(nome, page, limit);
+
         if (games == null || games.isEmpty()) {
+            String message = (nome == null || nome.isBlank()) ?
+                "Nenhum jogo encontrado." :
+                "Nenhum jogo encontrado com o nome: " + nome;
+
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body("Nenhum jogo encontrado com o nome: " + nome);
+                .body(Collections.singletonMap("message", message));
         }
-        // Se encontrar jogos, retorna lista filtrada
+
         return ResponseEntity.ok(games);
     } catch (Exception e) {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body("Erro ao buscar jogos: " + e.getMessage());
+            .body(Collections.singletonMap("error", "Erro ao buscar jogos: " + e.getMessage()));
     }
 }
+
+
+
 
 
     // --------------------- Detalhes de Jogo ---------------------
@@ -146,12 +161,15 @@ public ResponseEntity<?> searchGames(@RequestParam(required = false) String nome
     @GetMapping("/detalhado")
 public ResponseEntity<?> getAllGamesWithDescription() {
     try {
-        List<GameDTO> jogos = rawgService.searchGames(null); // pega todos os jogos (ou pagine se quiser)
+        // Aqui você pode ajustar a paginação conforme necessário
+        int page = 1;
+        int pageSize = 10;
+
+        List<GameDTO> jogos = rawgService.searchGames(null, page, pageSize);
         if (jogos == null || jogos.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Nenhum jogo encontrado.");
         }
 
-        // Para cada jogo, busca os detalhes completos pelo slug e atualiza as descrições
         for (GameDTO jogo : jogos) {
             GameDTO detalhado = rawgService.getGameBySlug(jogo.getSlug());
             if (detalhado != null) {
@@ -159,13 +177,14 @@ public ResponseEntity<?> getAllGamesWithDescription() {
                 jogo.setDescription_raw(detalhado.getDescription_raw());
             }
         }
-        return ResponseEntity.ok(jogos);
 
+        return ResponseEntity.ok(jogos);
     } catch (Exception e) {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body("Erro ao buscar jogos detalhados: " + e.getMessage());
     }
-    }
+}
+
 
 
     // --------------------- Cards de Jogo ---------------------
@@ -196,6 +215,31 @@ public ResponseEntity<?> getAllGamesWithDescription() {
                     .body("Erro ao buscar jogos futuros: " + e.getMessage());
         }
     }
+
+    @GetMapping
+public ResponseEntity<?> getGamesByOffset(
+    @RequestParam(defaultValue = "0") int offset,
+    @RequestParam(defaultValue = "20") int limit,
+    @RequestParam(required = false) String search
+) {
+    try {
+        if (limit <= 0) limit = 20;
+        if (offset < 0) offset = 0;
+
+        int page = (offset / limit) + 1;
+
+        List<GameDTO> games = rawgService.searchGames(search, page, limit);
+        if (games == null || games.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Nenhum jogo encontrado.");
+        }
+
+        return ResponseEntity.ok(games);
+    } catch (Exception e) {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+            .body("Erro ao buscar jogos: " + e.getMessage());
+    }
+}
+
 
 
     // --------------------- Screenshots ---------------------

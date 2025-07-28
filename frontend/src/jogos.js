@@ -1,79 +1,82 @@
+
 document.addEventListener("DOMContentLoaded", () => {
-    // Elementos do DOM
     const gameList = document.getElementById("game-list");
     const genreFilter = document.getElementById("genre-filter");
     const platformFilter = document.getElementById("platform-filter");
     const applyFiltersBtn = document.getElementById("apply-filters");
-    const loadingIndicator = document.getElementById("loading-indicator"); // Adicione um elemento para o indicador de carregamento
+    const loadingIndicator = document.getElementById("loading-indicator");
 
-    // Variáveis de estado
-    let allGames = []; // Para armazenar todos os jogos carregados (ou filtrados)
-    let displayedGames = []; // Para armazenar os jogos atualmente exibidos
-    let isLoading = false; // Para evitar múltiplas chamadas à API simultaneamente
-    let hasMore = true; // Indica se ainda há mais jogos para carregar
-    let currentPage = 0; // Usaremos como offset para a API, começando do 0
-    const LIMIT_PER_REQUEST = 20; // Quantidade de jogos a carregar por requisição (ajuste conforme sua API)
+    let allGames = [];
+    let displayedGames = [];
+    let isLoading = false;
+    let hasMore = true;
+    let currentPage = 0;
+    let firstLoad = true;
+    const LIMIT_PER_REQUEST = 20;
 
-    // Elemento sentinela para o Intersection Observer
     const sentinel = document.createElement('div');
     sentinel.id = 'sentinel';
-    sentinel.style.height = '1px'; // Apenas para ser visível para o observer
-    gameList.after(sentinel); // Colocamos o sentinela depois da lista de jogos
+    sentinel.style.height = '1px';
+    gameList.after(sentinel);
 
-    // --- Funções de Carregamento e Renderização ---
-
-    // Função para carregar mais jogos da API
-    async function loadMoreGames() {
-        if (isLoading || !hasMore) {
-            return; // Já está carregando ou não há mais jogos
+    const observer = new IntersectionObserver((entries) => {
+        if (entries[0].isIntersecting && !isLoading && hasMore) {
+            loadMoreGames();
         }
+    }, {
+        root: null,
+        rootMargin: '200px',
+        threshold: 0.01
+    });
+
+    observer.observe(sentinel);
+
+    async function loadMoreGames() {
+        if (isLoading || !hasMore) return;
 
         isLoading = true;
-        loadingIndicator.style.display = 'block'; // Mostra o indicador de carregamento
+        loadingIndicator.style.display = 'block';
 
         try {
-            // Adapte a URL da sua API para incluir offset e limit
-            // Ex: http://localhost:8080/api/games?offset=0&limit=20
-            const response = await fetch(`http://localhost:8080/api/games?offset=${currentPage * LIMIT_PER_REQUEST}&limit=${LIMIT_PER_REQUEST}`);
-            if (!response.ok) throw new Error('Erro ao carregar jogos');
+            let offset = currentPage * LIMIT_PER_REQUEST;
+            let url = `http://localhost:8080/api/games?offset=${offset}&limit=${LIMIT_PER_REQUEST}`;
+
+
+
+            console.log("Fetching URL:", url);
+            const response = await fetch(url);
+            if (!response.ok) throw new Error("Erro ao carregar jogos");
 
             const newGames = await response.json();
-            
-            if (newGames.length === 0) {
-                hasMore = false; // Não há mais jogos para carregar
-                sentinel.style.display = 'none'; // Esconde o sentinela
+
+            console.log("Jogos carregados:", newGames.length);
+
+            if (!newGames || newGames.length === 0) {
+                hasMore = false;
+                observer.unobserve(sentinel); // <- Melhor do que .style.display = "none"
             } else {
-                allGames = allGames.concat(newGames); // Adiciona os novos jogos à lista total
+                allGames = allGames.concat(newGames);
                 currentPage++;
-                renderGames(newGames, true); // Renderiza apenas os novos jogos
+                renderGames(newGames, true);
             }
 
+            firstLoad = false;
         } catch (error) {
             console.error("Erro ao carregar mais jogos:", error);
-            if (gameList.children.length === 0) { // Se não houver nenhum jogo ainda
-                gameList.innerHTML = `
-                    <div class="error-message">
-                        <i class="ri-error-warning-line"></i>
-                        <p>Não foi possível carregar os jogos. Tente novamente mais tarde.</p>
-                    </div>
-                `;
-            }
         } finally {
             isLoading = false;
-            loadingIndicator.style.display = 'none'; // Esconde o indicador de carregamento
+            loadingIndicator.style.display = "none";
         }
     }
 
-    // Função para renderizar os jogos
-    // O parâmetro 'append' indica se devemos adicionar os jogos ou substituir a lista
     function renderGames(games, append = false) {
         if (!append) {
-            gameList.innerHTML = ''; // Limpa a lista se não for para adicionar
+            gameList.innerHTML = '';
             displayedGames = [];
         }
 
         if (!games || games.length === 0) {
-            if (!append && gameList.children.length === 0) { // Se não houver jogos e não estiver adicionando
+            if (!append && gameList.children.length === 0) {
                 gameList.innerHTML = '<div class="no-results">Nenhum jogo encontrado com os filtros selecionados.</div>';
             }
             return;
@@ -82,74 +85,107 @@ document.addEventListener("DOMContentLoaded", () => {
         games.forEach(game => {
             const gameCard = createGameCard(game);
             gameList.appendChild(gameCard);
-            displayedGames.push(game); // Adiciona ao array de jogos exibidos
+            displayedGames.push(game);
         });
     }
 
-    // Função para criar um card de jogo (sem alterações aqui)
+    function renderEstrelas(nota, containerId, scoreId) {
+        const container = document.getElementById(containerId);
+        const score = document.getElementById(scoreId);
+
+        if (!container || !score) return;
+
+        container.innerHTML = '';
+        score.textContent = `${nota.toFixed(1)}/5`;
+
+        const full = Math.floor(nota);
+        const half = nota % 1 >= 0.25 && nota % 1 <= 0.75;
+        const empty = 5 - full - (half ? 1 : 0);
+
+        const starStyle = 'color: #FDB813; font-size: 18px; margin-right: 2px;';
+        const emptyStarStyle = 'color: #DDD; font-size: 18px; margin-right: 2px;';
+
+        for (let i = 0; i < full; i++) {
+            const icon = document.createElement('i');
+            icon.className = 'ri-star-fill';
+            icon.style.cssText = starStyle;
+            container.appendChild(icon);
+        }
+
+        if (half) {
+            const icon = document.createElement('i');
+            icon.className = 'ri-star-half-fill';
+            icon.style.cssText = starStyle;
+            container.appendChild(icon);
+        }
+
+        for (let i = 0; i < empty; i++) {
+            const icon = document.createElement('i');
+            icon.className = 'ri-star-line';
+            icon.style.cssText = emptyStarStyle;
+            container.appendChild(icon);
+        }
+    }
+
     function createGameCard(game) {
-        const card = document.createElement('div');
-        card.className = 'game-card';
+    const card = document.createElement('div');
+    card.className = 'game-card';
 
-        const description = game.description
-            ? game.description.substring(0, 100) + (game.description.length > 100 ? '...' : '')
-            : 'Descrição não disponível';
+    const plataformas = Array.isArray(game.platforms)
+        ? game.platforms.map(p => typeof p === 'string' ? p : p.name).join(', ')
+        : 'Plataforma desconhecida';
 
-        const platforms = Array.isArray(game.platforms)
-            ? game.platforms.map(p => typeof p === 'string' ? p : p.name).join(', ')
-            : 'Plataformas não especificadas';
+    const generos = Array.isArray(game.genres)
+        ? game.genres.map(g => typeof g === 'string' ? g : g.name).join(', ')
+        : 'Gênero não especificado';
 
-        const genres = Array.isArray(game.genres)
-            ? game.genres.map(g => typeof g === 'string' ? g : g.name).join(', ')
-            : 'Gênero não especificado';
+    const nota = game.rating ?? game.mediaAvaliacao ?? 0;
+    const imagem = game.background_image || './assets/images/sem-imagem.jpg';
 
-        const rating = game.rating ?? game.mediaAvaliacao ?? 0;
-        const ratingPercent = rating > 5 ? rating : rating * 20;
+    const starsId = `stars-${game.id}`;
+    const scoreId = `score-${game.id}`;
 
-        card.innerHTML = `
-            <div class="game-card-inner">
-                <div class="game-image">
-                    <img src="${game.background_image || './assets/images/sem-imagem.jpg'}" alt="${game.name}">
-                    <div class="game-rating" style="--rating: ${ratingPercent}%">
-                        ${rating.toFixed(1)}
+    card.innerHTML = `
+        <div class="game-image-container">
+            <img class="game-img" src="${imagem}" alt="${game.name}">
+            <span class="game-genre">${generos.split(',')[0]}</span>
+            ${nota > 0 ? `
+                <div class="quick-rate">
+                    <div class="quick-rate-content">
+                        <span class="quick-rate-label">Avaliação</span>
+                        <div class="stars" id="${starsId}"></div>
+                        <span class="score" id="${scoreId}"></span>
                     </div>
                 </div>
-                <div class="game-info">
-                    <h3 class="game-title">${game.name}</h3>
-                    <div class="game-meta">
-                        <span class="game-platforms" title="${platforms}">
-                            <i class="ri-computer-line"></i> ${platforms.split(',')[0] || 'N/A'}
-                        </span>
-                        <span class="game-genre" title="${genres}">
-                            <i class="ri-price-tag-3-line"></i> ${genres.split(',')[0] || 'N/A'}
-                        </span>
-                    </div>
-                    <p class="game-description">${description}</p>
-                    <div class="game-actions">
-                        <button class="btn-details">
-                            <i class="ri-information-line"></i> Detalhes
-                        </button>
-                        <button class="btn-wishlist">
-                            <i class="ri-heart-line"></i>
-                        </button>
-                    </div>
-                </div>
+            ` : ''}
+        </div>
+        <div class="game-content">
+            <h3 class="game-title">${game.name}</h3>
+            <div class="game-meta">
+                <span title="${plataformas}">
+                    <i class="ri-computer-line"></i> ${plataformas.split(',')[0]}
+                </span>
+                <span title="${generos}">
+                    <i class="ri-price-tag-3-line"></i> ${generos.split(',')[0]}
+                </span>
             </div>
-        `;
+        </div>
+    `;
 
-        card.querySelector('.btn-details').addEventListener('click', () => {
-            window.location.href = `detalhes.html?id=${game.id}`;
-        });
-
-        return card;
+    if (nota > 0) {
+        setTimeout(() => renderEstrelas(nota, starsId, scoreId), 0);
     }
 
-    // Função para filtrar jogos (aplicará os filtros nos jogos já carregados)
+    return card;
+}
+
+
+
     function filterGames() {
         const selectedGenre = genreFilter.value;
         const selectedPlatform = platformFilter.value.toLowerCase();
 
-        let filtered = [...allGames]; // Filtra todos os jogos carregados até o momento
+        let filtered = [...allGames];
 
         if (selectedGenre) {
             filtered = filtered.filter(game => {
@@ -170,30 +206,18 @@ document.addEventListener("DOMContentLoaded", () => {
                 );
             });
         }
-        
-        // Renderiza os jogos filtrados, substituindo a lista atual
+
         renderGames(filtered, false);
+
+        // 🔄 Reconectar observer se for necessário
+        if (filtered.length > 0 && !hasMore) {
+            hasMore = true;
+            observer.observe(sentinel);
+        }
     }
 
-    // --- Intersection Observer para Scroll Infinito ---
-    const observer = new IntersectionObserver((entries) => {
-        // Se o sentinela estiver visível e não estivermos carregando
-        if (entries[0].isIntersecting && !isLoading && hasMore) {
-            loadMoreGames();
-        }
-    }, {
-        root: null, // Observa a viewport
-        rootMargin: '0px', // Distância da borda da viewport
-        threshold: 0.1 // 10% do sentinela visível para disparar
-    });
-
-    // Observa o sentinela
-    observer.observe(sentinel);
-
-    // --- Event Listeners ---
     applyFiltersBtn.addEventListener('click', filterGames);
 
-    // --- Inicialização ---
-    // Na inicialização, a primeira carga será feita pelo Intersection Observer quando a página for carregada
-    // e o sentinela estiver visível.
+    // Inicializa
+    loadMoreGames();
 });

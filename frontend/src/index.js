@@ -1,3 +1,4 @@
+
 document.addEventListener("DOMContentLoaded", () => {
     const popularContainer = document.getElementById("game-container");
     const releasesContainer = document.getElementById("releases-container");
@@ -11,29 +12,19 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // ------------ POPULARES ------------
     fetch("http://localhost:8080/api/games/cards")
-    .then(res => res.json())
-    .then(cards => {
-        console.log("RECEBIDO DA API:", cards); // <-- ADICIONE ISSO
-
-        if (!Array.isArray(cards) || cards.length === 0) {
-            popularContainer.innerHTML = "<p>Nenhum jogo encontrado.</p>";
-            return;
-        }
-
-        // resto...
-
+        .then(res => res.json())
+        .then(cards => {
+            if (!Array.isArray(cards) || cards.length === 0) {
+                popularContainer.innerHTML = "<p>Nenhum jogo encontrado.</p>";
+                return;
+            }
 
             popularContainer.innerHTML = "";
 
             const limitedCards = cards.slice(0, MAX_POPULAR_CARDS);
 
             limitedCards.forEach(jogo => {
-                let descricao = jogo.description_raw || jogo.description || "Sem descrição disponível.";
-                descricao = descricao.replace(/<[^>]*>/g, "");
-
-                if (descricao.length > MAX_DESC_LENGTH) {
-                    descricao = descricao.substring(0, MAX_DESC_LENGTH) + "...";
-                }
+                
 
                 const card = document.createElement("div");
                 card.className = "game-card";
@@ -55,7 +46,6 @@ document.addEventListener("DOMContentLoaded", () => {
                     <img src="${imageUrl}" alt="${jogo.name}" class="game-img">
                     <div class="game-content">
                         <h2>${jogo.name}</h2>
-                        <p class="descricao">${descricao}</p>
                         ${ratingHTML}
                     </div>
                 `;
@@ -221,3 +211,60 @@ function atualizarHero(backgroundImageUrl) {
         heroBackground.appendChild(fallbackText);
     }
 }
+
+document.addEventListener('DOMContentLoaded', function() {
+    const searchInput = document.querySelector('.search-input');
+    const searchIcon = document.querySelector('.search-icon');
+    let searchTimeout;
+
+    // Função de debounce para evitar múltiplas requisições rápidas
+    searchInput.addEventListener('input', function() {
+        clearTimeout(searchTimeout);
+        
+        // Mostra estado de carregamento
+        searchIcon.innerHTML = '<i class="ri-loader-4-line"></i>';
+        searchIcon.classList.add('loading');
+        
+        searchTimeout = setTimeout(() => {
+            performSearch();
+            // Restaura o ícone de busca após a conclusão
+            searchIcon.innerHTML = '<i class="ri-search-line"></i>';
+            searchIcon.classList.remove('loading');
+        }, 500); // Atraso de 500ms
+    });
+
+    // Busca ao clicar no ícone
+    searchIcon.addEventListener('click', function() {
+        clearTimeout(searchTimeout);
+        performSearch();
+    });
+
+    // Busca ao pressionar Enter
+    searchInput.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+            clearTimeout(searchTimeout);
+            performSearch();
+        }
+    });
+
+    async function performSearch() {
+        const searchTerm = searchInput.value.trim();
+
+        try {
+            const response = await fetch(`/api/games/search?nome=${encodeURIComponent(searchTerm)}`);
+
+            if (!response.ok) {
+                const errorText = await response.text();
+                throw new Error(errorText || 'Erro na busca');
+            }
+            
+            const games = await response.json();
+            displaySearchResults(games);
+        } catch (error) {
+            console.error('Erro na busca:', error);
+            displaySearchError(error.message);
+        }
+    }
+
+    // ... (mantenha as funções displaySearchResults, displaySearchError e createGameCard do código anterior)
+});
