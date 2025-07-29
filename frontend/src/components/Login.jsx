@@ -65,11 +65,12 @@ function Login() {
 
           <div className="social-login">
             <p>Ou entre com o Google</p>
-            <div className="social-buttons">
-              <a href="#" className="social-btn google">
-                <i className="ri-google-fill"></i>
-              </a>
-            </div>
+           <div className="social-buttons">
+  <button type="button" className="social-btn google" onClick={handleGoogleLogin}>
+    <i className="ri-google-fill"></i> Entrar com Google
+  </button>
+</div>
+
           </div>
 
           <div className="register-link">
