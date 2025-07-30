@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import StarRating from '../components/StarRating'; // já implementado
-import './HeroBanner.css'; // certifique-se de que o CSS está vinculado
+import StarRating from '../commom/StarRating'; // já implementado
+
 
 const HeroBanner = () => {
   const [topGame, setTopGame] = useState(null);
@@ -33,9 +33,11 @@ const HeroBanner = () => {
             <h1 className="hero-title">{topGame.name}</h1>
             <div className="hero-rating">
               <div className="star-rating">
-                <StarRating rating={topGame.ratingAverage} />
+                <StarRating rating={topGame.mediaAvaliacao ?? 0} />
               </div>
-              <span className="rating-text">{topGame.ratingAverage.toFixed(1)} ({topGame.ratingCount} Avaliações)</span>
+              <span className="rating-text">
+                {(topGame.mediaAvaliacao ?? 0).toFixed(1)} ({topGame.totalAvaliacoes ?? 0} Avaliações)
+              </span>
             </div>
             <p className="hero-description">
               {topGame.description?.substring(0, 200) || "Sem descrição disponível."}
