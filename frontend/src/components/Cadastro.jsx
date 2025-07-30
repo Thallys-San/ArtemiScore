@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import './cadastro.css';
+import '../cadastro.css';
 
 const Cadastro = () => {
   // Estados
@@ -143,6 +143,10 @@ const Cadastro = () => {
     }
   };
 
+  // Definindo os valores de gêneros e plataformas
+  const genres = ["Ação", "FPS", "Battle royale", "PVP", "Super-herói", "Aventura", "RPG", "Estratégia", "Simulação", "Indie", "Esporte", "Corrida", "Luta", "Terror", "Puzzle"];
+  const platforms = ["PC", "PlayStation", "Xbox", "Nintendo Switch", "Mobile"];
+
   return (
     <div className="form-container">
       <h1 className="title">Crie Sua Conta</h1>
@@ -263,89 +267,83 @@ const Cadastro = () => {
               maxLength="300"
             ></textarea>
           </div>
+
+          <fieldset>
+            <legend>Gêneros Favoritos (selecione até 5)</legend>
+            {genres.map((genre) => (
+              <label key={genre}>
+                <input
+                  type="checkbox"
+                  value={genre}
+                  checked={formData.favoriteGenres.includes(genre)}
+                  onChange={(e) => {
+                    let newSelection = [...formData.favoriteGenres];
+                    if (e.target.checked) {
+                      if (newSelection.length < 5) {
+                        newSelection.push(genre);
+                        setGenreWarning(false);
+                      } else {
+                        setGenreWarning(true);
+                      }
+                    } else {
+                      newSelection = newSelection.filter(g => g !== genre);
+                      setGenreWarning(false);
+                    }
+                    setFormData({ ...formData, favoriteGenres: newSelection });
+                  }}
+                />
+                {genre}
+              </label>
+            ))}
+            {genreWarning && <small style={{ color: 'red' }}>Você pode selecionar no máximo 5 gêneros.</small>}
+          </fieldset>
+
+          <fieldset>
+            <legend>Plataformas Preferidas (selecione até 3)</legend>
+            {platforms.map((platform) => (
+              <label key={platform}>
+                <input
+                  type="checkbox"
+                  value={platform}
+                  checked={formData.preferredPlatforms.includes(platform)}
+                  onChange={(e) => {
+                    let newSelection = [...formData.preferredPlatforms];
+                    if (e.target.checked) {
+                      if (newSelection.length < 3) {
+                        newSelection.push(platform);
+                        setPlatformWarning(false);
+                      } else {
+                        setPlatformWarning(true);
+                      }
+                    } else {
+                      newSelection = newSelection.filter(p => p !== platform);
+                      setPlatformWarning(false);
+                    }
+                    setFormData({ ...formData, preferredPlatforms: newSelection });
+                  }}
+                />
+                {platform}
+              </label>
+            ))}
+            {platformWarning && <small style={{ color: 'red' }}>Você pode selecionar no máximo 3 Plataformas.</small>}
+          </fieldset>
+
+          <button className="sign" type="submit">
+            Criar Conta
+          </button>
+
+          {generalError && (
+            <p id="generalErrorMessage" className="error-message">
+              {generalError}
+            </p>
+          )}
         </fieldset>
-
-        <fieldset>
-          <legend className="visually-hidden">Preferências de Jogo</legend>
-          <br />
-          <div className="input-group">
-            <label htmlFor="favorite-genres">
-              Gêneros Favoritos (selecione até 5 - opcional)
-            </label>
-            <select
-              name="favorite_genres"
-              id="favorite-genres"
-              multiple
-              size="5"
-              value={formData.favoriteGenres}
-              onChange={handleGenreSelect}
-            >
-              <option value="Ação">Ação</option>
-              <option value="FPS">FPS</option>
-              <option value="Battle royale">Battle royale</option>
-              <option value="PVP">PVP</option>
-              <option value="Super-herói">Super-herói</option>
-              <option value="Aventura">Aventura</option>
-              <option value="RPG">RPG</option>
-              <option value="Estratégia">Estratégia</option>
-              <option value="Simulação">Simulação</option>
-              <option value="Indie">Indie</option>
-              <option value="Esporte">Esporte</option>
-              <option value="Corrida">Corrida</option>
-              <option value="Luta">Luta</option>
-              <option value="Terror">Terror</option>
-              <option value="Puzzle">Puzzle</option>
-            </select>
-            {genreWarning && (
-              <small id="genre-warning" style={{ color: 'red' }}>
-                Você pode selecionar no máximo 5 gêneros.
-              </small>
-            )}
-          </div>
-
-          <div className="input-group">
-            <label htmlFor="preferred-platforms">
-              Plataformas Preferidas (selecione até 3 - opcional)
-            </label>
-            <select
-              name="preferred_platforms"
-              id="preferred-platforms"
-              multiple
-              value={formData.preferredPlatforms}
-              onChange={handlePlatformSelect}
-            >
-              <option value="PC">PC</option>
-              <option value="PlayStation 5">PlayStation 5</option>
-              <option value="Xbox Series X/S">Xbox Series X/S</option>
-              <option value="Nintendo Switch">Nintendo Switch</option>
-              <option value="PlayStation 4">PlayStation 4</option>
-              <option value="Xbox One">Xbox One</option>
-              <option value="Mobile">Mobile</option>
-              <option value="Nenhuma específica">Nenhuma específica</option>
-            </select>
-            {platformWarning && (
-              <small id="platform-warning" style={{ color: 'red' }}>
-                Você pode selecionar no máximo 3 plataformas.
-              </small>
-            )}
-          </div>
-        </fieldset>
-
-        <button className="sign" type="submit">
-          Criar Conta
-        </button>
-        
-        {generalError && (
-          <p id="generalErrorMessage" className="error-message">
-            {generalError}
-          </p>
-        )}
       </form>
 
       <br />
       <p className="login-link">
         Já tem uma conta?
-        <a rel="noopener noreferrer" href="./login.html" className="">
+        <a rel="noopener noreferrer" href="./login" className="">
           Faça Login
         </a>
       </p>
