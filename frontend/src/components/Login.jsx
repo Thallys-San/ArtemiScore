@@ -25,13 +25,24 @@ function Login() {
       console.log('ID Token:', idToken);
 
       // Aqui você pode enviar o token pro seu backend
-      // await fetch("http://localhost:8080/api/usuario", {
-      //   method: "POST",
-      //   headers: {
-      //     Authorization: `Bearer ${idToken}`,
-      //     'Content-Type': 'application/json'
-      //   }
-      // });
+    
+       const response = await fetch("http://localhost:8080/api/usuario", {
+    method: "POST",
+    headers: {
+    Authorization: `Bearer ${idToken}`,
+    "Content-Type": "application/json",
+  },
+
+      body: JSON.stringify({}), // pode enviar dados extras, se precisar
+  });
+
+  if (!response.ok) {
+    throw new Error("Erro ao autenticar no backend");
+}
+
+  const data = await response.json();
+  console.log("Resposta do backend:", data);
+
 
       alert(`Bem-vindo, ${user.displayName}!`);
     } catch (error) {
