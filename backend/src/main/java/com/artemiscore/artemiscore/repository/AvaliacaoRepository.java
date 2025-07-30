@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+
 import com.artemiscore.artemiscore.model.AvaliacaoModel;
 
 
@@ -24,5 +25,7 @@ public interface AvaliacaoRepository extends JpaRepository<AvaliacaoModel, Long>
 
     @Query("SELECT AVG(a.nota) FROM AvaliacaoModel a WHERE a.jogo_id = :jogoId")
     Double findMediaAvaliacaoByJogoId(@Param("jogoId") Long jogoId);
+
+
 
 }

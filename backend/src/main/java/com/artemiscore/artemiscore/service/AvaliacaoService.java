@@ -45,7 +45,7 @@ public class AvaliacaoService {
 
     
     public AvaliacaoModel salvar(AvaliacaoModel avaliacaoModel) {
-    Long jogoId = avaliacaoModel.getId();
+    Long jogoId = avaliacaoModel.getJogo_id();
     if (jogoId == null || rawgService.getGameById(jogoId) == null) {
         throw new IllegalArgumentException("Jogo inválido ou não encontrado: " + jogoId);
     }

@@ -24,7 +24,7 @@ import com.artemiscore.artemiscore.service.RawgService;
 
 @RestController
 @RequestMapping("/api/games")
-@CrossOrigin(origins = "http://localhost:5500", allowCredentials = "true")
+@CrossOrigin(origins = "http://localhost:3005", allowCredentials = "true")
 public class JogosController {
 
     private final RawgService rawgService;
@@ -184,6 +184,8 @@ public ResponseEntity<?> getAllGamesWithDescription() {
                 .body("Erro ao buscar jogos detalhados: " + e.getMessage());
     }
 }
+
+
 
 
 

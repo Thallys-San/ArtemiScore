@@ -5,6 +5,7 @@ package com.artemiscore.artemiscore.service;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
+
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -16,9 +17,13 @@ import com.artemiscore.artemiscore.model.AvaliacaoModel;
 import com.artemiscore.artemiscore.model.rawghApi.*;
 import com.artemiscore.artemiscore.repository.AvaliacaoRepository;
 
+
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+
+
+
 
 @Service
 public class RawgService {
@@ -111,16 +116,10 @@ public List<GameDTO> searchGames(String name, int page, int pageSize) {
         lista.forEach(this::adicionarDadosDeAvaliacao);
         return lista;
     } catch (Exception ex) {
-        // Loga erro e retorna lista vazia (ou propague se preferir)
         System.err.println("Erro ao buscar jogos na RAWG: " + ex.getMessage());
         return Collections.emptyList();
     }
 }
-
-
-
-
-
 
     public GameDTO getGameById(Long id) {
     String url = BASE_URL + "games/" + id + "?key=" + apiKey;
@@ -146,6 +145,10 @@ public List<GameDTO> searchGames(String name, int page, int pageSize) {
     adicionarDadosDeAvaliacao(game); // ✅ insere avaliações
     return game;
 }
+
+
+
+
 
 
 

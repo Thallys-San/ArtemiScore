@@ -23,7 +23,7 @@ import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/avaliacoes")
-@CrossOrigin(origins = "http://localhost:5500", allowCredentials = "true")
+@CrossOrigin(origins = "http://localhost:3005", allowCredentials = "true")
 public class AvaliacaoController {
 
     @Autowired
