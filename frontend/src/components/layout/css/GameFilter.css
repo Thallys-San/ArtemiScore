@@ -1,0 +1,109 @@
+/* --- Filtros de Jogos --- */
+.filters-container {
+    margin-bottom: 3rem;
+}
+
+.filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    align-items: flex-end;
+    margin-bottom: 2rem;
+}
+
+.filter-group {
+    display: flex;
+    flex-direction: column;
+    min-width: 180px;
+    flex-grow: 1;
+}
+
+.filter-label {
+    font-size: 0.9rem;
+    color: var(--light-gray);
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+/* --- Game Filters --- */
+.filters-container {
+    margin-bottom: 3rem;
+}
+
+.filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    align-items: flex-end;
+    margin-bottom: 2rem;
+}
+
+.filter-group {
+    display: flex;
+    flex-direction: column;
+    min-width: 180px;
+    flex-grow: 1;
+}
+
+.filter-label {
+    font-size: 0.9rem;
+    color: var(--light-gray);
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.filter-select {
+    padding: 0.8rem 1rem;
+    border-radius: 8px;
+    border: 1px solid var(--medium-gray);
+    background-color: var(--dark-gray);
+    color: var(--white);
+    font-size: 0.9rem;
+    transition: var(--transition);
+    appearance: none;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'%3e%3cpath d='M7 10l5 5 5-5z'/%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+    background-size: 1em;
+}
+
+.filter-select:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 2px rgba(87, 51, 239, 0.3);
+}
+
+.filter-button {
+    padding: 0.8rem 1.5rem;
+    background: var(--primary);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: var(--transition);
+    font-weight: 600;
+}
+
+.filter-button:hover {
+    background: var(--primary-hover);
+    transform: translateY(-2px);
+}
+
+.reset-button {
+    padding: 0.8rem 1.5rem;
+    background: transparent;
+    color: var(--light-gray);
+    border: 1px solid var(--medium-gray);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.reset-button:hover {
+    color: var(--white);
+    border-color: var(--primary);
+}

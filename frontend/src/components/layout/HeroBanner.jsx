@@ -21,7 +21,7 @@ const HeroBanner = () => {
       <div className="hero-slide active">
         <div className="hero-background">
           <img
-            src={topGame.bannerImage || topGame.cover || '/default.jpg'}
+            src={topGame.background_image || topGame.background_image_additional || '/default.jpg'}
             alt={topGame.name}
             className="hero-image"
           />

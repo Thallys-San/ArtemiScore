@@ -1,10 +1,14 @@
 import React, { useEffect, useState } from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+
 import Header from '../components/layout/Header';
 import Footer from '../components/layout/Footer';
 import HeroBanner from '../components/layout/HeroBanner';
 import GameCard from '../components/cards/GameCard';
 import ReleaseCard from '../components/cards/ReleaseCard';
 import 'remixicon/fonts/remixicon.css';
+
+
 
 const HomePage = () => {
   const [popularGames, setPopularGames] = useState([]);

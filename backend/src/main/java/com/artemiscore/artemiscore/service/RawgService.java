@@ -5,7 +5,7 @@ package com.artemiscore.artemiscore.service;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
-
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -21,6 +21,7 @@ import com.artemiscore.artemiscore.repository.AvaliacaoRepository;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 
@@ -28,6 +29,7 @@ import java.util.List;
 @Service
 public class RawgService {
 
+    
     private final AvaliacaoRepository avaliacaoRepository;
     private final RestTemplate restTemplate;
 
@@ -147,8 +149,8 @@ public List<GameDTO> searchGames(String name, int page, int pageSize) {
 }
 
         // Game Card
-public List<GameCardDTO> getBasicGameCards() {
-    List<GameDTO> jogos = searchGames(null, 1, 40); // busca jogos da API
+public List<GameCardDTO> getBasicGameCards(int page, int pageSize) {
+    List<GameDTO> jogos = searchGames(null, page, pageSize); // agora usa paginação dinâmica
 
     return jogos.stream().map(j -> {
         GameCardDTO card = new GameCardDTO();
@@ -158,10 +160,10 @@ public List<GameCardDTO> getBasicGameCards() {
         card.setReleased(j.getReleased());
         card.setBackground_image(j.getBackground_image());
 
-        // Opcional: se quiser, adiciona avaliações aqui, mas sem detalhado
+        // Dados opcionais de avaliação
         adicionarDadosDeAvaliacao(card);
 
-        // Não precisa de descrição no card
+        // Cards não precisam de descrição
         card.setDescription("");
         card.setDescription_raw("");
 
@@ -172,10 +174,12 @@ public List<GameCardDTO> getBasicGameCards() {
 
 
 
-public List<GameCardDTO> getUpcomingGameCards() {
+
+public List<GameCardDTO> getUpcomingGameCards(int page, int limit) {
     String url = BASE_URL + "games?key=" + apiKey
                + "&dates=" + java.time.LocalDate.now() + ",2026-12-31"
-               + "&ordering=released";
+               + "&ordering=released" + "&page=" + page
+               + "&page_size=" + limit;
 
     ResponseEntity<RawghResponse<GameDTO>> response = restTemplate.exchange(
         url,
@@ -227,9 +231,9 @@ private void adicionarDadosDeAvaliacao(GameCardDTO card) {
     }
 }
 
-public GameDTO getTopRatedGame() {
+public GameDTO getTopRatedGame(int page, int limit) {
     // Aqui a ideia é buscar os jogos ordenados pela média de avaliações decrescente
-    List<GameDTO> jogos = this.searchGames(null, 1, 10); // ou com filtro de ordenação
+    List<GameDTO> jogos = this.searchGames(null, page, limit); // ou com filtro de ordenação
 
     if (jogos == null || jogos.isEmpty()) return null;
 
@@ -244,6 +248,74 @@ public GameDTO getTopRatedGame() {
 
     return topGame;
 }
+
+
+
+public List<GameCardDTO> filtrarJogos(String nome, List<String> generos, List<String> plataformas, int page, int limit) {
+    UriComponentsBuilder uriBuilder = UriComponentsBuilder
+        .fromHttpUrl(BASE_URL + "games")
+        .queryParam("key", apiKey)
+        .queryParam("page", page)
+        .queryParam("page_size", limit);
+
+    if (nome != null && !nome.isBlank()) {
+        uriBuilder.queryParam("search", nome.trim());
+    }
+
+    if (generos != null) {
+        List<String> cleanGeneros = generos.stream()
+            .filter(g -> g != null && !g.isBlank())
+            .map(String::trim)
+            .toList();
+        if (!cleanGeneros.isEmpty()) {
+            uriBuilder.queryParam("genres", String.join(",", cleanGeneros));
+        }
+    }
+
+    if (plataformas != null) {
+        List<String> cleanPlataformas = plataformas.stream()
+            .filter(p -> p != null && !p.isBlank())
+            .map(String::trim)
+            .toList();
+        if (!cleanPlataformas.isEmpty()) {
+            uriBuilder.queryParam("platforms", String.join(",", cleanPlataformas));
+        }
+    }
+
+    String url = uriBuilder.toUriString();
+
+    try {
+        ResponseEntity<RawghResponse<GameDTO>> response = restTemplate.exchange(
+            url,
+            HttpMethod.GET,
+            null,
+            new ParameterizedTypeReference<RawghResponse<GameDTO>>() {}
+        );
+
+        List<GameDTO> results = response.getBody() != null ? response.getBody().getResults() : Collections.emptyList();
+
+        return results.stream().map(j -> {
+            GameCardDTO card = new GameCardDTO();
+            card.setId(j.getId());
+            card.setName(j.getName());
+            card.setSlug(j.getSlug());
+            card.setReleased(j.getReleased());
+            card.setBackground_image(j.getBackground_image());
+
+            adicionarDadosDeAvaliacao(card);
+
+            card.setDescription("");
+            card.setDescription_raw("");
+            return card;
+        }).collect(Collectors.toList());
+
+    } catch (Exception e) {
+        // Ideal usar logger aqui
+        System.err.println("Erro ao filtrar jogos: " + e.getMessage());
+        return Collections.emptyList();
+    }
+}
+
 
 
     // Screenshots

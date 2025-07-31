@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.artemiscore.artemiscore.model.AvaliacaoModel;
 import com.artemiscore.artemiscore.model.rawghApi.AchievementDTO;
 import com.artemiscore.artemiscore.model.rawghApi.GameCardDTO;
 import com.artemiscore.artemiscore.model.rawghApi.GameDTO;
@@ -20,6 +21,7 @@ import com.artemiscore.artemiscore.model.rawghApi.GenreDTO;
 import com.artemiscore.artemiscore.model.rawghApi.PlatformDTO;
 import com.artemiscore.artemiscore.model.rawghApi.ScreenshotDTO;
 import com.artemiscore.artemiscore.model.rawghApi.StoreDTO;
+import com.artemiscore.artemiscore.service.AvaliacaoService;
 import com.artemiscore.artemiscore.service.RawgService;
 
 @RestController
@@ -158,52 +160,70 @@ public ResponseEntity<?> searchGames(
         }
     }
 
-    @GetMapping("/detalhado")
-public ResponseEntity<?> getAllGamesWithDescription() {
+
+
+@GetMapping("/games/filter")
+public ResponseEntity<?> filtrarJogos(
+    @RequestParam(required = false) String nome,
+    @RequestParam(required = false) List<String> generos,
+    @RequestParam(required = false) List<String> plataformas,
+    @RequestParam(defaultValue = "0") int offset,
+    @RequestParam(defaultValue = "10") int limit
+) {
     try {
-        // Aqui você pode ajustar a paginação conforme necessário
-        int page = 1;
-        int pageSize = 10;
+        int page = (offset / limit) + 1;
 
-        List<GameDTO> jogos = rawgService.searchGames(null, page, pageSize);
-        if (jogos == null || jogos.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Nenhum jogo encontrado.");
-        }
+        List<GameCardDTO> jogosFiltrados = rawgService.filtrarJogos(nome, generos, plataformas, page, limit);
 
-        for (GameDTO jogo : jogos) {
-            GameDTO detalhado = rawgService.getGameBySlug(jogo.getSlug());
-            if (detalhado != null) {
-                jogo.setDescription(detalhado.getDescription());
-                jogo.setDescription_raw(detalhado.getDescription_raw());
-            }
-        }
-
-        return ResponseEntity.ok(jogos);
+        return ResponseEntity.ok(jogosFiltrados);
     } catch (Exception e) {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body("Erro ao buscar jogos detalhados: " + e.getMessage());
+            .body("Erro ao buscar jogos com filtros: " + e.getMessage());
     }
 }
 
+
+
     // --------------------- Cards de Jogo ---------------------
-    @GetMapping("/cards")
-    public ResponseEntity<?> getGameCards() {
-        try {
-            List<GameCardDTO> cards = rawgService.getBasicGameCards();
-            if (cards == null || cards.isEmpty()) {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Nenhum card de jogo encontrado.");
-            }
-            return ResponseEntity.ok(cards);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("Erro ao buscar cards: " + e.getMessage());
+@GetMapping("/cards")
+public ResponseEntity<?> getGameCards(
+    @RequestParam(defaultValue = "0") int offset,
+    @RequestParam(defaultValue = "20") int limit,
+    @RequestParam(required = false) String generos,
+    @RequestParam(required = false) String plataformas,
+    @RequestParam(required = false) String sort
+) {
+    try {
+        int page = (offset / limit) + 1;
+
+        List<String> generosList = generos != null && !generos.isEmpty() ? List.of(generos.split(",")) : Collections.emptyList();
+        List<String> plataformasList = plataformas != null && !plataformas.isEmpty() ? List.of(plataformas.split(",")) : Collections.emptyList();
+
+        List<GameCardDTO> cards = rawgService.filtrarJogos(null, generosList, plataformasList, page, limit);
+
+        if (cards == null || cards.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Nenhum card de jogo encontrado.");
         }
+        return ResponseEntity.ok(cards);
+    } catch (Exception e) {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body("Erro ao buscar cards: " + e.getMessage());
     }
+}
+
+
 
     @GetMapping("/cards/upcoming")
-    public ResponseEntity<?> getUpcomingGameCards() {
+    public ResponseEntity<?> getUpcomingGameCards(
+        @RequestParam(defaultValue = "0") int offset,
+        @RequestParam(defaultValue = "20") int limit
+    ) {
+        
         try {
-            List<GameCardDTO> cards = rawgService.getUpcomingGameCards();
+            int page = (offset / limit) + 1;
+
+
+            List<GameCardDTO> cards = rawgService.getUpcomingGameCards(page, limit);
             if (cards == null || cards.isEmpty()) {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Nenhum jogo futuro encontrado.");
             }
@@ -239,13 +259,17 @@ public ResponseEntity<?> getGamesByOffset(
 }
 
 @GetMapping("/top-rated")
-public ResponseEntity<?> getTopRatedGame() {
+public ResponseEntity<?> getTopRatedGame(
+    @RequestParam(defaultValue = "0") int offset,
+    @RequestParam(defaultValue = "10") int limit
+) {
     try {
-
-        GameDTO topRated = rawgService.getTopRatedGame();
+        int page = (offset / limit) + 1;
+        GameDTO topRated = rawgService.getTopRatedGame(page, limit);
 
         if (topRated == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Nenhum jogo melhor avaliado encontrado.");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body("Nenhum jogo melhor avaliado encontrado.");
         }
 
         return ResponseEntity.ok(topRated);
@@ -254,6 +278,7 @@ public ResponseEntity<?> getTopRatedGame() {
             .body("Erro ao buscar o jogo melhor avaliado: " + e.getMessage());
     }
 }
+
 
 
     // --------------------- Screenshots ---------------------
