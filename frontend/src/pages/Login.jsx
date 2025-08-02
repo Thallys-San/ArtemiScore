@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import './Login.css';
+import '../components/layout/css/Login.css';
 import { signInWithEmailAndPassword, signInWithPopup } from 'firebase/auth';
-import { auth, provider } from './firebase';
+import { auth, provider } from '../components/firebase';
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);

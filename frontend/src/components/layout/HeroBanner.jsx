@@ -1,15 +1,16 @@
-import React, { useEffect, useState } from 'react';
-import StarRating from '../commom/StarRating'; // já implementado
-
+import React, { useEffect, useState } from "react";
+import StarRating from "../commom/StarRating"; // já implementado
 
 const HeroBanner = () => {
   const [topGame, setTopGame] = useState(null);
 
   useEffect(() => {
-    fetch('http://localhost:8080/api/games/top-rated') // ou o endpoint que você tiver
-      .then(res => res.json())
-      .then(data => setTopGame(data))
-      .catch(err => console.error('Erro ao buscar o jogo mais bem avaliado:', err));
+    fetch("http://localhost:8080/api/games/top-rated") // ou o endpoint que você tiver
+      .then((res) => res.json())
+      .then((data) => setTopGame(data))
+      .catch((err) =>
+        console.error("Erro ao buscar o jogo mais bem avaliado:", err)
+      );
   }, []);
 
   if (!topGame) {
@@ -21,7 +22,11 @@ const HeroBanner = () => {
       <div className="hero-slide active">
         <div className="hero-background">
           <img
-            src={topGame.background_image || topGame.background_image_additional || '/default.jpg'}
+            src={
+              topGame.background_image ||
+              topGame.background_image_additional ||
+              "/default.jpg"
+            }
             alt={topGame.name}
             className="hero-image"
           />
@@ -36,11 +41,13 @@ const HeroBanner = () => {
                 <StarRating rating={topGame.mediaAvaliacao ?? 0} />
               </div>
               <span className="rating-text">
-                {(topGame.mediaAvaliacao ?? 0).toFixed(1)} ({topGame.totalAvaliacoes ?? 0} Avaliações)
+                {(topGame.mediaAvaliacao ?? 0).toFixed(1)} (
+                {topGame.totalAvaliacoes ?? 0} Avaliações)
               </span>
             </div>
             <p className="hero-description">
-              {topGame.description?.substring(0, 200) || "Sem descrição disponível."}
+              {topGame.description?.substring(0, 200) ||
+                "Sem descrição disponível."}
             </p>
             <div className="hero-buttons">
               <button className="hero-button primary-button">
