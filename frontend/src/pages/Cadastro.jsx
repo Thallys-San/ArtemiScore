@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import "../components/layout/css/cadastro.css"; // Importando o CSS do componente
 import ProfilePicture from "../components/commom/ProfilePicture";
+import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const Cadastro = () => {
   // Estados
@@ -43,6 +45,7 @@ const Cadastro = () => {
   const [genreWarning, setGenreWarning] = useState(false);
   const [platformWarning, setPlatformWarning] = useState(false);
   const [generalError, setGeneralError] = useState("");
+  const navigate = useNavigate();
 
   // Atualiza contador de caracteres da biografia
   useEffect(() => {
@@ -59,8 +62,6 @@ const Cadastro = () => {
       setErrors({ ...errors, [name]: "" });
     }
   };
-
-  
 
   // Validação do formulário
   const validateForm = () => {
@@ -116,8 +117,7 @@ const Cadastro = () => {
       }
 
       alert("Cadastro realizado com sucesso!");
-      // Redirecionar para login ou página inicial
-      // history.push('/login');
+      navigate("/home"); //<-- redireciona para a rota "/home"
     } catch (error) {
       console.error("Erro no cadastro:", error);
       setGeneralError(error.message || "Erro ao conectar com o servidor");
@@ -132,14 +132,10 @@ const Cadastro = () => {
         jogos!
       </p>
 
-
       <form className="form" onSubmit={handleSubmit}>
         <fieldset>
           <div className="input-group profile-picture-container">
-            
-
             <ProfilePicture onAvatarChange={setProfilePic}></ProfilePicture>
-
           </div>
           <div className="input-group">
             <label htmlFor="username">Nome de Usuário</label>
@@ -335,9 +331,9 @@ const Cadastro = () => {
       <br />
       <p className="login-link">
         Já tem uma conta?
-        <a rel="noopener noreferrer" href="./login" className="">
+        <Link to="/Login.jsx" className="">
           Faça Login
-        </a>
+        </Link>
       </p>
     </div>
   );
