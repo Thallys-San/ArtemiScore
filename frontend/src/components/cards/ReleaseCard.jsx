@@ -1,5 +1,6 @@
 import React from 'react';
 import StarRating from '../commom/StarRating';
+import './css/ReleaseCard.css';
 
 const ReleaseCard = ({ jogo }) => {
   const date = new Date(jogo.released || jogo.release_date);

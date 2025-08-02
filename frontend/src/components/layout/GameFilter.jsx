@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import './css/GameFilter.css'; // Ensure you have the appropriate CSS for styling
+import './css/GameFilter.css';
 
 const GameFilter = ({ filters, onChange, onApply, onReset }) => {
   const [genres, setGenres] = useState([]);

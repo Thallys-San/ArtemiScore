@@ -1,5 +1,6 @@
 import React from 'react';
 import StarRating from '../commom/StarRating';
+import './css/GameCard.css';
 
 const GameCard = ({ jogo }) => (
   <div className="game-card" key={jogo.id}>

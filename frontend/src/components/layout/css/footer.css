@@ -1,211 +1,120 @@
-    /* RESET CSS - Remove margens e paddings padrão de todos elementos */
-    /* Define box-sizing: border-box para facilitar dimensionamento */
-    /* Define a fonte padrão para todo o site */
-    * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-        font-family: 'Poppins', sans-serif;
+/* --- Footer Section --- */
+.footer {
+    background-color: var(--darker);
+    color: var(--lighter);
+    padding: 40px 20px;
+}
+
+.footer-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 30px;
+    margin-bottom: 30px;
+}
+
+.footer-title {
+    font-size: 1.1rem;
+    margin-bottom: 10px;
+    color: var(--white);
+}
+
+.footer-links {
+    list-style: none;
+    padding: 0;
+}
+
+.footer-link {
+    color: var(--light-gray);
+    text-decoration: none;
+    display: block;
+    margin: 5px 0;
+    transition: color 0.3s;
+}
+
+.footer-link:hover {
+    color: var(--primary);
+}
+
+.footer-social .social-link {
+    margin-right: 10px;
+    color: var(--lighter);
+    font-size: 1.2rem;
+    transition: var(--transition);
+}
+
+.footer-social .social-link:hover {
+    color: var(--primary);
+}
+
+.newsletter-input {
+    padding: 8px;
+    width: calc(70% - 2px);
+    border: none;
+    border-radius: 6px 0 0 6px;
+    background-color: var(--medium-gray);
+    color: var(--white);
+}
+
+.newsletter-button {
+    padding: 8px 12px;
+    background-color: var(--primary);
+    border: none;
+    border-radius: 0 6px 6px 0;
+    color: var(--white);
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.newsletter-button:hover {
+    background-color: var(--primary-hover);
+}
+
+.footer-bottom {
+    border-top: 1px solid var(--medium-gray);
+    padding-top: 20px;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.footer-copyright {
+    font-size: 0.9rem;
+    color: var(--light-gray);
+}
+
+.footer-legal {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.legal-link {
+    color: var(--light-gray);
+    text-decoration: none;
+    transition: var(--transition);
+}
+
+.legal-link:hover {
+    color: var(--primary);
+}
+
+/* Footer Responsiveness */
+@media (max-width: 768px) {
+    .section-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
     }
 
-    /* VARIÁVEIS GLOBAIS - Define cores, gradientes e efeitos reutilizáveis */
-    :root {
-        /* Cores principais */
-        --primary: #5733ef;          /* Cor primária roxa */
-        --primary-dark: #4625c9;     /* Versão mais escura da primária */
-        --accent: #c688ff;           /* Cor de destaque */
-        
-        /* Tons de cinza e cores neutras */
-        --dark: #0f0f13;            /* Fundo escuro */
-        --darker: #0a0a0d;          /* Fundo mais escuro */
-        --gray: #1e1e24;            /* Cinza escuro */
-        --gray-light: #2a2a35;       /* Cinza médio */
-        --light-gray: #6d6d7a;       /* Cinza claro */
-        --white: #ffffff;           /* Branco puro */
-        --lighter: #e1e1e1;         /* Branco acinzentado */
-        
-        /* Cores de status */
-        --yellow: #fdcb6e;          /* Amarelo para avisos */
-        --green: #00cc96;           /* Verde para sucesso */
-        --red: #ff6b6b;            /* Vermelho para erros */
-        
-        /* Efeitos visuais */
-        --gradient-primary: linear-gradient(45deg, var(--primary), var(--accent)); /* Gradiente principal */
-        --transition: all 0.3s ease;           /* Transição rápida */
-        --transition-slow: all 0.5s ease;      /* Transição lenta */
-        --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.3); /* Sombra grande */
-        --glow: 0 0 15px rgba(135, 90, 255, 0.5);  /* Efeito de brilho */
-    }
-
-    /* ESTILOS GERAIS DO BODY */
-    body {
-        background: linear-gradient(135deg, var(--darker) 0%, var(--dark) 100%); /* Gradiente de fundo */
-        color: #e1e1e1;                         /* Cor do texto */
-        min-height: 100vh;                      /* Altura mínima da viewport */
-        position: relative;                     /* Contexto de posicionamento */
-        overflow-x: hidden;                     /* Esconde overflow horizontal */
-        padding-top: 80px;                      /* Espaço para o header fixo */
-    }
-
-    /* EFEITO DE FUNDO DECORATIVO - Gradientes radiais transparentes */
-    body::before {
-        content: '';
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        /* Dois gradientes radiais para efeito visual */
-        background: radial-gradient(circle at 10% 20%, rgba(87, 51, 239, 0.1) 0%, rgba(15, 15, 19, 0) 40%),
-                    radial-gradient(circle at 90% 80%, rgba(198, 136, 255, 0.1) 0%, rgba(15, 15, 19, 0) 40%);
-        z-index: -1; /* Coloca atrás de todo conteúdo */
-    }
-
-
-    /* ========= FOOTER ========= */
-    footer {
-        background: rgba(15, 15, 19, 0.95);    /* Fundo semi-transparente */
-        backdrop-filter: blur(12px);            /* Efeito de blur */
-        -webkit-backdrop-filter: blur(12px);    /* Suporte para Safari */
-        padding: 3rem 0 2rem;                  /* Espaçamento vertical */
-        margin-top: 3rem;                      /* Espaço acima */
-        border-top: 1px solid rgba(87, 51, 239, 0.3); /* Borda superior sutil */
-        position: relative;                    /* Contexto para pseudo-elemento */
-        z-index: 100;                          /* Sobre outros elementos */
-    }
-
-    /* EFEITO DE FUNDO DO FOOTER */
-    footer::before {
-        content: '';                            /* Pseudo-elemento */
-        position: absolute;                     /* Posicionamento absoluto */
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        /* Gradiente radial decorativo */
-        background: radial-gradient(circle at 70% 30%, rgba(87, 51, 239, 0.1) 0%, transparent 50%);
-        z-index: -1;                            /* Atrás do conteúdo */
-    }
-
-    /* CONTEÚDO DO FOOTER */
-    .footer-content {
-        max-width: 1400px;                     /* Largura máxima */
-        margin: 0 auto;                        /* Centraliza */
-        padding: 0 2rem;                       /* Espaçamento lateral */
-        display: grid;                         /* Layout em grid */
-        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Colunas responsivas */
-        gap: 2.5rem;                           /* Espaço entre colunas */
-    }
-
-    /* COLUNAS DO FOOTER */
-    .footer-column {
-        padding: 0.5rem;                       /* Espaçamento interno */
-    }
-
-    /* TÍTULOS DAS COLUNAS */
-    .footer-column h3 {
-        color: white;                          /* Texto branco */
-        font-size: 1.2rem;                     /* Tamanho grande */
-        margin-bottom: 1.5rem;                 /* Espaço abaixo */
-        position: relative;                    /* Contexto para pseudo-elemento */
-        padding-bottom: 0.5rem;                /* Espaço para linha */
-        font-weight: 600;                      /* Semi-negrito */
-    }
-
-    /* LINHA DECORATIVA ABAIXO DOS TÍTULOS */
-    .footer-column h3::after {
-        content: '';                            /* Pseudo-elemento */
-        position: absolute;                     /* Posicionamento absoluto */
-        bottom: 0;                              /* Alinhado na base */
-        left: 0;                                /* Começa da esquerda */
-        width: 40px;                            /* Largura */
-        height: 2px;                            /* Altura */
-        background: var(--primary);             /* Cor primária */
-        border-radius: 2px;                     /* Bordas arredondadas */
-    }
-
-    /* LISTA DE LINKS */
-    .footer-links {
-        list-style: none;                       /* Remove marcadores */
-    }
-
-    /* ITENS DA LISTA */
-    .footer-links li {
-        margin-bottom: 0.8rem;                 /* Espaço entre itens */
-        transition: transform 0.3s;            /* Efeito de transição */
-    }
-
-    /* EFEITO HOVER NOS ITENS */
-    .footer-links li:hover {
-        transform: translateX(3px);            /* Desloca para direita */
-    }
-
-    /* LINKS DO FOOTER */
-    .footer-links a {
-        color: var(--light-gray);              /* Cor clara */
-        transition: all 0.3s;                  /* Transição suave */
-        font-size: 0.95rem;                    /* Tamanho médio */
-        text-decoration: none;                 /* Remove sublinhado */
-        display: flex;                         /* Layout flexível */
-        align-items: center;                   /* Centraliza verticalmente */
-        gap: 0.5rem;                          /* Espaço entre ícone e texto */
-    }
-
-    /* EFEITO HOVER NOS LINKS */
-    .footer-links a:hover {
-        color: var(--accent);                  /* Muda para cor de destaque */
-    }
-
-    /* ÍCONES DOS LINKS */
-    .footer-links i {
-        font-size: 1.1rem;                    /* Tamanho grande */
-        color: var(--primary);                /* Cor primária */
-    }
-
-    /* PARÁGRAFOS DO FOOTER */
-    .footer-column p {
-        color: var(--light-gray);             /* Cor clara */
-        font-size: 0.9rem;                    /* Tamanho médio */
-        line-height: 1.6;                     /* Espaçamento entre linhas */
-        margin-bottom: 1.5rem;                /* Espaço abaixo */
-    }
-
-    /* LINKS SOCIAIS */
-    .social-links {
-        display: flex;                        /* Layout flexível */
-        gap: 1rem;                           /* Espaço entre ícones */
-        margin-top: 1.5rem;                  /* Espaço acima */
-    }
-
-    /* ÍCONES SOCIAIS */
-    .social-links a {
-        display: flex;
+    .footer-bottom {
+        flex-direction: column;
         align-items: center;
-        justify-content: center;
-        width: 38px;                         /* Tamanho fixo */
-        height: 38px;
-        background: rgba(30, 30, 36, 0.7);   /* Fundo semi-transparente */
-        border-radius: 50%;                   /* Forma circular */
-        color: white;                         /* Ícone branco */
-        transition: all 0.3s;                /* Efeito de transição */
-        text-decoration: none;               /* Remove sublinhado */
-        border: 1px solid var(--gray-light);  /* Borda sutil */
+        text-align: center;
     }
 
-    /* EFEITO HOVER NOS ÍCONES SOCIAIS */
-    .social-links a:hover {
-        background: var(--primary);          /* Fundo primário */
-        transform: translateY(-3px);         /* Levanta levemente */
-        box-shadow: 0 4px 12px rgba(87, 51, 239, 0.3); /* Sombra colorida */
+    .legal-link {
+        margin-left: 0;
+        margin-top: 10px;
     }
-
-    /* RODAPÉ DE COPYRIGHT */
-    .copyright {
-        text-align: center;                  /* Texto centralizado */
-        padding-top: 2rem;                   /* Espaço acima */
-        margin-top: 2rem;                    /* Espaço acima */
-        border-top: 1px solid var(--gray-light); /* Linha divisória */
-        color: var(--light-gray);            /* Cor clara */
-        font-size: 0.85rem;                  /* Tamanho pequeno */
-        opacity: 0.8;                        /* Transparência leve */
-    }
+}

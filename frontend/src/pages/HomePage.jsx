@@ -55,22 +55,26 @@ const HomePage = () => {
         <HeroBanner />
         <section className="popular-games">
           <div className="container">
+            <div className="section-wrapper">
             <h2 className="section-title">Jogos Populares</h2>
             <div className="games-grid">
               {popularGames.map((jogo) => (
                 <GameCard key={jogo.id} jogo={jogo} />
               ))}
             </div>
+            </div>
           </div>
         </section>
 
         <section className="upcoming-releases">
           <div className="container">
-            <h2 className="section-title">Próximos Lançamentos</h2>
-            <div className="releases-slider">
-              {upcomingGames.map((jogo) => (
-                <ReleaseCard key={jogo.id} jogo={jogo} />
-              ))}
+            <div className="section-wrapper">
+              <h2 className="section-title">Próximos Lançamentos</h2>
+                <div className="releases-slider">
+                  {upcomingGames.map((jogo) => (
+                  <ReleaseCard key={jogo.id} jogo={jogo} />
+                ))}
+                </div>
             </div>
           </div>
         </section>

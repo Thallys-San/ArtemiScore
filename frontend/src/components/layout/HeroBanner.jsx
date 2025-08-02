@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import StarRating from '../commom/StarRating'; // já implementado
-
+import './css/HeroBanner.css';
 
 const HeroBanner = () => {
   const [topGame, setTopGame] = useState(null);

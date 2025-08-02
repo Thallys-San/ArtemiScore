@@ -1,0 +1,350 @@
+.hero-banner {
+    position: relative;
+    height: 100vh;
+    min-height: 700px;
+    width: 100%;
+    overflow: hidden;
+    margin-bottom: 3rem;
+}
+
+.hero-slide {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+}
+
+.hero-background {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+}
+
+.hero-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    animation: zoomEffect 5s infinite alternate;
+}
+
+@keyframes zoomEffect {
+    0% { transform: scale(1); }
+    100% { transform: scale(1.1); }
+}
+
+.hero-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        to top,
+        rgba(15, 15, 19, 0.95) 0%,
+        rgba(87, 51, 239, 0.3) 50%,
+        rgba(15, 15, 19, 0.7) 100%
+    );
+}
+/* --- Hero Banner Section - Content & Interactions --- */
+
+/* Conteúdo central do Hero */
+.hero-content {
+    max-width: 1200px;
+    width: 100%;
+    padding: 3rem;
+    text-align: center;
+
+    /* NOVOS ajustes */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1.5rem;
+
+    /* CENTRALIZA VERTICALMENTE DENTRO DO CONTAINER PAI */
+    height: 100%;
+}
+
+.hero-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    padding: 0 2rem;
+    position: relative;
+    z-index: 2;
+}
+
+
+
+/* Tag de destaque no Hero */
+.hero-tag {
+    display: inline-block;
+    padding: 0.5rem 1.5rem;
+    background: var(--primary);
+    color: var(--white);
+    font-size: 0.9rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    border-radius: 50px;
+    margin-bottom: 1.5rem;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+/* Título principal do Hero */
+.hero-title {
+    font-size: clamp(3rem, 8vw, 6rem);
+    font-weight: 800;
+    line-height: 1.1;
+    margin-bottom: 1.5rem;
+    background: linear-gradient(to right, var(--white), var(--color5));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+}
+
+/* Seção de avaliação no Hero */
+.hero-rating {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    margin: 2rem 0;
+}
+
+/* Descrição do Hero */
+.hero-description {
+    max-width: 700px;
+    margin: 0 auto 2.5rem;
+    font-size: 1.2rem;
+    line-height: 1.7;
+    color: rgba(255,255,255,0.9);
+}
+
+/* Contêiner dos botões do Hero */
+.hero-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+    margin-top: 2rem;
+    flex-wrap: wrap;
+}
+
+/* Estilo base para todos os botões do Hero */
+.hero-button {
+    padding: 1rem 2.5rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+    border-radius: 50px;
+    transition: all 0.4s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.7rem;
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+    text-decoration: none;
+    cursor: pointer;
+    border: none;
+}
+
+/* Pseudo-elemento para o gradiente de fundo dos botões */
+.hero-button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--gradient-primary);
+    z-index: -1;
+    transition: opacity 0.4s;
+}
+
+/* Botão primário */
+.primary-button {
+    background-color: var(--primary);
+    color: var(--white);
+    box-shadow: 0 5px 20px rgba(87, 51, 239, 0.5);
+}
+
+.primary-button::before {
+    opacity: 1;
+}
+
+/* Botão secundário */
+.secondary-button {
+    background: rgba(255,255,255,0.1);
+    color: var(--white);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255,255,255,0.2);
+}
+
+.secondary-button::before {
+    opacity: 0;
+}
+
+.secondary-button:hover::before {
+    opacity: 0.2;
+}
+
+/* Efeito de hover geral para os botões */
+.hero-button:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(87, 51, 239, 0.6);
+}
+
+/* Hover específico para o botão primário */
+.primary-button:hover {
+    background-color: var(--primary-hover);
+}
+
+/* Hover específico para o botão secundário */
+.secondary-button:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+/* Efeito Ripple no clique do botão */
+.hero-button::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 5px;
+    height: 5px;
+    background: rgba(255, 255, 255, 0.5);
+    opacity: 0;
+    border-radius: 100%;
+    transform: scale(1, 1) translate(-50%, -50%);
+    transform-origin: 50% 50%;
+}
+
+.hero-button:focus:not(:active)::after {
+    animation: ripple 1s ease-out;
+}
+
+/* Indicadores de slide (dots na parte inferior do hero) */
+.hero-indicators {
+    position: absolute;
+    bottom: 2rem;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    z-index: 20;
+}
+
+.indicator {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.3);
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.indicator.active {
+    background: var(--primary);
+    transform: scale(1.3);
+    box-shadow: 0 0 10px var(--primary);
+}
+
+/* --- Responsividade do Hero Banner --- */
+@media (max-width: 1024px) {
+    .hero-content {
+        margin-left: 0;
+        max-width: 100%;
+    }
+}
+
+@media (max-width: 768px) {
+    .hero-content {
+        padding: 2rem 1.5rem;
+        margin-top: 0;
+    }
+
+    .hero-buttons {
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .hero-button {
+        width: 100%;
+        justify-content: center;
+        padding: 1rem;
+    }
+
+    .hero-description {
+        font-size: 1rem;
+    }
+
+    .star-rating i {
+        font-size: 1.5rem;
+    }
+
+    .rating-text {
+        font-size: 1rem;
+        padding: 0.3rem 0.8rem;
+    }
+
+    .hero-title {
+        font-size: clamp(2.5rem, 6vw, 5rem);
+    }
+
+    .hero-banner { 
+        height: auto;
+        min-height: 500px;
+        padding-top: 100px;
+        padding-bottom: 50px;
+    }
+}
+
+@media (max-width: 480px) {
+    /* Pode adicionar mais ajustes aqui para telas muito pequenas, 
+       se necessário, mas os 768px já cobrem bem muitos casos. */
+}
+
+/* Contêiner das estrelas */
+.star {
+    width: 18px;
+    height: 18px;
+    display: inline-block;
+    background-size: contain;
+    background-repeat: no-repeat;
+    margin-right: 2px;
+}
+
+.star.full {
+    background-image: url('data:image/svg+xml;utf8,<svg fill="%23FDB813" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 .587l3.668 7.571 8.332 1.151-6.064 5.877 1.464 8.291L12 18.896l-7.4 4.581 1.464-8.291L0 9.309l8.332-1.151z"/></svg>');
+}
+
+.star.half {
+    background-image: url('data:image/svg+xml;utf8,<svg fill="%23FDB813" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 .587l3.668 7.571 8.332 1.151-6.064 5.877 1.464 8.291L12 18.896V.587z" /><path fill="%23DDD" d="M12 18.896l-7.4 4.581 1.464-8.291L0 9.309l8.332-1.151L12 .587z"/></svg>');
+}
+
+.star.empty {
+    background-image: url('data:image/svg+xml;utf8,<svg fill="%23DDD" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 .587l3.668 7.571 8.332 1.151-6.064 5.877 1.464 8.291L12 18.896l-7.4 4.581 1.464-8.291L0 9.309l8.332-1.151z"/></svg>');
+}
+
+
+/* Texto da avaliação (ex: "4.8/5 Estrelas") */
+.rating-text {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.9);
+    background: rgba(0, 0, 0, 0.3);
+    padding: 0.5rem 1.2rem;
+    border-radius: 50px;
+    display: inline-block;
+}
