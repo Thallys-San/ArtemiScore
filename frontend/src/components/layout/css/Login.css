@@ -37,8 +37,9 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background: radial-gradient(circle at 10% 20%, rgba(87, 51, 239, 0.1) 0%, rgba(15, 15, 19, 0) 40%),
-              radial-gradient(circle at 90% 80%, rgba(198, 136, 255, 0.1) 0%, rgba(15, 15, 19, 0) 40%);
+  background:
+    radial-gradient(circle at 10% 20%, rgba(87, 51, 239, 0.1) 0%, rgba(15, 15, 19, 0) 40%),
+    radial-gradient(circle at 90% 80%, rgba(198, 136, 255, 0.1) 0%, rgba(15, 15, 19, 0) 40%);
   z-index: -1;
 }
 
@@ -57,8 +58,14 @@
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* Cabeçalho */
@@ -141,7 +148,7 @@
   color: var(--white);
 }
 
-/* Lembrar-me e esqueci a senha */
+/* Lembrar-me e Esqueci a senha */
 .remember-forgot {
   display: flex;
   justify-content: space-between;
@@ -270,7 +277,7 @@
   .login-container {
     padding: 2rem 1.5rem;
   }
-  
+
   .login-header h2 {
     font-size: 1.8rem;
   }
@@ -280,13 +287,13 @@
   .login-section {
     padding: 1rem;
   }
-  
+
   .remember-forgot {
     flex-direction: column;
     align-items: flex-start;
     gap: 0.8rem;
   }
-  
+
   .forgot-password {
     margin-top: 0.5rem;
   }
