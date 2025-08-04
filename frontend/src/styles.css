@@ -110,7 +110,7 @@ body::after {
     margin: 0 auto;
     padding: 0 2rem;
     display: flex;
-    flex-direction: column;
+    flex-direction:row;
 }
 
 @media (max-width: 768px) {
