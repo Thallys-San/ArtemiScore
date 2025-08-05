@@ -100,7 +100,7 @@ const buildQuery = () => {
   return (
     <>
       <Header />
-      <main>
+      <main className="main-content">
         <GameFilter
           filters={filters}
           onChange={handleFilterChange}
