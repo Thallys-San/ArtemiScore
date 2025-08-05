@@ -1,0 +1,402 @@
+/* === CreateReview.css - Tema roxo profundo, moderno e acessível === */
+
+/* Fundo com profundidade e efeito visual */
+.create-review-section {
+  padding: 4rem 0;
+  min-height: 100vh;
+  background: var(--gradient-dark);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Efeito radial sutil no fundo */
+.create-review-section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle at 80% 20%, rgba(124, 80, 244, 0.12), transparent 40%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Overlay sutil para melhor contraste */
+.create-review-section::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(10, 10, 16, 0.7);
+  backdrop-filter: blur(4px);
+  z-index: -1;
+}
+
+/* Card principal com blur suave e profundidade */
+.review-card {
+  background-color: rgba(30, 30, 36, 0.85);
+  border-radius: 18px;
+  border: 1px solid var(--medium-gray);
+  box-shadow: var(--shadow-lg);
+  overflow: hidden;
+  max-width: 720px;
+  margin: 0 auto;
+  backdrop-filter: blur(16px);
+  z-index: 1;
+  position: relative;
+}
+
+/* Cabeçalho com leve degrade */
+.review-header {
+  padding: 2.5rem 2rem;
+  border-bottom: 1px solid rgba(75, 85, 99, 0.3);
+  background: rgba(20, 20, 26, 0.8);
+  text-align: center;
+}
+
+.review-header h2 {
+  font-size: clamp(1.75rem, 4vw, 2rem);
+  color: var(--white);
+  margin-bottom: 0.5rem;
+  font-weight: 700;
+  font-family: 'Montserrat', sans-serif;
+  letter-spacing: -0.5px;
+}
+
+.review-header p {
+  color: var(--light-gray);
+  font-size: 1rem;
+  opacity: 0.9;
+}
+
+/* Formulário com espaçamento responsivo */
+.review-form {
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem; /* Separação consistente entre campos */
+}
+
+/* Grupo de campos */
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem; /* Espaçamento consistente */
+  align-items: stretch; /* Garante mesma largura para todos os elementos */
+}
+
+/* Campos de entrada (select, input, textarea) */
+.form-group select,
+.form-group input,
+.form-group textarea {
+  width: 100%;
+  padding: 0.85rem 1rem;
+  border-radius: 10px;
+  border: 1px solid var(--medium-gray);
+  background-color: rgba(20, 20, 28, 0.7);
+  color: var(--lighter);
+  font-size: 1rem;
+  transition: var(--transition);
+  font-family: 'Poppins', sans-serif;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  box-sizing: border-box; /* Garante largura consistente */
+}
+
+/* Foco com glow suave e borda roxa */
+.form-group select:focus,
+.form-group input:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(87, 51, 239, 0.25), 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+/* Estilo personalizado para o select */
+.form-group select {
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%236d6d7a'%3e%3cpath d='M7 10l5 5 5-5z'/%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 1rem center;
+  background-size: 16px;
+  padding-right: 2.5rem;
+  cursor: pointer;
+}
+
+.form-group select:hover {
+  border-color: var(--light-gray);
+}
+
+/* Estrelas de avaliação - Versão ajustada */
+.star-rating {
+  display: flex;
+  gap: 0.8rem; /* Aumentei o espaçamento entre estrelas */
+  font-size: 3.5rem; /* Aumentei o tamanho das estrelas */
+  margin: 1rem 0; /* Ajuste de margem */
+  justify-content: center;
+  width: 100%;
+  min-height: 60px; /* Garante altura mínima */
+}
+
+.star-btn {
+  background: none;
+  border: none;
+  color: #ddd;
+  cursor: pointer;
+  width: 50px; /* Diminuí a largura para melhor proporção */
+  height: 50px; /* Diminuí a altura para melhor proporção */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  padding: 0;
+  margin: 0;
+  outline: none;
+  position: relative;
+  overflow: hidden;
+  font-size: 2.5rem; /* Tamanho fixo para o ícone */
+}
+
+/* Versão para telas maiores - ainda mais destacada */
+@media (min-width: 768px) {
+  .star-rating {
+    gap: 1rem;
+    font-size: 4rem;
+  }
+  
+  .star-btn {
+    width: 60px;
+    height: 60px;
+    font-size: 3rem;
+  }
+}
+
+/* Efeitos de hover e focus mais pronunciados */
+.star-btn:hover {
+  transform: scale(1.25);
+}
+
+.star-btn:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+/* Mensagens de erro */
+.error {
+  color: var(--red);
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  width: 100%; /* Alinha com os campos */
+}
+
+/* Ações do formulário */
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  margin-top: 1.5rem; /* Separação consistente */
+  flex-wrap: wrap;
+  width: 100%; /* Garante alinhamento */
+}
+
+/* Botões */
+.btn-primary,
+.btn-secondary {
+  padding: 0.85rem 1.75rem;
+  border-radius: 50px;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: var(--transition);
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center; /* Centraliza conteúdo dos botões */
+  gap: 0.5rem;
+  font-family: 'Poppins', sans-serif;
+  min-height: 48px;
+  min-width: 150px; /* Garante tamanho mínimo consistente */
+}
+
+.btn-primary {
+  background: var(--gradient-primary);
+  color: var(--white);
+  box-shadow: var(--glow-hover);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+.btn-primary:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: var(--glow);
+}
+
+.btn-primary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.btn-secondary {
+  background-color: var(--medium-gray);
+  color: var(--lighter);
+}
+
+.btn-secondary:hover:not(:disabled) {
+  background-color: var(--light-gray);
+  color: var(--white);
+  transform: translateY(-1px);
+}
+
+.btn-secondary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Estado de sucesso */
+.success-state {
+  text-align: center;
+  padding: 4rem 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  color: var(--white);
+  animation: fadeIn 0.5s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.success-icon {
+  width: 64px;
+  height: 64px;
+  stroke: var(--green);
+  stroke-width: 2;
+  fill: none;
+  animation: checkmarkDraw 0.8s ease-out forwards;
+}
+
+@keyframes checkmarkDraw {
+  0% { stroke-dasharray: 0, 100; }
+  100% { stroke-dasharray: 100, 0; }
+}
+
+.success-state h3 {
+  color: var(--white);
+  font-size: clamp(1.5rem, 4vw, 1.8rem);
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+}
+
+.success-state p {
+  color: var(--light-gray);
+  max-width: 500px;
+  margin: 0.5rem 0 1.5rem;
+  line-height: 1.5;
+}
+
+/* Loader de envio */
+.loader {
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  border-top-color: var(--white);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Responsivo refinado */
+@media (max-width: 768px) {
+  .create-review-section {
+    padding: 2rem 0;
+  }
+
+  .review-card {
+    margin: 1rem;
+    border-radius: 14px;
+  }
+
+  .review-header {
+    padding: 1.5rem 1rem;
+  }
+
+  .review-header h2 {
+    font-size: 1.6rem;
+  }
+
+  .review-form {
+    padding: 1.5rem;
+    gap: 1.5rem; /* Reduzido para telas menores */
+  }
+
+  .form-group {
+    gap: 0.5rem;
+  }
+
+  .form-actions {
+    flex-direction: column;
+    align-items: stretch; /* Botões ocupam largura total */
+    gap: 0.75rem;
+  }
+
+  .btn-primary,
+  .btn-secondary {
+    width: 100%;
+    justify-content: center;
+    font-size: 1.05rem;
+  }
+
+  .success-state {
+    padding: 3rem 1.5rem;
+    gap: 1.25rem;
+  }
+
+  .success-icon {
+    width: 56px;
+    height: 56px;
+  }
+
+  .success-state h3 {
+    font-size: 1.6rem;
+  }
+}
+
+/* Telas muito pequenas */
+@media (max-width: 480px) {
+  .star-rating {
+    gap: 0.4rem;
+    font-size: 2.8rem; /* Tamanho ajustado para telas menores */
+    justify-content: center;
+  }
+
+  .star-btn {
+    width: 64px; /* Ajustado para telas menores */
+    height: 64px; /* Ajustado para telas menores */
+  }
+
+  .form-group label {
+    font-size: 0.9rem;
+  }
+
+  .form-group select,
+  .form-group input,
+  .form-group textarea {
+    font-size: 0.95rem;
+  }
+
+  .error {
+    font-size: 0.8rem;
+  }
+}
