@@ -7,7 +7,7 @@ import HeroBanner from '../components/layout/HeroBanner';
 import GameCard from '../components/cards/GameCard';
 import ReleaseCard from '../components/cards/ReleaseCard';
 import 'remixicon/fonts/remixicon.css';
-import { useNavigate } from "react-router-dom";
+
 
 
 
