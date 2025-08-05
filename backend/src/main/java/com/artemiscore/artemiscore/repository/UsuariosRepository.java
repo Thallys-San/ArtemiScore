@@ -13,4 +13,6 @@ import com.artemiscore.artemiscore.model.UsuariosModel;
 public interface UsuariosRepository extends JpaRepository<UsuariosModel, Long>{
     // Método customizado para buscar um usuário pelo e-mail
     Optional<UsuariosModel> findByEmail(String email);
+    boolean existsByEmail(String email);
+    boolean existsByNome(String nome);
 }
