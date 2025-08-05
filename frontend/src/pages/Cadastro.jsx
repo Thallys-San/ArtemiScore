@@ -79,26 +79,31 @@ const Cadastro = () => {
   };
 
   // Validação do formulário
-  const validateForm = () => {
-    const newErrors = {};
+  // Validação do formulário
+const validateForm = () => {
+  const newErrors = {};
 
-    if (!formData.username.trim()) {
-      newErrors.username = "Informe um nome de usuário";
-    }
+  if (!formData.username.trim()) {
+    newErrors.username = "Informe um nome de usuário";
+  }
 
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-      newErrors.email = "Informe um e-mail válido";
-    }
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+    newErrors.email = "Informe um e-mail válido";
+  }
 
-    validatePassword;
+  const passwordError = validatePassword(formData.password);
+  if (passwordError) {
+    newErrors.password = passwordError;
+  }
 
-    if (formData.password !== formData.confirmPassword) {
-      newErrors.confirmPassword = "As senhas não coincidem";
-    }
+  if (formData.password !== formData.confirmPassword) {
+    newErrors.confirmPassword = "As senhas não coincidem";
+  }
 
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
+  setErrors(newErrors);
+  return Object.keys(newErrors).length === 0;
+};
+
 
   const handleBlur = async (e) => {
     const { name, value } = e.target;
