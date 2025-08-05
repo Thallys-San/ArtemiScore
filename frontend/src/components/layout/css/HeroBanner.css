@@ -109,7 +109,7 @@
     background: linear-gradient(to right, var(--white), var(--color5));
     -webkit-background-clip: text;
     background-clip: text;
-    color: transparent;
+    color: white;
     text-shadow: 0 2px 10px rgba(0,0,0,0.3);
 }
 
