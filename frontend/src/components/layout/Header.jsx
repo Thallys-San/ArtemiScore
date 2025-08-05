@@ -1,9 +1,9 @@
 import React from "react";
 import { Link } from "react-router-dom";
-
+import "./css/header.css"
 
 const Header = () => (
-  <header>
+  <header >
     <div className="container header-container">
       <div className="flex items-center">
         <Link href="/" className="logo font-pacifico">
@@ -65,7 +65,7 @@ const Header = () => (
               <span>Configurações</span>
             </a>
             <div className="dropdown-divider"></div>
-            <a href="#" className="dropdown-item">
+            <a href="/" className="dropdown-item">
               <div className="dropdown-icon">
                 <i className="ri-logout-box-line"></i>
               </div>
