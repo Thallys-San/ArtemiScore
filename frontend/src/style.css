@@ -10,13 +10,46 @@
 
 html, body, #root {
   margin: 0;
-  padding-left: 0;
-  padding-right: 0;
+  padding: 0;
+  box-sizing: border-box;
   width: 100%;
   height: 100%;
-  background-color: var(--dark-gray);
-  overflow-x: hidden; /* previne scroll horizontal inesperado */
+  position: relative;
+  z-index: 0;
+  overflow-x: hidden;
+
+  background: linear-gradient(
+    to right,
+    rgba(var(--dark-gray-rgb), 0.98) 0%,
+    rgba(var(--dark-gray-rgb), 0.95) 50%,
+    rgba(var(--primary-rgb), 0.7) 100%
+  );
+
+  background-attachment: fixed; /* efeito de paralaxe leve */
+  background-size: cover;
+  background-repeat: no-repeat;
 }
+
+
+
+#root::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  backdrop-filter: blur(4px);
+  background: linear-gradient(
+    to right,
+    rgba(var(--dark-gray-rgb), 0.95) 60%,
+    rgba(var(--primary-rgb), 0.6)
+  );
+}
+
+/* Exemplo - ajustável conforme seu header */
+.main-content {
+  padding-top: 73px; /* ou o valor exato da altura do seu header */
+}
+
 
 .container {
   max-width: 1200px;
@@ -29,11 +62,13 @@ html, body, #root {
   /* Cores principais */
   --dark-gray: #1a1a1a;
   --medium-gray: #333;
-  --light-gray: #ada8dc;
+  --light-gray: #b0a8dc;
   --white: #f1faee;
   --primary: #5733ef;
   --primary-hover: #6a4aff;
   --yellow: #fdcb6e;
+  --dark-gray-rgb: 26, 26, 26;
+  --primary-rgb: 87, 51, 239;
   
   /* Efeitos */
   --card-transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), 
