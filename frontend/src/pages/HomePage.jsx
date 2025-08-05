@@ -51,7 +51,7 @@ const HomePage = () => {
   return (
     <>
       <Header />
-      <main>
+      <main className="main-content">
         <HeroBanner />
         <section className="popular-games">
           <div className="container">
