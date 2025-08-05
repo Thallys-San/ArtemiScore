@@ -26,25 +26,23 @@ const StarRating = ({ rating, onRate }) => {
 
   return (
     <div className="star-rating" role="radiogroup" aria-label="Avaliação do jogo">
-      {[1, 2, 3, 4, 5].map((star) => {
-        const isFilled = rating >= star;
-        const isHalfFilled = rating >= star - 0.5 && rating < star;
-        return (
-          <button
-            key={star}
-            type="button"
-            className={`star-btn ${isFilled ? 'filled' : ''} ${isHalfFilled ? 'half-filled' : ''}`}
-            onClick={(e) => handleClick(e, star)}
-            onKeyDown={(e) => handleKeyDown(e, star)}
-            role="radio"
-            aria-checked={rating === star || rating === star - 0.5}
-            tabIndex={0}
-            aria-label={`Avaliar com ${star}${isHalfFilled ? '.5' : ''} estrela${star > 1 ? 's' : ''}`}
-          >
-            ★
-          </button>
-        );
-      })}
+      {[1, 2, 3, 4, 5].map((star) => (
+        <button
+          key={star}
+          type="button"
+          className={`star-btn ${rating >= star ? 'filled' : ''} ${
+            rating >= star - 0.5 && rating < star ? 'half-filled' : ''
+          }`}
+          onClick={(e) => handleClick(e, star)}
+          onKeyDown={(e) => handleKeyDown(e, star)}
+          role="radio"
+          aria-checked={rating === star || rating === star - 0.5}
+          tabIndex={0}
+          aria-label={`Avaliar com ${rating === star - 0.5 ? star - 0.5 : star} estrela${star > 1 ? 's' : ''}`}
+        >
+          ★
+        </button>
+      ))}
     </div>
   );
 };
@@ -81,17 +79,8 @@ const LoadingSpinner = () => (
 
 // === Componente Principal ===
 const CreateReview = () => {
-  const games = [
-    { id: 1, title: 'The Legend of Zelda: Tears of the Kingdom' },
-    { id: 2, title: 'Elden Ring: Shadow of the Erdtree' },
-    { id: 3, title: 'Hollow Knight: Silksong' },
-    { id: 4, title: 'Cyberpunk 2077: Phantom Liberty' },
-    { id: 5, title: 'God of War Ragnarök' },
-  ];
-
   const platforms = ['PC', 'PlayStation 5', 'Xbox Series X', 'Nintendo Switch', 'Outros'];
 
-  const [selectedGameId, setSelectedGameId] = useState('');
   const [rating, setRating] = useState(0);
   const [title, setTitle] = useState('');
   const [comment, setComment] = useState('');
@@ -116,7 +105,6 @@ const CreateReview = () => {
   const validate = () => {
     const newErrors = {};
 
-    if (!selectedGameId) newErrors.game = 'Selecione um jogo.';
     if (rating < 1) newErrors.rating = 'Por favor, avalie com 1 a 5 estrelas.';
     if (!title.trim()) newErrors.title = 'O título é obrigatório.';
     else if (title.trim().length < 5)
@@ -146,7 +134,6 @@ const CreateReview = () => {
     setTimeout(() => {
       const reviewData = {
         usuario_id: usuario_id,
-        jogo_id: parseInt(selectedGameId, 10),
         nota: rating,
         tempoDeJogo: playTime ? parseInt(playTime, 10) : null,
         plataforma: platform,
@@ -160,7 +147,6 @@ const CreateReview = () => {
   };
 
   const handleReset = () => {
-    setSelectedGameId('');
     setRating(0);
     setTitle('');
     setComment('');
@@ -183,28 +169,6 @@ const CreateReview = () => {
             <SuccessState onReset={handleReset} />
           ) : (
             <form onSubmit={handleSubmit} className="review-form">
-              {/* Seleção do Jogo */}
-              <div className="form-group">
-                <label htmlFor="game">Jogo</label>
-                <select
-                  id="game"
-                  value={selectedGameId}
-                  onChange={(e) => {
-                    setSelectedGameId(e.target.value);
-                    clearError('game');
-                  }}
-                  aria-invalid={!!errors.game}
-                >
-                  <option value="">Escolha um jogo...</option>
-                  {games.map((game) => (
-                    <option key={game.id} value={game.id}>
-                      {game.title}
-                    </option>
-                  ))}
-                </select>
-                {errors.game && <span className="error">{errors.game}</span>}
-              </div>
-
               {/* Plataforma */}
               <div className="form-group">
                 <label htmlFor="platform">Plataforma</label>
@@ -254,7 +218,9 @@ const CreateReview = () => {
                     clearError('rating');
                   }}
                 />
-                {errors.rating && <span className="error">{errors.rating}</span>}
+                <div aria-live="polite" className="error-message">
+                  {errors.rating && <span className="error">{errors.rating}</span>}
+                </div>
               </div>
 
               {/* Título */}
