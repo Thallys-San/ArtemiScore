@@ -3,7 +3,7 @@ import Header from "../components/layout/Header";
 import Footer from "../components/layout/Footer";
 import GameCard from "../components/cards/GameCard";
 import GameFilter from "../components/layout/GameFilter"; // 🔧
-import "../styles.css";
+import "../style.css";
 
 const LIMIT_PER_REQUEST = 20;
 
