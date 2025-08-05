@@ -2,8 +2,10 @@ package com.artemiscore.artemiscore.config;
 
 import java.util.Arrays;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -17,11 +19,14 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-import com.artemiscore.artemiscore.utils.JwtAuthenticationFilter;
+import com.artemiscore.artemiscore.utils.FirebaseAuthenticationFilter;
 
 @Configuration
 @EnableMethodSecurity
 public class SecurityConfiguration {
+
+    @Autowired
+    private FirebaseAuthenticationFilter firebaseAuthenticationFilter;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -34,11 +39,12 @@ public class SecurityConfiguration {
     }
 
     @Bean
-public SecurityFilterChain filterChain(HttpSecurity http, JwtAuthenticationFilter jwtFilter) throws Exception {
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
     http
         .cors(cors -> cors.configurationSource(corsConfigurationSource())) // Habilita o CORS
-        .csrf(csrf -> csrf.disable()) // Desativa proteção CSRF (porque usamos JWT)
+        .csrf(csrf -> csrf.disable()) // Desativa proteção CSRF
         .authorizeHttpRequests(auth -> auth
+        .requestMatchers(HttpMethod.POST, "/api/usuarios").permitAll()
             .requestMatchers(
                 "/api/auth/**",        // Rota pública para login
                 "/api/usuarios/**",    // Rota temporariamente pública para cadastro
@@ -53,7 +59,7 @@ public SecurityFilterChain filterChain(HttpSecurity http, JwtAuthenticationFilte
         .sessionManagement(session -> session
             .sessionCreationPolicy(SessionCreationPolicy.STATELESS) // Não cria sessão (stateless)
         )
-        .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class); // Usa o filtro de JWT ANTES do filtro padrão de login
+        .addFilterBefore(firebaseAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
     return http.build();
 }
