@@ -1,31 +1,10 @@
-/* Estilos gerais */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: 'Poppins', sans-serif;
-}
-
-:root {
-  --primary: #5733ef;
-  --primary-dark: #4625c9;
-  --accent: #c688ff;
-  --dark: #0f0f13;
-  --darker: #0a0a0d;
-  --gray: #1e1e24;
-  --gray-light: #2a2a35;
-  --light-gray: #6d6d7a;
-  --white: #ffffff;
-}
-
-/* Container principal */
+/* Estilos da página de login */
 .login-section {
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 100vh;
+  min-height: calc(100vh - 73px); /* Subtrai a altura do header */
   padding: 2rem;
-  background: linear-gradient(135deg, var(--darker) 0%, var(--dark) 100%);
   position: relative;
   overflow: hidden;
 }
@@ -38,12 +17,12 @@
   width: 100%;
   height: 100%;
   background:
-    radial-gradient(circle at 10% 20%, rgba(87, 51, 239, 0.1) 0%, rgba(15, 15, 19, 0) 40%),
-    radial-gradient(circle at 90% 80%, rgba(198, 136, 255, 0.1) 0%, rgba(15, 15, 19, 0) 40%);
+    radial-gradient(circle at 10% 20%, rgba(var(--primary-rgb), 0.1) 0%, rgba(var(--dark-gray-rgb), 0) 40%),
+    radial-gradient(circle at 90% 80%, rgba(198, 136, 255, 0.1) 0%, rgba(var(--dark-gray-rgb), 0) 40%);
   z-index: -1;
 }
 
-/* Card de login */
+/* Container principal */
 .login-container {
   width: 100%;
   max-width: 450px;
@@ -51,7 +30,7 @@
   backdrop-filter: blur(10px);
   border-radius: 16px;
   padding: 2.5rem;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  box-shadow: var(--hover-elevation);
   border: 1px solid var(--primary);
   z-index: 1;
   animation: fadeIn 0.5s ease-out;
@@ -68,15 +47,15 @@
   }
 }
 
-/* Cabeçalho */
-.login-header {
+/* Container do título */
+.title-container {
   text-align: center;
-  margin-bottom: 2rem;
+  margin-bottom: 2.5rem;
 }
 
-.login-header h2 {
+.title-container h2 {
   font-size: 2.2rem;
-  background: linear-gradient(45deg, var(--primary), var(--accent));
+  background: linear-gradient(45deg, var(--primary), #c688ff);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
@@ -84,9 +63,10 @@
   line-height: 1.2;
 }
 
-.login-header p {
+.title-container p {
   color: var(--light-gray);
   font-size: 0.95rem;
+  opacity: 0.8;
 }
 
 /* Formulário */
@@ -98,9 +78,10 @@
 
 .form-group {
   margin-bottom: 1.5rem;
+  position: relative;
 }
 
-.form-group label {
+.form-label {
   display: block;
   margin-bottom: 0.5rem;
   color: var(--light-gray);
@@ -108,21 +89,26 @@
   font-size: 0.95rem;
 }
 
-.form-group input {
+.form-input {
   width: 100%;
   padding: 0.9rem 1.2rem;
-  background: var(--darker);
-  border: 1px solid var(--gray-light);
+  background: var(--dark-gray);
+  border: 1px solid var(--medium-gray);
   border-radius: 8px;
   color: var(--white);
   font-size: 1rem;
   transition: all 0.3s ease;
 }
 
-.form-group input:focus {
+.form-input:focus {
   border-color: var(--primary);
   outline: none;
-  box-shadow: 0 0 0 3px rgba(87, 51, 239, 0.2);
+  box-shadow: 0 0 0 3px rgba(var(--primary-rgb), 0.2);
+}
+
+.form-input:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
 }
 
 /* Campo de senha */
@@ -139,13 +125,18 @@
   border: none;
   color: var(--light-gray);
   cursor: pointer;
-  font-size: 1.2rem;
   padding: 0.5rem;
   transition: color 0.3s;
+  font-size: 1.2rem;
 }
 
 .toggle-password:hover {
   color: var(--white);
+}
+
+.toggle-password:disabled {
+  cursor: not-allowed;
+  opacity: 0.7;
 }
 
 /* Lembrar-me e Esqueci a senha */
@@ -174,10 +165,14 @@
 }
 
 .forgot-password {
-  color: var(--accent);
+  color: var(--primary);
   font-size: 0.9rem;
   text-decoration: none;
   transition: color 0.3s;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
 }
 
 .forgot-password:hover {
@@ -185,11 +180,16 @@
   text-decoration: underline;
 }
 
+.forgot-password:disabled {
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
 /* Botão de login */
 .login-button {
   width: 100%;
   padding: 1rem;
-  background: linear-gradient(45deg, var(--primary), var(--primary-dark));
+  background: linear-gradient(45deg, var(--primary), #4625c9);
   border: none;
   border-radius: 8px;
   color: var(--white);
@@ -200,28 +200,50 @@
   margin: 1rem 0;
 }
 
-.login-button:hover {
-  background: linear-gradient(45deg, var(--primary-dark), var(--primary));
+.login-button:hover:not(:disabled) {
+  background: linear-gradient(45deg, #4625c9, var(--primary));
   transform: translateY(-2px);
-  box-shadow: 0 6px 15px rgba(87, 51, 239, 0.3);
+  box-shadow: 0 6px 15px rgba(var(--primary-rgb), 0.3);
+}
+
+.login-button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
 }
 
 /* Divisor social */
-.social-divider {
+.social-login {
   display: flex;
+  flex-direction: column;
   align-items: center;
   margin: 1.5rem 0;
   color: var(--light-gray);
   font-size: 0.9rem;
 }
 
-.social-divider::before,
-.social-divider::after {
+.social-login p {
+  margin-bottom: 1rem;
+  position: relative;
+  width: 100%;
+  text-align: center;
+}
+
+.social-login p::before,
+.social-login p::after {
   content: '';
-  flex: 1;
+  position: absolute;
+  top: 50%;
+  width: 30%;
   height: 1px;
-  background: var(--gray-light);
-  margin: 0 1rem;
+  background: var(--medium-gray);
+}
+
+.social-login p::before {
+  left: 0;
+}
+
+.social-login p::after {
+  right: 0;
 }
 
 /* Botão do Google */
@@ -242,9 +264,14 @@
   margin-bottom: 1.5rem;
 }
 
-.google-btn:hover {
+.google-btn:hover:not(:disabled) {
   background: #f7f8f8;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.google-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
 }
 
 .google-logo {
@@ -261,7 +288,7 @@
 }
 
 .register-link a {
-  color: var(--accent);
+  color: var(--primary);
   font-weight: 600;
   text-decoration: none;
   transition: color 0.3s;
@@ -272,13 +299,34 @@
   text-decoration: underline;
 }
 
+/* Mensagens de status */
+.reset-status {
+  padding: 0.75rem;
+  border-radius: 8px;
+  margin: 0.5rem 0;
+  text-align: center;
+  font-size: 0.9rem;
+}
+
+.reset-status.success {
+  background-color: rgba(0, 255, 0, 0.1);
+  color: #51cf66;
+  border: 1px solid rgba(0, 255, 0, 0.2);
+}
+
+.reset-status.error {
+  background-color: rgba(255, 0, 0, 0.1);
+  color: #ff6b6b;
+  border: 1px solid rgba(255, 0, 0, 0.2);
+}
+
 /* Responsividade */
 @media (max-width: 768px) {
   .login-container {
     padding: 2rem 1.5rem;
   }
 
-  .login-header h2 {
+  .title-container h2 {
     font-size: 1.8rem;
   }
 }
