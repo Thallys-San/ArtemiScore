@@ -44,9 +44,15 @@ public class UsuariosService {
         return repository.save(usuariosModel);
     }
 
-    
-
     public void deletar(Long id){
         repository.deleteById(id);
+    }
+
+    public boolean emailExists(String email){
+        return repository.existsByEmail(email);
+    }
+
+    public boolean usernameExists(String username){
+        return repository.existsByNome(username);
     }
 }
