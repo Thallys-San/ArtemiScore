@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import './css/GameFilter.css';
 
+
 const GameFilter = ({ filters, onChange, onApply, onReset }) => {
   const [genres, setGenres] = useState([]);
   const [platforms, setPlatforms] = useState([]);
@@ -34,6 +35,7 @@ const GameFilter = ({ filters, onChange, onApply, onReset }) => {
 
   return (
     <section>
+      <div className="container">
       <div className="filters-container">
         <div className="filters">
 
@@ -103,6 +105,7 @@ const GameFilter = ({ filters, onChange, onApply, onReset }) => {
             <i className="ri-close-line"></i> Limpar
           </button>
         </div>
+      </div>
       </div>
     </section>
   );
