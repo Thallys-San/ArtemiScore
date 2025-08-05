@@ -2,7 +2,9 @@ package com.artemiscore.artemiscore.controller;
 
 
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -42,6 +45,8 @@ public class UsuariosController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public UsuariosModel cadastrar(@RequestBody UsuariosModel usuariosModel){
+        System.out.println("Recebi uma requisição de cadastro!");
+        System.out.println(usuariosModel);
         return service.salvar(usuariosModel);
     }
 
@@ -61,6 +66,24 @@ public class UsuariosController {
         }
         service.deletar(id);
         return ResponseEntity.noContent().build();
+    }
+
+    // Verifica se o e-mail já está em uso
+    @GetMapping("/check-email")
+    public ResponseEntity<Map<String,Boolean>> checkEmailExists(@RequestParam String email){
+        boolean exists = service.emailExists(email);
+        Map<String, Boolean> response = new HashMap<>();
+        response.put("exists", exists);
+        return ResponseEntity.ok(response);
+    }
+
+    // Verifica se o username já está em uso
+    @GetMapping("/check-username")
+    public ResponseEntity<Map<String,Boolean>> checkUsernameExists(@RequestParam String username){
+        boolean exists = service.usernameExists(username);
+        Map<String, Boolean> response = new HashMap<>();
+        response.put("exists", exists);
+        return ResponseEntity.ok(response);
     }
 
 }
