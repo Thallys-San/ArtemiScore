@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
-import "../components/layout/css/cadastro.css"; // Importando o CSS do componente
+import "../components/layout/css/cadastro.css";
 import ProfilePicture from "../components/commom/ProfilePicture";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
+import { auth } from "../components/firebase";
+import { createUserWithEmailAndPassword, getIdToken, sendEmailVerification } from "firebase/auth";
 
 const Cadastro = () => {
   // Estados
@@ -63,6 +65,19 @@ const Cadastro = () => {
     }
   };
 
+  const validatePassword = (password) => {
+    if (password.length < 8) {
+      return "A senha deve ter pelo menos 8 caracteres";
+    } else if (!/[A-Z]/.test(password)) {
+      return "A senha deve conter ao menos uma letra maiúscula";
+    } else if (!/[0-9]/.test(password)) {
+      return "A senha deve conter ao menos um número";
+    } else if (!/[!@#$%^&*(),.?\":{}|<>]/.test(password)) {
+      return "A senha deve conter ao menos um caractere especial";
+    }
+    return ""; // válida
+  };
+
   // Validação do formulário
   const validateForm = () => {
     const newErrors = {};
@@ -75,9 +90,7 @@ const Cadastro = () => {
       newErrors.email = "Informe um e-mail válido";
     }
 
-    if (formData.password.length < 8) {
-      newErrors.password = "A senha deve ter pelo menos 8 caracteres";
-    }
+    validatePassword;
 
     if (formData.password !== formData.confirmPassword) {
       newErrors.confirmPassword = "As senhas não coincidem";
@@ -87,19 +100,106 @@ const Cadastro = () => {
     return Object.keys(newErrors).length === 0;
   };
 
+  const handleBlur = async (e) => {
+    const { name, value } = e.target;
+    const newErrors = { ...errors };
+
+    switch (name) {
+      case "username":
+        if (!value.trim()) {
+          newErrors.username = "Informe um nome de usuário";
+        } else {
+          // Verifica duplicidade no backend
+          try {
+            const res = await fetch(
+              `http://localhost:8080/api/usuarios/check-username?username=${value}`
+            );
+            const data = await res.json();
+            if (data.exists) {
+              newErrors.username = "Nome de usuário já está em uso";
+            } else {
+              delete newErrors.username;
+            }
+          } catch (err) {
+            newErrors.username = "Erro ao verificar nome de usuário";
+          }
+        }
+        break;
+
+      case "email":
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
+          newErrors.email = "Informe um e-mail válido";
+        } else {
+          // Verifica duplicidade no backend
+          try {
+            const res = await fetch(
+              `http://localhost:8080/api/usuarios/check-email?email=${value}`
+            );
+            const data = await res.json();
+            if (data.exists) {
+              newErrors.email = "E-mail já está em uso";
+            } else {
+              delete newErrors.email;
+            }
+          } catch (err) {
+            newErrors.email = "Erro ao verificar e-mail";
+          }
+        }
+        break;
+
+      case "password":
+        const passwordError = validatePassword(value);
+        if (passwordError) {
+          newErrors.password = passwordError;
+        } else {
+          delete newErrors.password;
+        }
+        break;
+
+      case "confirmPassword":
+        if (value !== formData.password) {
+          newErrors.confirmPassword = "As senhas não coincidem";
+        } else {
+          delete newErrors.confirmPassword;
+        }
+        break;
+
+      default:
+        break;
+    }
+
+    setErrors(newErrors);
+  };
+
   // Submissão do formulário
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setGeneralError("");
 
-    if (!validateForm()) return;
-
+    // Chama a validação
+    const isValid = validateForm();
+    if (!isValid) {
+      setGeneralError("Preencha todos os campos obrigatórios corretamente!");
+      return; // Se não for válido, para a execução
+    }
     try {
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        formData.email,
+        formData.password
+      );
+
+      const user = userCredential.user;
+
+      // Envia o e-mail de verificação
+      await sendEmailVerification(user);
+
+      const idToken = await user.getIdToken(); // Token JWT do Firebase
+
       const userData = {
         nome: formData.username,
         email: formData.email,
-        senha: formData.password,
         bio: formData.bio,
+        senha: formData.password,
         foto_perfil: profilePic,
         preferencias_jogos: formData.favoriteGenres,
         plataformas_utilizadas: formData.preferredPlatforms,
@@ -107,21 +207,40 @@ const Cadastro = () => {
 
       const response = await fetch("http://localhost:8080/api/usuarios", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${idToken}`, // <-- Aqui você passa o token
+        },
         body: JSON.stringify(userData),
       });
 
       if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || "Erro ao cadastrar usuário");
+      const errorData = await response.json();
+      if (response.status === 409) {
+        setGeneralError(errorData.message || "Usuário já existe");
+      } else {
+        setGeneralError("Erro ao cadastrar usuário");
       }
-
-      alert("Cadastro realizado com sucesso!");
-      navigate("/home"); //<-- redireciona para a rota "/home"
-    } catch (error) {
-      console.error("Erro no cadastro:", error);
-      setGeneralError(error.message || "Erro ao conectar com o servidor");
+      return;
     }
+
+    alert("Cadastro realizado com sucesso! Verifique seu e-mail antes de fazer login.");
+    navigate("/login");
+
+  } catch (error) {
+    console.error("Erro no cadastro:", error);
+    alert("Erro ao cadastrar usuário: " + error.message);
+  }
+  };
+
+  const getInputClass = (fieldName) => {
+    if (errors[fieldName]) {
+      return "input-error";
+    }
+    if (formData[fieldName] && !errors[fieldName]) {
+      return "input-success";
+    }
+    return "";
   };
 
   return (
@@ -146,13 +265,19 @@ const Cadastro = () => {
               placeholder="Seu nome de usuário"
               value={formData.username}
               onChange={handleInputChange}
+              onBlur={handleBlur}
               required
               autoComplete="username"
+              className={getInputClass("username")}
             />
             {errors.username && (
-              <p className="error-message">{errors.username}</p>
+              <p className="error-message">
+                <span className="error-icon">⚠</span>
+                {errors.username}
+              </p>
             )}
           </div>
+
           <div className="input-group">
             <label htmlFor="email">E-mail</label>
             <input
@@ -162,11 +287,19 @@ const Cadastro = () => {
               placeholder="seuemail@exemplo.com"
               value={formData.email}
               onChange={handleInputChange}
+              onBlur={handleBlur}
               required
               autoComplete="email"
+              className={getInputClass("email")}
             />
-            {errors.email && <p className="error-message">{errors.email}</p>}
+            {errors.email && (
+              <p className="error-message">
+                <span className="error-icon">⚠</span>
+                {errors.email}
+              </p>
+            )}
           </div>
+
           <div className="input-group">
             <label htmlFor="password">Senha</label>
             <input
@@ -176,17 +309,24 @@ const Cadastro = () => {
               placeholder="Mínimo 8 caracteres"
               value={formData.password}
               onChange={handleInputChange}
+              onBlur={handleBlur}
               required
               minLength="8"
               autoComplete="new-password"
+              className={getInputClass("password")}
             />
             <small id="password-hint" className="form-text-hint">
-              Use 8 ou mais caracteres, incluindo letras e números.
+              Use 8 ou mais caracteres, no mínimo uma letra maiúscula, um número
+              e um caractere especial .
             </small>
             {errors.password && (
-              <p className="error-message">{errors.password}</p>
+              <p className="error-message">
+                <span className="error-icon">⚠</span>
+                {errors.password}
+              </p>
             )}
           </div>
+
           <div className="input-group">
             <label htmlFor="confirm-password">Confirmar Senha</label>
             <input
@@ -196,14 +336,20 @@ const Cadastro = () => {
               placeholder="Repita sua senha"
               value={formData.confirmPassword}
               onChange={handleInputChange}
+              onBlur={handleBlur}
               required
               minLength="8"
               autoComplete="new-password"
+              className={getInputClass("confirmPassword")}
             />
             {errors.confirmPassword && (
-              <p className="error-message">{errors.confirmPassword}</p>
+              <p className="error-message">
+                <span className="error-icon">⚠</span>
+                {errors.confirmPassword}
+              </p>
             )}
           </div>
+
           {/* Campo de biografia com contador de caracteres */}
           <div className="input-group">
             <label htmlFor="bio">
@@ -317,6 +463,12 @@ const Cadastro = () => {
               </small>
             )}
           </fieldset>
+          {generalError && (
+            <div id="generalErrorMessage">
+              <span className="error-icon">⚠</span>
+              {generalError}
+            </div>
+          )}
           <button className="sign" type="submit">
             Criar Conta
           </button>
@@ -331,7 +483,7 @@ const Cadastro = () => {
       <br />
       <p className="login-link">
         Já tem uma conta?
-        <Link to="/Login.jsx" className="">
+        <Link to="/Login" className="">
           Faça Login
         </Link>
       </p>
