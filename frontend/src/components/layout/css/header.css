@@ -63,18 +63,25 @@ body::before {
 
 /* ========= HEADER ========= */
 header {
-    background: rgba(15, 15, 19, 0.85);   /* Fundo semi-transparente */
-    backdrop-filter: blur(12px);            /* Efeito de blur (vidro fosco) */
-    -webkit-backdrop-filter: blur(12px);    /* Suporte para Safari */
-    padding: 1rem 0;                        /* Espaçamento vertical */
-    position: fixed;                        /* Fixo no topo */
-    width: 100%;                            /* Largura total */
-    top: 0;                                 /* Alinhado ao topo */
-    z-index: 1000;                          /* Garante que fique acima de outros elementos */
+    background: rgba(15, 15, 19, 0.85);        /* Fundo semi-transparente */
+    backdrop-filter: blur(12px);                /* Efeito de blur (vidro fosco) */
+    -webkit-backdrop-filter: blur(12px);        /* Suporte para Safari */
+    height: 73px;                               /* Altura fixa */
+    box-sizing: border-box;                     /* Inclui bordas e padding na altura */
+    padding: 0 1rem;                            /* Apenas padding horizontal */
+    position: fixed;                            /* Fixo no topo */
+    width: 100%;                               /* Largura total */
+    top: 0;                                    /* Alinhado ao topo */
+    z-index: 1000;                             /* Fica acima dos elementos */
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3); /* Sombra sutil */
     border-bottom: 1px solid rgba(87, 51, 239, 0.3); /* Borda inferior sutil */
-    transition: var(--transition-slow);     /* Transição suave para efeitos */
+    transition: var(--transition-slow);       /* Transição suave */
+    
+    display: flex;                             /* Flexbox para alinhamento */
+    align-items: center;                       /* Centraliza verticalmente */
+    justify-content: space-between;            /* Espaço entre elementos */
 }
+
 
 /* HEADER AO ROLAR A PÁGINA - Efeito de redução */
 header.scrolled {
@@ -240,8 +247,10 @@ header.scrolled {
 }
 
 /* MENU DO USUÁRIO */
-#userMenuContainer {
-    position: relative;                     /* Contexto para dropdown */
+.user-menu-container { /* mudou de #userMenuContainer para .user-menu-container para casar com seu JSX */
+    position: relative;
+  padding-bottom: 70px;     /* área expandida para hover */
+  margin-bottom: -70px;     /* remove o espaço extra causado pelo padding */                   /* Expande a área para baixo e evita hover sair ao mover mouse */
 }
 
 /* BOTÃO DO MENU DO USUÁRIO */
@@ -269,25 +278,63 @@ header.scrolled {
 
 /* DROPDOWN DO USUÁRIO */
 .user-dropdown {
-    position: absolute;                     /* Posicionamento absoluto */
-    right: 0;                               /* Alinhado à direita */
-    top: 50px;                              /* Distância do botão */
-    background-color: var(--dark-gray);     /* Fundo escuro */
-    border-radius: 12px;                    /* Bordas arredondadas */
-    box-shadow: var(--shadow-lg);           /* Sombra grande */
-    width: 240px;                           /* Largura fixa */
-    padding: 0.5rem 0;                      /* Espaçamento vertical */
-    opacity: 0;                             /* Inicialmente transparente */
-    visibility: hidden;                     /* Inicialmente invisível */
-    transition: opacity 0.3s ease, visibility 0.3s ease, top 0.3s ease; /* Anima tudo */
-    z-index: 100;                           /* Sobre outros elementos */
-    border: 1px solid var(--medium-gray);   /* Borda sutil */
-    backdrop-filter: blur(10px);            /* Efeito de vidro fosco */
+    position: absolute;                 /* Posicionamento absoluto */
+    right: 0;                         /* Alinhado à direita */
+    top: 50px;                       /* Distância do botão */
+    background-color: var(--dark-gray); /* Fundo escuro */
+    border-radius: 12px;              /* Bordas arredondadas */
+    box-shadow: var(--shadow-lg);    /* Sombra grande */
+    box-sizing: border-box;
+    width: 240px;                    /* Largura fixa */
+    max-width: 90vw;
+    padding: 0.5rem 0;               /* Espaçamento vertical */
+    opacity: 0;                     /* Inicialmente transparente */
+    visibility: hidden;             /* Inicialmente invisível */
+    transition: opacity 0.3s ease, visibility 0.3s ease, top 0.3s ease; /* Animação suave */
+    z-index: 100;                  /* Sobre outros elementos */
+    border: 1px solid var(--medium-gray); /* Borda sutil */
+    backdrop-filter: blur(10px);   /* Vidro fosco */
+    pointer-events: none;          /* Evita clique quando invisível */
 }
 
-/* MOSTRAR DROPDOWN - Por hover ou classe JS */
+/* Abrir dropdown ao passar mouse no container que engloba botão + dropdown */
+.user-menu-container:hover .user-dropdown {
+    opacity: 1;
+    visibility: visible;
+    top: 45px; /* Pequeno ajuste para efeito de subida */
+    pointer-events: auto; /* Permite clique quando visível */
+}
 
 
+
+.user-dropdown-container {
+  position: relative;
+}
+
+.user-dropdown-container::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 0;
+  height: 10px;  /* zona entre botão e menu */
+  width: 100%;
+  background: transparent;
+}
+
+
+.user-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  margin-top: 8px; /* afasta um pouco do botão */
+  padding: 12px;
+  display: none;
+}
+
+.user-dropdown-container:hover .user-menu,
+.user-menu:hover {
+  display: block;
+}
 
 /* ITENS DO DROPDOWN */
 .dropdown-item {
@@ -298,6 +345,13 @@ header.scrolled {
     text-decoration: none;                  /* Remove sublinhado */
     font-size: 0.9rem;                      /* Tamanho médio */
     transition: var(--transition);          /* Efeito de transição */
+}
+
+/* Para melhor acessibilidade: foco visível nos itens */
+.dropdown-item:focus {
+  outline: 2px solid var(--primary);
+  background-color: var(--medium-gray);
+  color: var(--white);
 }
 
 /* EFEITO HOVER NOS ITENS */
@@ -322,6 +376,24 @@ header.scrolled {
     background-color: var(--medium-gray);    /* Cor de fundo */
     margin: 0.5rem 0;                       /* Espaçamento vertical */
 }
+
+/* Para botão logout ter aparência consistente */
+.dropdown-item.button-logout {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.75rem 1.5rem;
+  font: inherit;
+  color: var(--lighter);
+  width: 100%;
+  text-align: left;
+}
+.dropdown-item.button-logout:hover {
+  background-color: var(--medium-gray);
+  color: var(--white);
+  padding-left: 1.75rem;
+}
+
 
 /* BOTÃO DO MENU MOBILE - Escondido em desktop */
 .mobile-menu-button {
