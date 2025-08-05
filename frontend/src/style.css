@@ -1,4 +1,30 @@
 /* ===================== VARIÁVEIS GLOBAIS ===================== */
+/* Reset básico */
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0 ;
+  box-sizing: border-box;
+}
+
+html, body, #root {
+  margin: 0;
+  padding-left: 0;
+  padding-right: 0;
+  width: 100%;
+  height: 100%;
+  background-color: var(--dark-gray);
+  overflow-x: hidden; /* previne scroll horizontal inesperado */
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
 :root {
   /* Cores principais */
   --dark-gray: #1a1a1a;
@@ -32,8 +58,8 @@
 
 /* ===================== SEÇÕES ===================== */
 .section-wrapper {
-  margin-bottom: 3rem;
-  position: relative;
+  padding-left: 0;
+  padding-right: 0;
 }
 
 .section-title {
