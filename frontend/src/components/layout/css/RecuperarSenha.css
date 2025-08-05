@@ -1,0 +1,232 @@
+/* RecuperarSenha.css */
+/* Estilos gerais */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+}
+
+:root {
+  --primary: #5733ef;
+  --primary-dark: #4625c9;
+  --accent: #c688ff;
+  --dark: #0f0f13;
+  --darker: #0a0a0d;
+  --gray: #1e1e24;
+  --gray-light: #2a2a35;
+  --light-gray: #6d6d7a;
+  --white: #ffffff;
+  --error: #e74c3c;
+}
+
+/* Container principal */
+.login-section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 2rem;
+  background: linear-gradient(135deg, var(--darker) 0%, var(--dark) 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+.login-section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background:
+    radial-gradient(circle at 10% 20%, rgba(87, 51, 239, 0.1) 0%, rgba(15, 15, 19, 0) 40%),
+    radial-gradient(circle at 90% 80%, rgba(198, 136, 255, 0.1) 0%, rgba(15, 15, 19, 0) 40%);
+  z-index: -1;
+}
+
+/* Card de recuperação */
+.login-container {
+  width: 100%;
+  max-width: 450px;
+  background: rgba(30, 30, 36, 0.9);
+  backdrop-filter: blur(10px);
+  border-radius: 16px;
+  padding: 2.5rem;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  border: 1px solid var(--primary);
+  z-index: 1;
+  animation: fadeIn 0.5s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Cabeçalho */
+.login-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.login-header h2 {
+  font-size: 2.2rem;
+  background: linear-gradient(45deg, var(--primary), var(--accent));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  margin-bottom: 0.5rem;
+  line-height: 1.2;
+}
+
+.login-header p {
+  color: var(--light-gray);
+  font-size: 0.95rem;
+}
+
+/* Formulário */
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: var(--light-gray);
+  font-weight: 500;
+  font-size: 0.95rem;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 0.9rem 1.2rem;
+  background: var(--darker);
+  border: 1px solid var(--gray-light);
+  border-radius: 8px;
+  color: var(--white);
+  font-size: 1rem;
+  transition: all 0.3s ease;
+}
+
+.form-group input:focus {
+  border-color: var(--primary);
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(87, 51, 239, 0.2);
+}
+
+/* Botão de envio */
+.login-button {
+  width: 100%;
+  padding: 1rem;
+  background: linear-gradient(45deg, var(--primary), var(--primary-dark));
+  border: none;
+  border-radius: 8px;
+  color: var(--white);
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+  margin: 1rem 0;
+}
+
+.login-button:hover:not(:disabled) {
+  background: linear-gradient(45deg, var(--primary-dark), var(--primary));
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(87, 51, 239, 0.3);
+}
+
+.login-button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+/* Mensagens */
+.message-container {
+  text-align: center;
+  padding: 1.5rem;
+  background: rgba(30, 30, 36, 0.7);
+  border-radius: 8px;
+  margin-bottom: 1.5rem;
+}
+
+.message-container.success {
+  border: 1px solid var(--primary);
+}
+
+.message-container.success p {
+  color: var(--accent);
+}
+
+.message-container.error {
+  border: 1px solid var(--error);
+}
+
+.message-container.error p {
+  color: var(--error);
+}
+
+.back-to-login {
+  margin-top: 1rem;
+}
+
+.back-to-login a {
+  color: var(--accent);
+  font-weight: 600;
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+.back-to-login a:hover {
+  color: var(--white);
+  text-decoration: underline;
+}
+
+/* Link para login */
+.register-link {
+  text-align: center;
+  margin-top: 1.5rem;
+  color: var(--light-gray);
+  font-size: 0.95rem;
+}
+
+.register-link a {
+  color: var(--accent);
+  font-weight: 600;
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+.register-link a:hover {
+  color: var(--white);
+  text-decoration: underline;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  .login-container {
+    padding: 2rem 1.5rem;
+  }
+
+  .login-header h2 {
+    font-size: 1.8rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .login-section {
+    padding: 1rem;
+  }
+}
