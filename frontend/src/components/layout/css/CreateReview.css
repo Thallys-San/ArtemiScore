@@ -129,21 +129,21 @@
 /* Estrelas de avaliação - Versão ajustada */
 .star-rating {
   display: flex;
-  gap: 0.8rem; /* Aumentei o espaçamento entre estrelas */
-  font-size: 3.5rem; /* Aumentei o tamanho das estrelas */
-  margin: 1rem 0; /* Ajuste de margem */
+  gap: 0.8rem;
+  font-size: 3.5rem;
+  margin: 1rem 0;
   justify-content: center;
   width: 100%;
-  min-height: 60px; /* Garante altura mínima */
+  min-height: 60px;
 }
 
 .star-btn {
   background: none;
   border: none;
-  color: #ddd;
+  color: #4b5563; /* Neutral gray for unfilled stars */
   cursor: pointer;
-  width: 50px; /* Diminuí a largura para melhor proporção */
-  height: 50px; /* Diminuí a altura para melhor proporção */
+  width: 50px;
+  height: 50px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -156,7 +156,45 @@
   font-size: 2.5rem; /* Tamanho fixo para o ícone */
 }
 
-/* Versão para telas maiores - ainda mais destacada */
+/* Estrela preenchida */
+.star-btn.filled {
+  color: #facc15; /* Yellow for filled stars */
+}
+
+/* Estrela meio preenchida */
+.star-btn.half-filled {
+  background: linear-gradient(
+    to right,
+    #facc15 50%, /* Left half yellow */
+    #4b5563 50% /* Right half gray */
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Hover e focus mais pronunciados */
+.star-btn:hover {
+  transform: scale(1.25);
+}
+
+.star-btn:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+/* Remove os controles de incremento/decremento */
+.no-spinner::-webkit-outer-spin-button,
+.no-spinner::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Para Firefox */
+.no-spinner {
+  -moz-appearance: textfield;
+}
+/* Versão para telas maiores */
 @media (min-width: 768px) {
   .star-rating {
     gap: 1rem;
@@ -170,15 +208,19 @@
   }
 }
 
-/* Efeitos de hover e focus mais pronunciados */
-.star-btn:hover {
-  transform: scale(1.25);
-}
+/* Telas muito pequenas */
+@media (max-width: 480px) {
+  .star-rating {
+    gap: 0.4rem;
+    font-size: 2.8rem;
+    justify-content: center;
+  }
 
-.star-btn:focus-visible {
-  outline: 2px solid var(--primary);
-  outline-offset: 2px;
-  border-radius: 2px;
+  .star-btn {
+    width: 64px;
+    height: 64px;
+    font-size: 2.5rem; /* Mantém tamanho original */
+  }
 }
 
 /* Mensagens de erro */
