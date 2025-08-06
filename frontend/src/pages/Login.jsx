@@ -101,13 +101,9 @@ const Login = () => {
               <label htmlFor="remember">Lembrar-me</label>
             </div>
 
-            <button
-              type="button"
-              onClick={handlePasswordReset}
-              className="forgot-password"
-            >
-              Esqueceu a senha?
-            </button>
+           <p>
+              Esqueceu a senha? <Link to="/recuperacao">Crie agora</Link>
+            </p>
           </div>
 
           <button 
