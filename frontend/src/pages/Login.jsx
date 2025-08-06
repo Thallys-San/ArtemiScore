@@ -1,14 +1,13 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import '../components/layout/css/Login.css';
-import { signInWithEmailAndPassword, signInWithPopup, sendPasswordResetEmail } from 'firebase/auth';
+import { signInWithEmailAndPassword, signInWithPopup } from 'firebase/auth';
 import { auth, provider } from '../components/firebase';
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [resetStatus, setResetStatus] = useState('');
   const navigate = useNavigate();
 
   const togglePasswordVisibility = () => {
@@ -40,26 +39,15 @@ const Login = () => {
     }
   };
 
-  const handlePasswordReset = async () => {
-    if (!email) {
-      alert('Por favor, insira seu e-mail para receber o link de recuperação.');
-      return;
-    }
-
-    try {
-      await sendPasswordResetEmail(auth, email);
-      setResetStatus('E-mail para recuperação enviado! Verifique sua caixa de entrada.');
-    } catch (error) {
-      console.error('Erro ao enviar e-mail de recuperação:', error);
-      setResetStatus('Erro ao enviar e-mail de recuperação. Verifique o e-mail e tente novamente.');
-    }
+  const handlePasswordReset = () => {
+    navigate('/reset-password');
   };
 
   return (
     <section className="login-section">
       <div className="login-container">
         <div className="title-container">
-          <h2>Bem-vindo de volta ao ArtemisScore!</h2>
+          <h2>Bem-vindo de volta ao ArtemiScore!</h2>
           <p>Entre na sua conta para continuar sua jornada</p>
         </div>
 
@@ -121,12 +109,6 @@ const Login = () => {
               Esqueceu a senha?
             </button>
           </div>
-
-          {resetStatus && (
-            <p className={`reset-status ${resetStatus.startsWith('Erro') ? 'error' : 'success'}`}>
-              {resetStatus}
-            </p>
-          )}
 
           <button 
             type="submit" 
