@@ -249,6 +249,7 @@ const validateForm = () => {
   };
 
   return (
+    <div className="cadastro-container">
     <div className="form-container">
       <h1 className="title">Crie Sua Conta</h1>
       <p className="subtitle">
@@ -492,6 +493,7 @@ const validateForm = () => {
           Faça Login
         </Link>
       </p>
+    </div>
     </div>
   );
 };
