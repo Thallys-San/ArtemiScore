@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './CreateReview.css';
 
-// === Subcomponente: StarRating ===
+// StarRating component (unchanged from previous response)
 const StarRating = ({ rating, onRate }) => {
   const handleClick = (e, star) => {
     const rect = e.currentTarget.getBoundingClientRect();
@@ -14,13 +14,14 @@ const StarRating = ({ rating, onRate }) => {
   const handleKeyDown = (e, star) => {
     if (e.key === 'ArrowLeft') {
       e.preventDefault();
-      onRate(Math.max(1, star - 0.5));
+      onRate(Math.max(0.5, star - 0.5));
     } else if (e.key === 'ArrowRight') {
       e.preventDefault();
-      onRate(Math.min(5, star));
+      onRate(Math.min(5, star + 0.5));
     } else if (e.key === 'Enter' || e.key === ' ') {
       e.preventDefault();
-      onRate(star);
+      const newRating = rating === star ? star - 0.5 : star;
+      onRate(newRating >= 0.5 ? newRating : star);
     }
   };
 
@@ -30,8 +31,8 @@ const StarRating = ({ rating, onRate }) => {
         <button
           key={star}
           type="button"
-          className={`star-btn ${rating >= star ? 'filled' : ''} ${
-            rating >= star - 0.5 && rating < star ? 'half-filled' : ''
+          className={`star-btn ${
+            rating >= star ? 'filled' : rating >= star - 0.5 ? 'half-filled' : ''
           }`}
           onClick={(e) => handleClick(e, star)}
           onKeyDown={(e) => handleKeyDown(e, star)}
@@ -47,7 +48,7 @@ const StarRating = ({ rating, onRate }) => {
   );
 };
 
-// === Subcomponente: SuccessState ===
+// SuccessState and LoadingSpinner components (unchanged)
 const SuccessState = ({ onReset }) => (
   <div className="success-state" role="status" aria-live="polite">
     <svg
@@ -64,20 +65,19 @@ const SuccessState = ({ onReset }) => (
       <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
       <polyline points="22 4 12 14.01 9 11.01" />
     </svg>
-    <h3>Opinião enviada com sucesso! 🎉</h3>
+    <h3>Avaliação enviada com sucesso! 🎉</h3>
     <p>Sua avaliação já está visível na página do jogo.</p>
     <button onClick={onReset} className="btn-primary" type="button">
-      Escrever outra opinião
+      Escrever outra Avaliação
     </button>
   </div>
 );
 
-// === Subcomponente: LoadingSpinner ===
 const LoadingSpinner = () => (
   <span className="loader" aria-hidden="true"></span>
 );
 
-// === Componente Principal ===
+// Main CreateReview component
 const CreateReview = () => {
   const platforms = ['PC', 'PlayStation 5', 'Xbox Series X', 'Nintendo Switch', 'Outros'];
 
@@ -90,10 +90,8 @@ const CreateReview = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [success, setSuccess] = useState(false);
 
-  // Placeholder: Simula usuário autenticado (deve vir de um contexto de autenticação)
-  const usuario_id = 1; // Substituir por lógica de autenticação real, e.g., useContext ou API
+  const usuario_id = 1; // Placeholder for authenticated user
 
-  // Função para limpar apenas um erro específico
   const clearError = (field) => {
     setErrors((prev) => {
       const updated = { ...prev };
@@ -105,7 +103,7 @@ const CreateReview = () => {
   const validate = () => {
     const newErrors = {};
 
-    if (rating < 1) newErrors.rating = 'Por favor, avalie com 1 a 5 estrelas.';
+    if (rating <= 0) newErrors.rating = 'Por favor, avalie com 0.5 a 5 estrelas.';
     if (!title.trim()) newErrors.title = 'O título é obrigatório.';
     else if (title.trim().length < 5)
       newErrors.title = 'O título deve ter pelo menos 5 caracteres.';
@@ -116,11 +114,13 @@ const CreateReview = () => {
     if (playTime && isNaN(playTime)) newErrors.playTime = 'O tempo de jogo deve ser um número.';
     else if (playTime && playTime < 0) newErrors.playTime = 'O tempo de jogo não pode ser negativo.';
 
+    console.log('Validation errors:', newErrors); // Debugging
     return newErrors;
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log('Form submitted with:', { rating, title, comment, platform, playTime }); // Debugging
 
     const newErrors = validate();
     if (Object.keys(newErrors).length > 0) {
@@ -130,10 +130,11 @@ const CreateReview = () => {
 
     setIsSubmitting(true);
 
-    // Simulação de envio (futuro: API)
-    setTimeout(() => {
+    try {
+      // Simulate API call
+      await new Promise((resolve) => setTimeout(resolve, 1200));
       const reviewData = {
-        usuario_id: usuario_id,
+        usuario_id,
         nota: rating,
         tempoDeJogo: playTime ? parseInt(playTime, 10) : null,
         plataforma: platform,
@@ -141,9 +142,13 @@ const CreateReview = () => {
         data_avaliacao: new Date().toISOString().split('T')[0],
       };
       console.log('✅ Opinião enviada:', reviewData);
-      setIsSubmitting(false);
       setSuccess(true);
-    }, 1200);
+    } catch (error) {
+      console.error('Submission error:', error);
+      setErrors({ submit: 'Erro ao enviar a opinião. Tente novamente.' });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleReset = () => {
@@ -161,7 +166,7 @@ const CreateReview = () => {
       <div className="container">
         <div className="review-card">
           <header className="review-header">
-            <h2 id="review-title">Escreva sua Opinião</h2>
+            <h2 id="review-title">Escreva sua Avaliação</h2>
             <p>Compartilhe sua experiência com a comunidade de jogadores</p>
           </header>
 
@@ -169,7 +174,7 @@ const CreateReview = () => {
             <SuccessState onReset={handleReset} />
           ) : (
             <form onSubmit={handleSubmit} className="review-form">
-              {/* Plataforma */}
+              {errors.submit && <span className="error form-error">{errors.submit}</span>}
               <div className="form-group">
                 <label htmlFor="platform">Plataforma</label>
                 <select
@@ -191,7 +196,6 @@ const CreateReview = () => {
                 {errors.platform && <span className="error">{errors.platform}</span>}
               </div>
 
-              {/* Tempo de Jogo */}
               <div className="form-group">
                 <label htmlFor="playTime">Tempo de Jogo (horas, opcional)</label>
                 <input
@@ -204,11 +208,12 @@ const CreateReview = () => {
                   }}
                   placeholder="Ex: 20"
                   aria-invalid={!!errors.playTime}
+                  step="any"  // Adicione esta linha
+                  className="no-spinner"  // Opcional: para estilização adicional
                 />
                 {errors.playTime && <span className="error">{errors.playTime}</span>}
               </div>
 
-              {/* Nota */}
               <div className="form-group">
                 <label id="rating-label">Nota</label>
                 <StarRating
@@ -218,14 +223,11 @@ const CreateReview = () => {
                     clearError('rating');
                   }}
                 />
-                <div aria-live="polite" className="error-message">
-                  {errors.rating && <span className="error">{errors.rating}</span>}
-                </div>
+                {errors.rating && <span className="error">{errors.rating}</span>}
               </div>
 
-              {/* Título */}
               <div className="form-group">
-                <label htmlFor="title">Título da Opinião</label>
+                <label htmlFor="title">Título</label>
                 <input
                   type="text"
                   id="title"
@@ -234,13 +236,12 @@ const CreateReview = () => {
                     setTitle(e.target.value);
                     clearError('title');
                   }}
-                  placeholder="Ex: Uma obra-prima da narrativa e exploração"
+                  placeholder="Ex: Ótima experiência!"
                   aria-invalid={!!errors.title}
                 />
                 {errors.title && <span className="error">{errors.title}</span>}
               </div>
 
-              {/* Comentário */}
               <div className="form-group">
                 <label htmlFor="comment">Comentário</label>
                 <textarea
@@ -257,7 +258,6 @@ const CreateReview = () => {
                 {errors.comment && <span className="error">{errors.comment}</span>}
               </div>
 
-              {/* Ações */}
               <div className="form-actions">
                 <button
                   type="button"
