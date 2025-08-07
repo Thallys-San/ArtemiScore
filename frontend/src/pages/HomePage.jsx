@@ -1,5 +1,5 @@
 
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 
 import Header from '../components/layout/Header';
 import Footer from '../components/layout/Footer';
@@ -8,13 +8,14 @@ import GameCard from '../components/cards/GameCard';
 import ReleaseCard from '../components/cards/ReleaseCard';
 import 'remixicon/fonts/remixicon.css';
 import { Link } from 'react-router-dom';
+import { AuthContext } from '../components/AuthContext';
 
 
 
 
 
 const HomePage = () => {
-  const [isAuthenticated, setisAuthenticated]=useState(false);
+  const {isAuthenticated, login, logout,user, token}=useContext(AuthContext);
   const [popularGames, setPopularGames] = useState([]);
   const [upcomingGames, setUpcomingGames] = useState([]);
 
@@ -22,9 +23,6 @@ const HomePage = () => {
   const MAX_RELEASE_CARDS = 4;
 
   useEffect(() => {
-
-    const token=localStorage.getItem('token')
-    setisAuthenticated(!!token);// true se existir, false se não
 
     fetchPopularGames();
     fetchUpcomingGames();
