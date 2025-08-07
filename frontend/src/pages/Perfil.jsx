@@ -12,6 +12,7 @@ const Perfil = () => {
   // Estado para controlar o carregamento
   const [carregando, setCarregando] = useState(true);
 
+  const [profilePic, setProfilePic] = useState("");
   // useEffect roda assim que o componente for montado
   useEffect(() => {
     const fetchPerfil = async () => {
