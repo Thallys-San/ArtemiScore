@@ -55,4 +55,8 @@ public class UsuariosService {
     public boolean usernameExists(String username){
         return repository.existsByNome(username);
     }
+
+    public Optional<UsuariosModel> buscarPorEmail(String email){
+        return repository.findByEmail(email);
+    }
 }
