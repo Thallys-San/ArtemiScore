@@ -52,7 +52,8 @@ public class SecurityConfiguration {
                 "/js/**",              // Frontend
                 "/api/games/**",       // Exemplo de endpoint público
                 "/avaliacoes/**",      // Exemplo
-                "/error"               // Rota padrão de erro
+                "/error",               // Rota padrão de erro
+                "/favicon.ico"
             ).permitAll()
             .anyRequest().authenticated() // Todas as outras rotas precisam de token
         )
