@@ -1,0 +1,27 @@
+const platformIcons = {
+  "pc": "/assets/icons/platforms/icons8-pc-50.png",
+  "linux": "/assets/icons/platforms/icons8-linux-48.png",
+  "macos": "/assets/icons/platforms/icons8-macos-50.png",
+  "playstation5": "/assets/icons/platforms/ps5.png",
+  "playstation4": "/assets/icons/platforms/ps4.png",
+  "playstation3": "/assets/icons/platforms/ps3.png",
+  "playstation2": "/assets/icons/platforms/icons8-ps-2-50.png",
+  "playstation1": "/assets/icons/platforms/icons8-playstation-50.png",  // corrigido slug
+  "psp": "/assets/icons/platforms/icons8-psp-50.png",
+  "xbox360": "/assets/icons/platforms/xbox360.png",
+  "xbox-one": "/assets/icons/platforms/xbox-one.png",
+  "xbox-series-x": "/assets/icons/platforms/xbox-series-x.png",
+  "nintendo-switch": "/assets/icons/platforms/switch.png",
+  "wii": "/assets/icons/platforms/icons8-wii-50.png",
+  "wii-u": "/assets/icons/platforms/icons8-wii-u-24.png",
+  "gamecube": "/assets/icons/platforms/icons8-nintendo-gamecube-24.png",
+  "nintendo-64": "/assets/icons/platforms/icons8-nintendo-64-48.png",
+  "snes": "/assets/icons/platforms/icons8-snes-48.png",
+  "game-boy": "/assets/icons/platforms/icons8-gameboy-48.png",
+  "game-boy-advance": "/assets/icons/platforms/icons8-gameboy-advance-console-48.png",
+  "dreamcast": "/assets/icons/platforms/icons8-dreamcast-48.png",
+  "sega-cd": "/assets/icons/platforms/icons8-sega-mega-cd-system-48.png",
+  "atari-2600": "/assets/icons/platforms/icons8-atari-retro-24.png", // exemplo de desagregação
+  "android": "/assets/icons/platforms/icons8-android-os-50.png",
+  "ios": "/assets/icons/platforms/icons8-apple-inc-50.png",
+};
