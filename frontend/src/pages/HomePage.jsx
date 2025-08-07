@@ -7,12 +7,14 @@ import HeroBanner from '../components/layout/HeroBanner';
 import GameCard from '../components/cards/GameCard';
 import ReleaseCard from '../components/cards/ReleaseCard';
 import 'remixicon/fonts/remixicon.css';
+import { Link } from 'react-router-dom';
 
 
 
 
 
 const HomePage = () => {
+  const [isAuthenticated, setisAuthenticated]=useState(false);
   const [popularGames, setPopularGames] = useState([]);
   const [upcomingGames, setUpcomingGames] = useState([]);
 
@@ -20,11 +22,18 @@ const HomePage = () => {
   const MAX_RELEASE_CARDS = 4;
 
   useEffect(() => {
+
+    const token=localStorage.getItem('token')
+    setisAuthenticated(!!token);// true se existir, false se não
+
     fetchPopularGames();
     fetchUpcomingGames();
   }, []);
 
   const fetchPopularGames = async () => {
+    
+
+
     try {
       const res = await fetch("http://localhost:8080/api/games/cards");
       const cards = await res.json();
