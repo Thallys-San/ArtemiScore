@@ -3,6 +3,7 @@ import axios from "axios";
 import "../components/layout/css/Perfil.css";
 import Header from "../components/layout/Header";
 import { Link } from "react-router-dom";
+import ProfilePicture from "../components/commom/ProfilePicture";
 
 const Perfil = () => {
   // Estado que armazena os dados do usuário
@@ -28,6 +29,7 @@ const Perfil = () => {
 
         // Salva os dados do usuário no estado
         setUsuario(response.data);
+        setProfilePic(response.data.foto_perfil)
       } catch (error) {
         // Mostra erro no console, caso ocorra
         console.error("Erro ao carregar o perfil: ", error);
@@ -53,7 +55,7 @@ const Perfil = () => {
       <Header></Header>
 
       <div>
-        <ProfilePicture onAvatarChange={setProfilePic}></ProfilePicture>
+        <ProfilePicture src={usuario.foto_perfil} />
       </div>
 
       {/* Informações principais do usuário */}
@@ -109,11 +111,6 @@ const Perfil = () => {
           <p>{usuario.plataformas?.join(", ")}</p>
         </div>
 
-        {/* Conquistas/insígnias */}
-        <div className="badges">
-          <h4>Conquistas</h4>
-          <p>{usuario.conquistas?.join(", ")}</p>
-        </div>
       </aside>
     </main>
   );
