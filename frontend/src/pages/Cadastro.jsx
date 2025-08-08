@@ -194,17 +194,15 @@ const validateForm = () => {
       );
 
       const user = userCredential.user;
-
-      // Envia o e-mail de verificação
       await sendEmailVerification(user);
-
-      const idToken = await user.getIdToken(); // Token JWT do Firebase
+      const idToken = await user.getIdToken();
 
       const userData = {
+        uid: user.uid,              // <-- adicionado
         nome: formData.username,
         email: formData.email,
         bio: formData.bio,
-        senha: formData.password,
+        senha: formData.password,  // veja observação para talvez remover
         foto_perfil: profilePic,
         preferencias_jogos: formData.favoriteGenres,
         plataformas_utilizadas: formData.preferredPlatforms,
@@ -214,10 +212,11 @@ const validateForm = () => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${idToken}`, // <-- Aqui você passa o token
+          Authorization: `Bearer ${idToken}`,
         },
         body: JSON.stringify(userData),
       });
+
 
       if (!response.ok) {
       const errorData = await response.json();
