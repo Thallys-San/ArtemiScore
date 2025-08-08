@@ -1,5 +1,5 @@
-  import React, { useState } from "react";
-  import { useNavigate, Link, data } from "react-router-dom";
+  import React, { useState, useContext } from "react";
+  import { useNavigate, Link } from "react-router-dom";
   import "../components/layout/css/Login.css";
   import {
     signInWithEmailAndPassword,
@@ -35,7 +35,14 @@
         const user = userCredential.user;
 
         const token = await user.getIdToken();
-        login (token, {uid:user.uid, email: user.email});
+        login(token, {
+          uid: user.uid,
+          email: user.email,
+          displayName: user.displayName,
+          photoURL: user.photoURL,
+        });
+
+
 
         navigate("/home");
       } catch (error) {
