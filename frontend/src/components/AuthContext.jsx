@@ -1,35 +1,57 @@
-// Importa as funções e hooks do React
+// AuthContext.jsx
 import React, { createContext, useState, useEffect } from "react";
+import { onIdTokenChanged, signOut } from "firebase/auth";
+import { auth, provider } from "./firebase"; // ajustando o caminho conforme a localização real
 
-// Cria o contexto que será usado em toda a aplicação
+
 export const AuthContext = createContext();
 
-// Cria o provedor do contexto, que vai envolver os componentes da aplicação
 export const AuthProvider = ({ children }) => {
-  // Estado para saber se o usuário está autenticado
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-
-  // Estado para armazenar o token JWT
   const [token, setToken] = useState(null);
-
-  // Estado para armazenar os dados do usuário
   const [user, setUser] = useState(null);
 
-  // useEffect roda uma vez, ao montar o componente
   useEffect(() => {
-    // Recupera o token e o usuário do localStorage, se existirem
+    // Recupera do localStorage se já havia login salvo
     const savedToken = localStorage.getItem("token");
     const savedUser = JSON.parse(localStorage.getItem("user"));
 
-    // Se houver token salvo, atualiza os estados
-    if (savedToken) {
+    if (savedToken && savedUser) {
       setIsAuthenticated(true);
       setToken(savedToken);
       setUser(savedUser);
     }
+
+    // Listener para atualização automática do token
+    const unsubscribe = onIdTokenChanged(auth, async (firebaseUser) => {
+      if (firebaseUser) {
+        const newToken = await firebaseUser.getIdToken();
+        const userData = {
+          uid: firebaseUser.uid,
+          email: firebaseUser.email,
+          displayName: firebaseUser.displayName,
+          photoURL: firebaseUser.photoURL,
+        };
+
+        setToken(newToken);
+        setUser(userData);
+        setIsAuthenticated(true);
+
+        localStorage.setItem("token", newToken);
+        localStorage.setItem("user", JSON.stringify(userData));
+      } else {
+        // Se deslogar no Firebase, limpa tudo
+        setToken(null);
+        setUser(null);
+        setIsAuthenticated(false);
+        localStorage.removeItem("token");
+        localStorage.removeItem("user");
+      }
+    });
+
+    return () => unsubscribe();
   }, []);
 
-  // Função de login: salva token e dados do usuário no localStorage e nos estados
   const login = (token, userData) => {
     localStorage.setItem("token", token);
     localStorage.setItem("user", JSON.stringify(userData));
@@ -38,8 +60,8 @@ export const AuthProvider = ({ children }) => {
     setIsAuthenticated(true);
   };
 
-  // Função de logout: limpa o localStorage e reseta os estados
-  const logout = () => {
+  const logout = async () => {
+    await signOut(auth);
     localStorage.removeItem("token");
     localStorage.removeItem("user");
     setToken(null);
@@ -47,7 +69,6 @@ export const AuthProvider = ({ children }) => {
     setIsAuthenticated(false);
   };
 
-  // Retorna o provedor com os dados e funções disponíveis para os componentes filhos
   return (
     <AuthContext.Provider value={{ isAuthenticated, token, user, login, logout }}>
       {children}
