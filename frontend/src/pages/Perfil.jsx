@@ -1,120 +1,68 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import "../components/layout/css/Perfil.css";
 import Header from "../components/layout/Header";
 import { Link } from "react-router-dom";
 import ProfilePicture from "../components/commom/ProfilePicture";
+import { AuthContext } from "../components/AuthContext";
 
-const Perfil = () => {
-  // Estado que armazena os dados do usuário
-  const [usuario, setUsuario] = useState(null);
+function Perfil() {
+  const { token } = useContext(AuthContext);
+  const [perfil, setPerfil] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  // Estado para controlar o carregamento
-  const [carregando, setCarregando] = useState(true);
-
-  const [profilePic, setProfilePic] = useState("");
-  // useEffect roda assim que o componente for montado
   useEffect(() => {
+    console.log("Token atual:", token);
     const fetchPerfil = async () => {
+      if (!token) {
+        setError("Usuário não autenticado");
+        setLoading(false);
+        return;
+      }
+
       try {
-        // Recupera o token JWT salvo no login
-        const token = localStorage.getItem("token");
+        setLoading(true);
+        setError(null);
 
-        // Faz a requisição GET para buscar o perfil do usuário logado
-        const response = await axios.get(
-          "http://localhost:8080/api/usuarios/me",
-          {
-            headers: { Authorization: `Bearer ${token}` }, // Envia o token no cabeçalho
-          }
-        );
+        const response = await axios.get("http://localhost:8080/api/usuarios/me", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
 
-        // Salva os dados do usuário no estado
-        setUsuario(response.data);
-        setProfilePic(response.data.foto_perfil)
-      } catch (error) {
-        // Mostra erro no console, caso ocorra
-        console.error("Erro ao carregar o perfil: ", error);
+        setPerfil(response.data);
+      } catch (err) {
+        console.error("Erro ao carregar o perfil:", err);
+        setError("Erro ao carregar os dados do perfil");
       } finally {
-        // Marca que terminou o carregamento
-        setCarregando(false);
+        setLoading(false);
       }
     };
 
-    // Chama a função que busca os dados
     fetchPerfil();
-  }, []); // Array vazio significa que executa só 1 vez ao montar
+  }, [token]);
 
-  // Se ainda estiver carregando, mostra mensagem de loading
-  if (carregando) return <p>Carregando perfil...</p>;
-
-  // Se não houver dados de usuário (erro), exibe erro
-  if (!usuario) return <p>Erro ao carregar perfil.</p>;
+  if (loading) return <div className="loading">Carregando perfil...</div>;
+  if (error) return <div className="error">{error}</div>;
+  if (!perfil) return <div className="no-data">Nenhum dado disponível</div>;
 
   return (
-    <main className="profile">
-      {/* Cabeçalho do perfil */}
-      <Header></Header>
-
-      <div>
-        <ProfilePicture src={usuario.foto_perfil} />
-      </div>
-
-      {/* Informações principais do usuário */}
-      <div className="profile-info">
-        <h2>{usuario.nome}</h2>
-        <p className="data">
-          Membro desde{" "}
-          {new Date(usuario.dataCadastro).toLocaleDateString("pt-BR")}
-        </p>
-        <p>{usuario.bio || "Sem descrição pessoal."}</p>
-        <button className="edit">Editar Perfil</button>
-        <button className="share">+ Compartilhar</button>
-      </div>
-
-      {/* Métricas: avaliações e likes */}
-      <section className="metrics">
-        <div className="card">
-          Avaliações: <strong>{usuario.totalAvaliacoes}</strong>
-        </div>
-        <div className="card">
-          Likes recebidos: <strong>{usuario.totalLikes}</strong>
-        </div>
-      </section>
-
-      {/* Avaliações recentes do usuário */}
-      <section className="reviews">
-        <h3>Avaliações Recentes</h3>
-        {usuario.avaliacoes?.map((avaliacao, index) => (
-          <div key={index} className="review">
-            <h4>
-              {avaliacao.jogo} <span>{avaliacao.nota}</span>
-            </h4>
-            <p>{avaliacao.comentario}</p>
+    <>
+      <Header />
+      <div className="container-perfil">
+        <div className="card-perfil">
+          <ProfilePicture src={perfil.fotoPerfilUrl} alt={perfil.nome || "Foto do usuário"} />
+          <div className="informacoes-usuario">
+            <h1 className="titulo">{perfil.nome || "Usuário"}</h1>
+            <p className="bio">{perfil.bio || "Adicione uma bio"}</p>
           </div>
-        ))}
-      </section>
-
-      {/* Informações adicionais: preferências, plataformas e conquistas */}
-      <aside className="sidebar">
-        {/* Preferências de gênero */}
-        <div className="prefs">
-          <h4>Preferências de Jogos</h4>
-          <ul>
-            {usuario.preferencias?.map((pref, index) => (
-              <li key={index}>{pref}</li>
-            ))}
-          </ul>
         </div>
 
-        {/* Plataformas mais usadas */}
-        <div className="platforms">
-          <h4>Plataformas mais Utilizadas</h4>
-          <p>{usuario.plataformas?.join(", ")}</p>
-        </div>
-
-      </aside>
-    </main>
+        {/* Outros cards (estatísticas, avaliações, etc) aqui */}
+      </div>
+    </>
   );
-};
+}
 
 export default Perfil;
