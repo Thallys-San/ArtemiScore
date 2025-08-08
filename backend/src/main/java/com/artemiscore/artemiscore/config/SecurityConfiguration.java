@@ -40,44 +40,53 @@ public class SecurityConfiguration {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-    http
-        .cors(cors -> cors.configurationSource(corsConfigurationSource())) // Habilita o CORS
-        .csrf(csrf -> csrf.disable()) // Desativa proteção CSRF
-        .authorizeHttpRequests(auth -> auth
-        .requestMatchers(HttpMethod.POST, "/api/usuarios").permitAll()
-            .requestMatchers(
-                "/api/auth/**",        // Rota pública para login
-                "/api/usuarios/**",    // Rota temporariamente pública para cadastro
-                "/css/**",             // Frontend
-                "/js/**",              // Frontend
-                "/api/games/**",       // Exemplo de endpoint público
-                "/avaliacoes/**",      // Exemplo
-                "/error",               // Rota padrão de erro
-                "/favicon.ico"
-            ).permitAll()
-            .anyRequest().authenticated() // Todas as outras rotas precisam de token
-        )
-        .sessionManagement(session -> session
-            .sessionCreationPolicy(SessionCreationPolicy.STATELESS) // Não cria sessão (stateless)
-        )
-        .addFilterBefore(firebaseAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+        http
+            .cors(cors -> cors.configurationSource(corsConfigurationSource())) // Habilita CORS
+            .csrf(csrf -> csrf.disable()) // Desativa CSRF para API REST
+            .authorizeHttpRequests(auth -> auth
+                // Permite POST para cadastro público
+                .requestMatchers(HttpMethod.POST, "/api/usuarios").permitAll()
 
-    return http.build();
-}
+                // Libera outras rotas públicas necessárias
+                .requestMatchers(
+                    "/api/auth/**",      // Login, autenticação externa, etc.
+                    "/css/**",
+                    "/js/**",
+                    "/api/games/**",
+                    "/avaliacoes/**",
+                    "/error",
+                    "/favicon.ico"
+                ).permitAll()
 
+                // Aqui a rota /api/usuarios/me fica protegida pois não está liberada explicitamente
+                .requestMatchers("/api/usuarios/me").authenticated()
+
+                // Todas as outras rotas também protegidas
+                .anyRequest().authenticated()
+            )
+            .sessionManagement(session -> session
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS) // Sem sessão
+            )
+            .addFilterBefore(firebaseAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+
+        return http.build();
+    }
 
     @Bean
-public CorsConfigurationSource corsConfigurationSource() {
-    CorsConfiguration configuration = new CorsConfiguration();
-    configuration.setAllowedOrigins(Arrays.asList("http://127.0.0.1:5500", "http://localhost:5500", "http://localhost:3005"));
-    configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-    configuration.setAllowedHeaders(Arrays.asList("Content-Type", "Authorization", "X-XSRF-TOKEN"));
-    configuration.setAllowCredentials(true);
-    configuration.setMaxAge(3600L);
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOrigins(
+            Arrays.asList("http://127.0.0.1:5500", "http://localhost:5500", "http://localhost:3005")
+        );
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        configuration.setAllowedHeaders(Arrays.asList("Content-Type", "Authorization", "X-XSRF-TOKEN"));
+        configuration.setAllowCredentials(true);
+        configuration.setMaxAge(3600L);
 
-    UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-    source.registerCorsConfiguration("/**", configuration);
-    return source;
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+
+        return source;
+    }
 }
 
-}
