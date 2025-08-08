@@ -39,6 +39,7 @@
 
 /* ESTILOS GERAIS DO BODY */
 body {
+    overflow-x: hidden;
     background: linear-gradient(135deg, var(--darker) 0%, var(--dark) 100%); /* Gradiente de fundo */
     color: #e1e1e1;                         /* Cor do texto */
     min-height: 100vh;                      /* Altura mínima da viewport */
@@ -62,41 +63,42 @@ body::before {
 
 /* ========= HEADER ========= */
 header {
-    background: rgba(15, 15, 19, 0.85);        /* Fundo semi-transparente */
-    backdrop-filter: blur(12px);                /* Efeito de blur (vidro fosco) */
-    -webkit-backdrop-filter: blur(12px);        /* Suporte para Safari */
-    height: 73px;                               /* Altura fixa */
-    box-sizing: border-box;                     /* Inclui bordas e padding na altura */
-    padding: 0 1rem;                            /* Apenas padding horizontal */
-    position: fixed;                            /* Fixo no topo */
-    width: 100%;                               /* Largura total */
-    top: 0;                                    /* Alinhado ao topo */
-    z-index: 1000;                             /* Fica acima dos elementos */
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3); /* Sombra sutil */
-    border-bottom: 1px solid rgba(87, 51, 239, 0.3); /* Borda inferior sutil */
-    transition: var(--transition-slow);       /* Transição suave */
-    
-    display: flex;                             /* Flexbox para alinhamento */
-    align-items: center;                       /* Centraliza verticalmente */
-    justify-content: space-between;            /* Espaço entre elementos */
+    background: rgba(15, 15, 19, 0.85);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    height: 73px;
+    box-sizing: border-box;
+    padding: 0 1rem;
+    position: fixed;
+    width: calc(100% - 17px);
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    border-bottom: 1px solid rgba(87, 51, 239, 0.3);
+    transition: var(--transition-slow);
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }
 
-
-/* HEADER AO ROLAR A PÁGINA - Efeito de redução */
 header.scrolled {
-    padding: 0.75rem 0;                          /* Reduz o padding */
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3); /* Aumenta a sombra */
+    padding: 0.75rem 0;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
 }
 
-/* CONTAINER DO HEADER - Organiza os elementos internos */
 .header-container {
-    display: flex;                          /* Layout flexível */
-    justify-content: space-between;         /* Espaço entre elementos */
-    align-items: center;                    /* Centraliza verticalmente */
-    max-width: 1400px;                      /* Largura máxima */
-    margin: 0 auto;                         /* Centraliza na página */
-    padding: 0 2rem;                        /* Espaçamento lateral */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1400px;
+    width: 100%;
+    padding: 0 2rem; /* padding ao invés de margin */
+    box-sizing: border-box;
+    margin: 0 auto;
 }
+
+
 
 /* LADO ESQUERDO DO HEADER - Logo e navegação */
 .header-left {
