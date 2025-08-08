@@ -8,16 +8,16 @@
   box-sizing: border-box;
 }
 
+/* Mantém fundo fixo no body e html */
 html, body, #root {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
   width: 100%;
   height: 100%;
-  position: relative;
-  z-index: 0;
   overflow-x: hidden;
 
+  /* Fundo fixo bonito */
   background: linear-gradient(
     to right,
     rgba(var(--dark-gray-rgb), 0.98) 0%,
@@ -25,19 +25,25 @@ html, body, #root {
     rgba(var(--primary-rgb), 0.7) 100%
   );
 
-  background-attachment: fixed; /* efeito de paralaxe leve */
+  background-attachment: fixed;
   background-size: cover;
   background-repeat: no-repeat;
+  position: relative;
+  z-index: 0;
 }
 
-
-
+/* Remove o blur do ::before do root, ou deixa apenas um overlay sem blur */
+/* Se quiser manter um overlay, remova o backdrop-filter */
 #root::before {
   content: "";
   position: fixed;
   inset: 0;
   z-index: -1;
-  backdrop-filter: blur(4px);
+
+  /* Retire o blur para o scroll não ter efeito */
+  /* backdrop-filter: blur(4px); */
+  
+  /* Mantenha o gradiente ou sombra suave para efeito */
   background: linear-gradient(
     to right,
     rgba(var(--dark-gray-rgb), 0.95) 60%,
@@ -45,10 +51,44 @@ html, body, #root {
   );
 }
 
-/* Exemplo - ajustável conforme seu header */
+/* Agora o conteúdo que rola (exemplo main-content) deve ter fundo sólido sem blur */
 .main-content {
-  padding-top: 73px; /* ou o valor exato da altura do seu header */
+  padding-top: 73px;
+  background-color: var(--dark-gray); /* cor sólida para "limpar" atrás do conteúdo */
+  min-height: 100vh; /* garante altura para scroll */
+  position: relative;
+  z-index: 1; /* fica acima do fundo fixo */
 }
+
+/* Barra de rolagem */
+::-webkit-scrollbar {
+  width: 16px; /* scroll mais largo para destacar */
+}
+
+::-webkit-scrollbar-track {
+  background: #2b217a; /* roxo muito escuro, quase preto */
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #bf9fff; /* roxo claro, vibrante */
+  border-radius: 12px;
+  border: 4px solid rgba(255, 255, 255, 0.7);
+  box-shadow: 0 0 6px rgba(191, 159, 255, 0.8); /* leve brilho */
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: #d1bfff; /* mais claro no hover */
+  box-shadow: 0 0 8px rgba(209, 191, 255, 1);
+}
+
+/* Firefox */
+html {
+  scrollbar-color: #bf9fff #2b217a;
+  scrollbar-width: auto;
+}
+
+
+
 
 
 .container {
