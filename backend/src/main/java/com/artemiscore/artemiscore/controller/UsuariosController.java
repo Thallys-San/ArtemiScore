@@ -89,12 +89,13 @@ public class UsuariosController {
 
     @GetMapping("/me")
     public ResponseEntity<UsuariosModel> getUsuarioLogado (Authentication authentication){
-        if (authentication==null || !authentication.isAuthenticated() ) {
+        if (authentication == null || !authentication.isAuthenticated()) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
-        String email = authentication.getName();// normalmente o e-mail
-        return service.buscarPorEmail(email)
-        .map(ResponseEntity::ok)
-        .orElse(ResponseEntity.status(HttpStatus.UNAUTHORIZED).build());
+
+        String uid = authentication.getPrincipal().toString();
+        return service.buscarPorUid(uid)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.status(HttpStatus.UNAUTHORIZED).build());
     }
 }
