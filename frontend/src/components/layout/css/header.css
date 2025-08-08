@@ -44,7 +44,6 @@ body {
     min-height: 100vh;                      /* Altura mínima da viewport */
     position: relative;                     /* Contexto de posicionamento */
     overflow-x: hidden;                     /* Esconde overflow horizontal */
-    padding-top: 80px;                      /* Espaço para o header fixo */
 }
 
 /* EFEITO DE FUNDO DECORATIVO - Gradientes radiais transparentes */
