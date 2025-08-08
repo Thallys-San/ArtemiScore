@@ -1,15 +1,15 @@
-import React, { useState } from "react";
+import React, { useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "./css/header.css";
+import { AuthContext } from "../AuthContext"; // importa seu contexto
 
 const Header = () => {
-
   const navigate = useNavigate();
-  const isLoggedIn = !!localStorage.getItem("token");
+  const { isAuthenticated, logout } = useContext(AuthContext);
 
   const handleLogout = () => {
-    localStorage.removeItem("token");
-    navigate("/login")
+    logout(); // usa a função do contexto (já limpa localStorage)
+    navigate("/login");
   };
 
   return (
@@ -36,7 +36,7 @@ const Header = () => {
               <i className="ri-user-line user-icon"></i>
             </div>
             <div className="user-dropdown">
-              {isLoggedIn ? (
+              {isAuthenticated ? (
                 <>
                   <Link to="/perfil" className="dropdown-item">
                     <div className="dropdown-icon"><i className="ri-user-3-line"></i></div>
@@ -58,7 +58,14 @@ const Header = () => {
                   <button
                     onClick={handleLogout}
                     className="dropdown-item button-logout"
-                    style={{ background: "none", border: "none", cursor: "pointer", padding: 0, font: "inherit", color: "inherit" }}
+                    style={{
+                      background: "none",
+                      border: "none",
+                      cursor: "pointer",
+                      padding: 0,
+                      font: "inherit",
+                      color: "inherit"
+                    }}
                   >
                     <div className="dropdown-icon"><i className="ri-logout-box-line"></i></div>
                     <span>Sair</span>
