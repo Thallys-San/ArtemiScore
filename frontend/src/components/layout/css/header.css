@@ -335,63 +335,68 @@ header.scrolled {
   display: block;
 }
 
-/* ITENS DO DROPDOWN */
+/* Base para todos os itens do dropdown */
 .dropdown-item {
-    display: flex;                          /* Layout flexível */
-    align-items: center;                    /* Centraliza verticalmente */
-    padding: 0.75rem 1.5rem;               /* Espaçamento interno */
-    color: var(--lighter);                  /* Cor clara */
-    text-decoration: none;                  /* Remove sublinhado */
-    font-size: 0.9rem;                      /* Tamanho médio */
-    transition: var(--transition);          /* Efeito de transição */
-}
-
-/* Para melhor acessibilidade: foco visível nos itens */
-.dropdown-item:focus {
-  outline: 2px solid var(--primary);
-  background-color: var(--medium-gray);
-  color: var(--white);
-}
-
-/* EFEITO HOVER NOS ITENS */
-.dropdown-item:hover {
-    background-color: var(--medium-gray);   /* Fundo mais claro */
-    color: var(--white);                    /* Texto branco */
-    padding-left: 1.75rem;                  /* Deslocamento sutil */
-}
-
-/* ÍCONES DOS ITENS */
-.dropdown-icon {
-    margin-right: 1rem;                     /* Espaço à direita */
-    color: var(--light-gray);               /* Cor clara */
-    font-size: 1.1rem;                      /* Tamanho grande */
-    width: 20px;                            /* Largura fixa */
-    text-align: center;                     /* Centraliza ícone */
-}
-
-/* DIVISOR ENTRE ITENS */
-.dropdown-divider {
-    height: 1px;                            /* Linha fina */
-    background-color: var(--medium-gray);    /* Cor de fundo */
-    margin: 0.5rem 0;                       /* Espaçamento vertical */
-}
-
-/* Para botão logout ter aparência consistente */
-.dropdown-item.button-logout {
-  background: none;
-  border: none;
-  cursor: pointer;
+  display: flex;
+  align-items: center;
   padding: 0.75rem 1.5rem;
-  font: inherit;
   color: var(--lighter);
-  width: 100%;
-  text-align: left;
+  text-decoration: none;
+  font-size: 0.9rem;
+  transition: var(--transition);
+  cursor: pointer; /* importante para botões */
 }
-.dropdown-item.button-logout:hover {
+
+/* Hover e foco para todos os itens (links e botão) */
+.dropdown-item:hover,
+.dropdown-item:focus {
   background-color: var(--medium-gray);
   color: var(--white);
   padding-left: 1.75rem;
+  outline: none;
 }
+
+/* Ícones do dropdown */
+.dropdown-icon {
+  margin-right: 1rem;
+  color: var(--light-gray);
+  font-size: 1.1rem;
+  width: 20px;
+  text-align: center;
+}
+
+/* Botão logout reutilizando dropdown-item para manter o estilo igual */
+.button-logout {
+  background: none;
+  border: none;
+  font: inherit;
+  width: 100%;
+  text-align: left;
+  padding: 0.75rem 1.5rem;
+  color: var(--lighter);
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+/* Hover e foco para botão logout */
+.button-logout:hover,
+.button-logout:focus {
+  background-color: var(--medium-gray);
+  color: var(--white);
+  padding-left: 1.75rem;
+  outline: none;
+}
+
+/* Ícone no botão logout */
+.button-logout .dropdown-icon {
+  margin-right: 1rem;
+  color: var(--light-gray);
+  display: flex;
+  align-items: center;
+}
+
 
 
 /* BOTÃO DO MENU MOBILE - Escondido em desktop */
@@ -493,4 +498,22 @@ header.scrolled {
     .search-input {
         width: 100%;                       /* Ocupa toda largura */
     }
+}
+
+/* Estilo do container do logo */
+.logo {
+  display: inline-block;
+  height: 40px; /* Ajuste conforme necessário */
+}
+
+/* Estilo da imagem do logo */
+.logo-image {
+  height: 100%;
+  width: auto;
+  transition: transform 0.3s ease;
+}
+
+/* Efeito hover */
+.logo:hover .logo-image {
+  transform: scale(1.05);
 }
