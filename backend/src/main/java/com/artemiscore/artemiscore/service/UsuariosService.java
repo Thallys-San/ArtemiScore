@@ -59,4 +59,9 @@ public class UsuariosService {
     public Optional<UsuariosModel> buscarPorEmail(String email){
         return repository.findByEmail(email);
     }
+
+    public Optional<UsuariosModel> buscarPorUid(String uid) {
+        return repository.findByUid(uid);
+    }
+
 }
