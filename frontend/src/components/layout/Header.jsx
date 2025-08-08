@@ -1,19 +1,18 @@
 import React, { useState, useEffect } from "react";
-import { Link, useNavigate, useLocation } from "react-router-dom";
-import "../layout/css/header.css";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import "./css/header.css";
 
 const Header = () => {
+
   const navigate = useNavigate();
-  const location = useLocation();
+  const location=useLocation();
+  const [activeLink, setActiveLink]=useState("")
   const isLoggedIn = !!localStorage.getItem("token");
-  const [activeLink, setActiveLink] = useState("");
 
-  // Função para verificar se um link está ativo
-  const isActive = (linkName) => {
-    return activeLink === linkName;
-  };
+  const isActive = (linkName)=>{
+    return activeLink===linkName
+  }
 
-  // Atualiza o link ativo quando a rota muda
   useEffect(() => {
     const path = location.pathname;
     
@@ -29,42 +28,30 @@ const Header = () => {
       setActiveLink("");
     }
   }, [location]);
-
+  
   const handleLogout = () => {
     localStorage.removeItem("token");
-    navigate("/login");
+    navigate("/login")
   };
 
   return (
     <header>
       <div className="container header-container">
         <div className="flex items-center">
-          <Link to="/" className="logo font-pacifico">AtermiScore</Link>
+          <Link to="/" className="logo" aria-label="AtermiScore">
+  <img 
+    src="https://raw.githubusercontent.com/Thallys-San/ArtemiScore/main/ArtemiScoreLogo.png" 
+    alt="AtermiScore Logo"
+    className="logo-image"
+    width="180"
+    height="40"
+  />
+</Link>
           <nav className="main-nav">
-            <Link 
-              to="/home" 
-              className={`nav-link ${isActive("home") ? "active" : ""}`}
-            >
-              Início
-            </Link>
-            <Link 
-              to="/jogos" 
-              className={`nav-link ${isActive("jogos") ? "active" : ""}`}
-            >
-              Jogos
-            </Link>
-            <Link 
-              to="/ranking" 
-              className={`nav-link ${isActive("ranking") ? "active" : ""}`}
-            >
-              Ranking
-            </Link>
-            <Link 
-              to="/Lancamentos" 
-              className={`nav-link ${isActive("Lancamentos") ? "active" : ""}`}
-            >
-              Lançamentos
-            </Link>
+            <Link to="/home" className={`nav-link ${isActive("home") ? "active" : ""}`}>Início</Link>
+            <Link to="/jogos" className={`nav-link ${isActive("jogos") ? "active" : ""}`}>Jogos</Link>
+            <Link to="/ranking" className={`nav-link ${isActive("ranking") ? "active" : ""}`}>Ranking</Link>
+            <Link to="/Lancamentos" className={`nav-link ${isActive("Lancamentos") ? "active" : ""}`}>Lançamentos</Link>
           </nav>
         </div>
         <div className="flex items-center gap-4">
@@ -101,9 +88,10 @@ const Header = () => {
                   <button
                     onClick={handleLogout}
                     className="dropdown-item button-logout"
-                    style={{ background: "none", border: "none", cursor: "pointer", padding: 0, font: "inherit", color: "inherit" }}
                   >
-                    <div className="dropdown-icon"><i className="ri-logout-box-line"></i></div>
+                    <div className="dropdown-icon">
+                      <i className="ri-logout-box-line"></i>
+                    </div>
                     <span>Sair</span>
                   </button>
                 </>
