@@ -1,14 +1,37 @@
-import React, { useContext } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import "./css/header.css";
-import { AuthContext } from "../AuthContext"; // importa seu contexto
+import React, { useState, useEffect } from "react";
+import { Link, useNavigate, useLocation } from "react-router-dom";
+import "../layout/css/header.css";
 
 const Header = () => {
   const navigate = useNavigate();
-  const { isAuthenticated, logout } = useContext(AuthContext);
+  const location = useLocation();
+  const isLoggedIn = !!localStorage.getItem("token");
+  const [activeLink, setActiveLink] = useState("");
+
+  // Função para verificar se um link está ativo
+  const isActive = (linkName) => {
+    return activeLink === linkName;
+  };
+
+  // Atualiza o link ativo quando a rota muda
+  useEffect(() => {
+    const path = location.pathname;
+    
+    if (path === "/home" || path === "/") {
+      setActiveLink("home");
+    } else if (path === "/jogos") {
+      setActiveLink("jogos");
+    } else if (path === "/ranking") {
+      setActiveLink("ranking");
+    } else if (path === "/Lancamentos") {
+      setActiveLink("Lancamentos");
+    } else {
+      setActiveLink("");
+    }
+  }, [location]);
 
   const handleLogout = () => {
-    logout(); // usa a função do contexto (já limpa localStorage)
+    localStorage.removeItem("token");
     navigate("/login");
   };
 
@@ -18,10 +41,30 @@ const Header = () => {
         <div className="flex items-center">
           <Link to="/" className="logo font-pacifico">AtermiScore</Link>
           <nav className="main-nav">
-            <Link to="/home" className="nav-link active">Início</Link>
-            <Link to="/jogos" className="nav-link">Jogos</Link>
-            <Link to="/ranking" className="nav-link">Ranking</Link>
-            <Link to="/Lancamentos" className="nav-link">Lançamentos</Link>
+            <Link 
+              to="/home" 
+              className={`nav-link ${isActive("home") ? "active" : ""}`}
+            >
+              Início
+            </Link>
+            <Link 
+              to="/jogos" 
+              className={`nav-link ${isActive("jogos") ? "active" : ""}`}
+            >
+              Jogos
+            </Link>
+            <Link 
+              to="/ranking" 
+              className={`nav-link ${isActive("ranking") ? "active" : ""}`}
+            >
+              Ranking
+            </Link>
+            <Link 
+              to="/Lancamentos" 
+              className={`nav-link ${isActive("Lancamentos") ? "active" : ""}`}
+            >
+              Lançamentos
+            </Link>
           </nav>
         </div>
         <div className="flex items-center gap-4">
@@ -36,7 +79,7 @@ const Header = () => {
               <i className="ri-user-line user-icon"></i>
             </div>
             <div className="user-dropdown">
-              {isAuthenticated ? (
+              {isLoggedIn ? (
                 <>
                   <Link to="/perfil" className="dropdown-item">
                     <div className="dropdown-icon"><i className="ri-user-3-line"></i></div>
@@ -58,14 +101,7 @@ const Header = () => {
                   <button
                     onClick={handleLogout}
                     className="dropdown-item button-logout"
-                    style={{
-                      background: "none",
-                      border: "none",
-                      cursor: "pointer",
-                      padding: 0,
-                      font: "inherit",
-                      color: "inherit"
-                    }}
+                    style={{ background: "none", border: "none", cursor: "pointer", padding: 0, font: "inherit", color: "inherit" }}
                   >
                     <div className="dropdown-icon"><i className="ri-logout-box-line"></i></div>
                     <span>Sair</span>
