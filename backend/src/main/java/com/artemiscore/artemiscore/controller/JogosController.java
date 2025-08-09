@@ -259,26 +259,48 @@ public ResponseEntity<?> getGamesByOffset(
 }
 
 @GetMapping("/top-rated")
-public ResponseEntity<?> getTopRatedGame(
+public ResponseEntity<?> getTopRatedGames(
     @RequestParam(defaultValue = "0") int offset,
     @RequestParam(defaultValue = "10") int limit
 ) {
     try {
-        int page = (offset / limit) + 1;
-        GameDTO topRated = rawgService.getTopRatedGame(page, limit);
+        int page = (offset / limit); // page começa em 0 no PageRequest.of
+        List<GameDTO> topRatedGames = rawgService.getTopRatedGames(page, limit);
 
-        if (topRated == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                .body("Nenhum jogo melhor avaliado encontrado.");
-        }
-
-        return ResponseEntity.ok(topRated);
+        // Retorna 200 com lista vazia, caso não encontre nenhum jogo
+        return ResponseEntity.ok(topRatedGames);
     } catch (Exception e) {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-            .body("Erro ao buscar o jogo melhor avaliado: " + e.getMessage());
+            .body("Erro ao buscar os jogos melhor avaliados: " + e.getMessage());
     }
 }
 
+/**
+     * Endpoint para obter os jogos mais bem avaliados no mês atual.
+     * 
+     * Exemplo de chamada: GET /avaliacoes/top-rated-monthly?page=1&limit=10
+     *
+     * @param page  número da página (1-based)
+     * @param limit quantidade de itens por página
+     * @return lista paginada de GameDTO com média de avaliação do mês
+     */
+    @GetMapping("/top-rated-monthly")
+    public ResponseEntity<List<GameDTO>> getTopRatedGamesMonthly(
+            @RequestParam(defaultValue = "1") int page,
+            @RequestParam(defaultValue = "10") int limit) {
+        
+        if (page < 1 || limit < 1) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        List<GameDTO> jogos = rawgService.getTopRatedGamesMonthly(page, limit);
+        
+        if (jogos.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        
+        return ResponseEntity.ok(jogos);
+    }
 
 
     // --------------------- Screenshots ---------------------
