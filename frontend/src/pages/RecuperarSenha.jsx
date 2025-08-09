@@ -1,38 +1,42 @@
 // src/pages/RecuperarSenha.jsx
-import React, { useState } from 'react';
-import { sendPasswordResetEmail } from 'firebase/auth';
-import { auth } from '../firebase'; // Ajuste o caminho conforme necessário
-import './RecuperarSenha.css';
+import React, { useState } from "react";
+import { useNavigate, Link, useLocation } from "react-router-dom";
+import "../components/layout/css/Login.css";
+import { sendPasswordResetEmail } from "firebase/auth";
+import { auth } from "../components/firebase";
 
 const RecuperarSenha = () => {
-  const [email, setEmail] = useState('');
-  const [message, setMessage] = useState('');
+  const navigate = useNavigate();
+  const location = useLocation();
+  const prefilledEmail = location.state?.email || "";
+
+  const [email, setEmail] = useState(prefilledEmail);
+  const [message, setMessage] = useState("");
+  const [isError, setIsError] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [isSuccess, setIsSuccess] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setMessage("");
+    setIsError(false);
     setIsLoading(true);
-    setMessage('');
-    
+
     try {
       await sendPasswordResetEmail(auth, email);
-      setMessage(`Um e-mail de recuperação foi enviado para ${email}. Verifique sua caixa de entrada.`);
-      setIsSuccess(true);
+      setMessage(
+        `E-mail de recuperação enviado para ${email}. Verifique sua caixa de entrada.`
+      );
     } catch (error) {
-      let errorMessage = 'Erro ao enviar e-mail de recuperação.';
-      switch (error.code) {
-        case 'auth/user-not-found':
-          errorMessage = 'Não há usuário cadastrado com este e-mail.';
-          break;
-        case 'auth/invalid-email':
-          errorMessage = 'E-mail inválido.';
-          break;
-        default:
-          errorMessage = `Erro: ${error.message}`;
+      let errorMessage = "Erro ao enviar e-mail de recuperação.";
+      if (error.code === "auth/user-not-found") {
+        errorMessage = "Não há usuário cadastrado com este e-mail.";
+      } else if (error.code === "auth/invalid-email") {
+        errorMessage = "E-mail inválido.";
+      } else {
+        errorMessage = `Erro: ${error.message}`;
       }
+      setIsError(true);
       setMessage(errorMessage);
-      setIsSuccess(false);
     } finally {
       setIsLoading(false);
     }
@@ -41,47 +45,60 @@ const RecuperarSenha = () => {
   return (
     <section className="login-section">
       <div className="login-container">
-        <div className="login-header">
+        <div className="title-container">
           <h2>Recuperar Senha</h2>
           <p>Insira seu e-mail para receber as instruções de recuperação</p>
         </div>
 
         {message ? (
-          <div className={`message-container ${isSuccess ? 'success' : 'error'}`}>
+          <div className={`message-box ${isError ? "error-message" : "success-message"}`}>
             <p>{message}</p>
-            {isSuccess && (
-              <div className="back-to-login">
-                <a href="/login">Voltar para o login</a>
+            {!isError && (
+              <div className="back-to-login" style={{ marginTop: "10px" }}>
+                <Link to="/login">Voltar para o login</Link>
               </div>
             )}
           </div>
         ) : (
-          <form onSubmit={handleSubmit} className="login-form">
-            <div className="form-group">
-              <label htmlFor="email">E-mail</label>
+          <form className="login-form" onSubmit={handleSubmit} noValidate>
+            <div className="form-group email-group">
+              <label htmlFor="email" className="form-label">
+                E-mail
+              </label>
               <input
                 type="email"
                 id="email"
+                name="email"
+                className="form-input email-input"
+                placeholder="seu.email@exemplo.com"
+                required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="seu@email.com"
-                required
+                autoComplete="email"
                 disabled={isLoading}
+                autoCorrect="off"
+                spellCheck="false"
               />
             </div>
 
-            <button 
-              type="submit" 
+            <button
+              type="submit"
               className="login-button"
-              disabled={isLoading}
+              disabled={!email || isLoading}
+              aria-busy={isLoading}
             >
-              {isLoading ? 'Enviando...' : 'Enviar Instruções'}
+              {isLoading ? "Enviando..." : "Enviar Instruções"}
             </button>
           </form>
         )}
 
-        <div className="register-link">
-          <p>Lembrou sua senha? <a href="/login">Fazer login</a></p>
+        <div className="register-link" style={{ marginTop: "15px" }}>
+          <p>
+            Lembrou sua senha? <Link to="/login">Fazer login</Link>
+          </p>
+          <p>
+            Não tem uma conta? <Link to="/cadastro">Crie agora</Link>
+          </p>
         </div>
       </div>
     </section>
