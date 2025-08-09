@@ -4,18 +4,21 @@
 *::before,
 *::after {
   margin: 0;
-  padding: 0 ;
+  padding: 0;
   box-sizing: border-box;
 }
 
 /* Mantém fundo fixo no body e html */
-html, body, #root {
+html,
+body,
+#root {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
   width: 100%;
-  height: 100%;
+  height: auto;
   overflow-x: hidden;
+  overflow-y: auto;
 
   /* Fundo fixo bonito */
   background: linear-gradient(
@@ -42,7 +45,7 @@ html, body, #root {
 
   /* Retire o blur para o scroll não ter efeito */
   /* backdrop-filter: blur(4px); */
-  
+
   /* Mantenha o gradiente ou sombra suave para efeito */
   background: linear-gradient(
     to right,
@@ -54,7 +57,9 @@ html, body, #root {
 /* Agora o conteúdo que rola (exemplo main-content) deve ter fundo sólido sem blur */
 .main-content {
   padding-top: 73px;
-  background-color: var(--dark-gray); /* cor sólida para "limpar" atrás do conteúdo */
+  background-color: var(
+    --dark-gray
+  ); /* cor sólida para "limpar" atrás do conteúdo */
   min-height: 100vh; /* garante altura para scroll */
   position: relative;
   z-index: 1; /* fica acima do fundo fixo */
@@ -105,16 +110,15 @@ html {
   --yellow: #fdcb6e;
   --dark-gray-rgb: 26, 26, 26;
   --primary-rgb: 87, 51, 239;
-  
+
   /* Efeitos */
-  --card-transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), 
-                   box-shadow 0.3s ease, 
-                   border-color 0.3s ease;
+  --card-transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1),
+    box-shadow 0.3s ease, border-color 0.3s ease;
   --hover-elevation: 0 10px 24px rgba(0, 0, 0, 0.5);
   --image-scale: 1.05;
   --shadow-md: 0 4px 8px rgba(0, 0, 0, 0.3);
   --shadow-lg: 0 6px 12px rgba(0, 0, 0, 0.4);
-  
+
   /* Plataformas */
   --platform-tag: #457b9d;
 }
