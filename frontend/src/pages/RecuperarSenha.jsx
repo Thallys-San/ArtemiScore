@@ -1,19 +1,20 @@
-// src/pages/RecuperarSenha.jsx
 import React, { useState } from "react";
-import { useNavigate, Link, useLocation } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import "../components/layout/css/Login.css";
-import { sendPasswordResetEmail } from "firebase/auth";
+import { sendPasswordResetEmail, fetchSignInMethodsForEmail } from "firebase/auth";
 import { auth } from "../components/firebase";
 
 const RecuperarSenha = () => {
   const navigate = useNavigate();
-  const location = useLocation();
-  const prefilledEmail = location.state?.email || "";
-
-  const [email, setEmail] = useState(prefilledEmail);
+  const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
   const [isError, setIsError] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+
+  const validateEmail = (email) => {
+    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return re.test(email);
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -21,20 +22,41 @@ const RecuperarSenha = () => {
     setIsError(false);
     setIsLoading(true);
 
+    const cleanEmail = email.trim().toLowerCase();
+
+    if (!validateEmail(cleanEmail)) {
+      setIsError(true);
+      setMessage("Formato de e-mail inválido.");
+      setIsLoading(false);
+      return;
+    }
+
     try {
-      await sendPasswordResetEmail(auth, email);
-      setMessage(
-        `E-mail de recuperação enviado para ${email}. Verifique sua caixa de entrada.`
-      );
+      // Verifica se o email está cadastrado (tem método de login)
+      const methods = await fetchSignInMethodsForEmail(auth, cleanEmail);
+      if (!methods || methods.length === 0) {
+        setIsError(true);
+        setMessage("Este e-mail não está cadastrado.");
+        setIsLoading(false);
+        return;
+      }
+
+      // Se email existe, envia email de recuperação
+      await sendPasswordResetEmail(auth, cleanEmail);
+      setMessage(`E-mail de recuperação enviado para ${cleanEmail}. Verifique sua caixa de entrada.`);
+      setIsError(false);
     } catch (error) {
+      console.error("Erro ao enviar e-mail:", error);
       let errorMessage = "Erro ao enviar e-mail de recuperação.";
-      if (error.code === "auth/user-not-found") {
-        errorMessage = "Não há usuário cadastrado com este e-mail.";
-      } else if (error.code === "auth/invalid-email") {
+
+      if (error.code === "auth/invalid-email") {
         errorMessage = "E-mail inválido.";
+      } else if (error.code === "auth/too-many-requests") {
+        errorMessage = "Muitas tentativas. Tente novamente mais tarde.";
       } else {
         errorMessage = `Erro: ${error.message}`;
       }
+
       setIsError(true);
       setMessage(errorMessage);
     } finally {
@@ -45,6 +67,25 @@ const RecuperarSenha = () => {
   return (
     <section className="login-section">
       <div className="login-container">
+        <button
+          type="button"
+          onClick={() => navigate(-1)}
+          className="back-button"
+          style={{
+            background: "none",
+            border: "none",
+            color: "#5733ef",
+            cursor: "pointer",
+            fontWeight: "bold",
+            marginBottom: "10px",
+            fontSize: "1rem",
+          }}
+          aria-label="Voltar"
+          title="Voltar"
+        >
+          ← Voltar
+        </button>
+
         <div className="title-container">
           <h2>Recuperar Senha</h2>
           <p>Insira seu e-mail para receber as instruções de recuperação</p>
