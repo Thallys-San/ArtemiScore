@@ -1,21 +1,15 @@
 /* From Uiverse.io by Nawsome */ 
 
-.loading-wrapper {
-  width: 100%;
+.hamster-loading-container {
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 40px 0;
-  margin: 20px 0;
-  min-height: 300px; /* Altura mínima para melhor visualização */
-}
-
-/* Container do hamster */
-.loading-container {
-  position: relative;
-  width: 100%;
-  max-width: 200px; /* Largura máxima para o hamster */
-  margin: 0 auto;
+  height: 100vh; /* ocupa toda a altura da tela */
+  width: 100vw;  /* ocupa toda a largura */
+  position: fixed; /* mantém fixo na tela */
+  top: 0;
+  left: 0;
+  z-index: 9999; /* fica acima de todo o conteúdo */
 }
 
 /* Ajuste opcional para o hamster */
