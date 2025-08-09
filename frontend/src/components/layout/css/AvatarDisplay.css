@@ -1,0 +1,58 @@
+/* Container principal */
+.avatar-container {
+  position: relative;
+  width: var(--avatar-size);
+  height: var(--avatar-size);
+  border-radius: 50%;
+  background: linear-gradient(45deg, var(--primary), var(--accent));
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease;
+}
+
+/* Efeito hover */
+.avatar-container:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 16px rgba(87, 51, 239, 0.3);
+}
+
+/* Imagem do avatar */
+.avatar-image {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid var(--darker);
+  transition: all 0.3s ease;
+}
+
+/* Efeito de status (opcional) */
+.avatar-status {
+  position: absolute;
+  bottom: 8px;
+  right: 8px;
+  width: 20%;
+  height: 20%;
+  background-color: var(--green);
+  border-radius: 50%;
+  border: 2px solid var(--darker);
+}
+
+/* Variantes de tamanho */
+.avatar-container.small {
+  --avatar-size: 64px;
+  padding: 2px;
+}
+
+.avatar-container.medium {
+  --avatar-size: 128px;
+}
+
+.avatar-container.large {
+  --avatar-size: 192px;
+  padding: 6px;
+}
+
+.avatar-container.xlarge {
+  --avatar-size: 256px;
+  padding: 8px;
+}
