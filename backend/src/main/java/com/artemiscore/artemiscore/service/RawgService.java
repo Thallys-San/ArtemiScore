@@ -2,7 +2,8 @@
 package com.artemiscore.artemiscore.service;
 
 
-
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.data.domain.PageRequest;
@@ -18,6 +19,8 @@ import com.artemiscore.artemiscore.model.rawghApi.*;
 import com.artemiscore.artemiscore.repository.AvaliacaoRepository;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -238,24 +241,62 @@ private void adicionarDadosDeAvaliacao(GameCardDTO card) {
     }
 }
 
-public GameDTO getTopRatedGame(int page, int limit) {
-    // Aqui a ideia é buscar os jogos ordenados pela média de avaliações decrescente
-    List<GameDTO> jogos = this.searchGames(null, page, limit); // ou com filtro de ordenação
+public List<GameDTO> getTopRatedGames(int page, int limit) {
+    Pageable pageable = PageRequest.of(page - 1, limit);
 
-    if (jogos == null || jogos.isEmpty()) return null;
+    Page<Object[]> topRatedPage = avaliacaoRepository.findTopRatedGames(pageable);
 
-    // Suponha que já estejam ordenados pela média de avaliação (se não estiverem, ordene aqui)
-    GameDTO topGame = jogos.get(0);
-
-    // Pega detalhes completos (se quiser pegar avaliações detalhadas)
-    GameDTO detalhado = this.getGameBySlug(topGame.getSlug());
-    if (detalhado != null) {
-        return detalhado;
+    if (topRatedPage.isEmpty()) {
+        return Collections.emptyList();
     }
 
-    return topGame;
+    List<GameDTO> jogos = new ArrayList<>();
+    for (Object[] row : topRatedPage.getContent()) {
+        Long jogoId = (Long) row[0];
+        Double media = (Double) row[1];
+
+        GameDTO gameDTO = this.getGameById(jogoId); // método que consulta API RAWG pelo id local ou slug
+        if (gameDTO != null) {
+            // Opcional: pode colocar a média na resposta se quiser
+            gameDTO.setMediaAvaliacao(media);
+            jogos.add(gameDTO);
+        }
+    }
+
+    return jogos;
 }
 
+
+public List<GameDTO> getTopRatedGamesMonthly(int page, int limit) {
+    Pageable pageable = PageRequest.of(page - 1, limit);
+
+    LocalDateTime now = LocalDateTime.now();
+    LocalDate firstDay = now.withDayOfMonth(1).toLocalDate();
+    LocalDate lastDay = now.withDayOfMonth(now.toLocalDate().lengthOfMonth()).toLocalDate();
+
+    LocalDateTime startDate = firstDay.atStartOfDay();
+    LocalDateTime endDate = lastDay.atTime(23, 59, 59, 999999999);
+
+    Page<Object[]> topRatedPage = avaliacaoRepository.findTopRatedGamesInPeriod(startDate, endDate, pageable);
+
+    if (topRatedPage.isEmpty()) {
+        return Collections.emptyList();
+    }
+
+    List<GameDTO> jogos = new ArrayList<>();
+    for (Object[] row : topRatedPage.getContent()) {
+        Long jogoId = (Long) row[0];
+        Double media = (Double) row[1];
+
+        GameDTO gameDTO = this.getGameById(jogoId);
+        if (gameDTO != null) {
+            gameDTO.setMediaAvaliacao(media);
+            jogos.add(gameDTO);
+        }
+    }
+
+    return jogos;
+}
 
 
 public List<GameCardDTO> filtrarJogos(String nome, List<String> generos, List<String> plataformas, int page, int limit) {
