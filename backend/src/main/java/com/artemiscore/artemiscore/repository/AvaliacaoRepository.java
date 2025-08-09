@@ -2,8 +2,11 @@ package com.artemiscore.artemiscore.repository;
 
 
 
+import java.time.LocalDateTime;
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -22,5 +25,19 @@ public interface AvaliacaoRepository extends JpaRepository<AvaliacaoModel, Long>
 
     @Query("SELECT AVG(a.nota) FROM AvaliacaoModel a WHERE a.jogo_id = :jogoId")
     Double findMediaAvaliacaoByJogoId(@Param("jogoId") Long jogoId);
+
+    @Query("SELECT a.jogo_id as jogoId, AVG(a.nota) as media " +
+           "FROM AvaliacaoModel a " +
+           "GROUP BY a.jogo_id " +
+           "ORDER BY media DESC")
+    Page<Object[]> findTopRatedGames(Pageable pageable);
+
+    @Query("SELECT a.jogo_id, AVG(a.nota) as media " +
+       "FROM AvaliacaoModel a " +
+       "WHERE a.dataAvaliacao BETWEEN :startDate AND :endDate " +
+       "GROUP BY a.jogo_id " +
+       "ORDER BY media DESC")
+Page<Object[]> findTopRatedGamesInPeriod(LocalDateTime startDate, LocalDateTime endDate, Pageable pageable);
+
 
 }
