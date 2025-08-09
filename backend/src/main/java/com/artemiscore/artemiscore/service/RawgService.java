@@ -17,7 +17,7 @@ import com.artemiscore.artemiscore.model.AvaliacaoModel;
 import com.artemiscore.artemiscore.model.rawghApi.*;
 import com.artemiscore.artemiscore.repository.AvaliacaoRepository;
 
-
+import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -176,10 +176,17 @@ public List<GameCardDTO> getBasicGameCards(int page, int pageSize) {
 
 
 public List<GameCardDTO> getUpcomingGameCards(int page, int limit) {
+
+    LocalDate hoje = LocalDate.now();
+    LocalDate daquiUmAno = hoje.plusYears(5);
+
+    String intervaloDatas = hoje.toString() + "," + daquiUmAno.toString();
+
     String url = BASE_URL + "games?key=" + apiKey
-               + "&dates=" + java.time.LocalDate.now() + ",2099-12-31"
-               + "&ordering=released" + "&page=" + page
-               + "&page_size=" + limit;
+             + "&dates=" + intervaloDatas
+             + "&ordering=released"
+             + "&page=" + page
+             + "&page_size=" + limit;
 
     ResponseEntity<RawghResponse<GameDTO>> response = restTemplate.exchange(
         url,
