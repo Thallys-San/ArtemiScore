@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import StarRating from "../commom/StarRating"; // já implementado
 import "./css/HeroBanner.css";
+import HamsterLoading from "../../components/commom/HamsterLoading";
+import "../../components/layout/css/HamsterLoading.css"
 
 const HeroBanner = () => {
   const [topGame, setTopGame] = useState(null);
@@ -14,8 +16,11 @@ const HeroBanner = () => {
       );
   }, []);
 
-  if (!topGame) {
-    return <div className="hero-banner loading">Carregando...</div>;
+ if (!topGame) {
+    return (
+    <div className="hero-banner loading">
+      <HamsterLoading/>
+    </div>);
   }
 
   return (
