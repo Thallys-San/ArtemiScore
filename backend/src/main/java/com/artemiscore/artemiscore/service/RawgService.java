@@ -177,7 +177,7 @@ public List<GameCardDTO> getBasicGameCards(int page, int pageSize) {
 
 public List<GameCardDTO> getUpcomingGameCards(int page, int limit) {
     String url = BASE_URL + "games?key=" + apiKey
-               + "&dates=" + java.time.LocalDate.now() + ",2026-12-31"
+               + "&dates=" + java.time.LocalDate.now() + ",2099-12-31"
                + "&ordering=released" + "&page=" + page
                + "&page_size=" + limit;
 
