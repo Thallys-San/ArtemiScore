@@ -1,9 +1,6 @@
 package com.artemiscore.artemiscore.model;
 
-
-
-
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -50,5 +47,5 @@ public class AvaliacaoModel {
     private String comentario;
 
     @Column
-    private LocalDate data_avaliacao;
+    private LocalDateTime data_avaliacao;
 }
