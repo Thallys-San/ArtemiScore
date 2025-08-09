@@ -1,4 +1,20 @@
 /* footer.css */
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+main.main-content {
+  flex: 1; /* expande para ocupar o espaço entre header e footer */
+}
+
 .footer {
   background-color: var(--darker);
   color: var(--lighter);
