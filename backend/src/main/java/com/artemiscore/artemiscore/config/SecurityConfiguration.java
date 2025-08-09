@@ -55,7 +55,8 @@ public class SecurityConfiguration {
                     "/api/games/**",
                     "/avaliacoes/**",
                     "/error",
-                    "/favicon.ico"
+                    "/favicon.ico",
+                    "/api/usuarios/**"
                 ).permitAll()
 
                 // Aqui a rota /api/usuarios/me fica protegida pois não está liberada explicitamente
@@ -89,4 +90,5 @@ public class SecurityConfiguration {
         return source;
     }
 }
+
 
