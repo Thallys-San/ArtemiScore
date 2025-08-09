@@ -53,17 +53,14 @@
 .hero-content {
     max-width: 1200px;
     width: 100%;
-    padding: 3rem;
+    padding: 1.5rem 3rem; /* menor padding para aproveitar mais */
     text-align: center;
 
-    /* NOVOS ajustes */
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
-    gap: 1.5rem;
-
-    /* CENTRALIZA VERTICALMENTE DENTRO DO CONTAINER PAI */
+    justify-content: flex-start; /* alinha ao topo, aproveitando mais espaço */
+    gap: 1.5rem; /* reduz espaçamento vertical entre elementos */
     height: 100%;
 }
 
@@ -102,16 +99,27 @@
 
 /* Título principal do Hero */
 .hero-title {
+    /* Remover height fixo para evitar corte inadequado */
+    height: 2.5em;
+
     font-size: clamp(3rem, 8vw, 6rem);
     font-weight: 800;
     line-height: 1.1;
     margin-bottom: 1.5rem;
+
     background: linear-gradient(to right, var(--white), var(--color5));
     -webkit-background-clip: text;
     background-clip: text;
     color: white;
     text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
 }
+
+
 
 /* Seção de avaliação no Hero */
 .hero-rating {
@@ -129,7 +137,13 @@
     font-size: 1.2rem;
     line-height: 1.7;
     color: rgba(255,255,255,0.9);
+
+    display: -webkit-box;      /* para truncar */
+    -webkit-line-clamp: 4;     /* limita a 4 linhas */
+    -webkit-box-orient: vertical;
+    overflow: hidden;          /* esconde texto extra */
 }
+
 
 /* Contêiner dos botões do Hero */
 .hero-buttons {
@@ -235,30 +249,39 @@
 
 /* Indicadores de slide (dots na parte inferior do hero) */
 .hero-indicators {
-    position: absolute;
-    bottom: 2rem;
-    left: 0;
-    right: 0;
-    display: flex;
-    justify-content: center;
-    gap: 1rem;
-    z-index: 20;
+  position: absolute;
+  bottom: 1rem; /* reduzir para aproximar mais da base */
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  z-index: 20;
 }
 
 .indicator {
-    width: 12px;
-    height: 12px;
-    border-radius: 50%;
-    background: rgba(255,255,255,0.3);
-    cursor: pointer;
-    transition: all 0.3s ease;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.3);
+  cursor: pointer;
+  transition: all 0.3s ease;
 }
 
-.indicator.active {
-    background: var(--primary);
-    transform: scale(1.3);
-    box-shadow: 0 0 10px var(--primary);
+.indicator.active,
+.indicator:hover {
+  background: var(--primary);
+  transform: scale(1.3);
+  box-shadow: 0 0 10px var(--primary);
 }
+
+@media (max-height: 700px) {
+  .hero-indicators {
+    bottom: 1rem;
+  }
+}
+
+
 
 /* --- Responsividade do Hero Banner --- */
 @media (max-width: 1024px) {
