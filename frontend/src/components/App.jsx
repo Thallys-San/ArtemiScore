@@ -6,7 +6,7 @@ import Login from "../pages/Login";
 import Jogos from "../pages/Jogos";
 import Lancamentos from "../pages/Lancamentos";
 import Perfil from "../pages/Perfil";
-//import Ranking from "../pages/Ranking";
+import Ranking from "../pages/Ranking";
 
 const App = () => {
   return (
@@ -16,7 +16,7 @@ const App = () => {
       <Route path="/login" element={<Login />} />
       <Route path="/home" element={<HomePage />} />
       <Route path="/jogos" element={<Jogos />} />
-      {/*<Route path="/ranking" element={<Ranking />} /> */}
+      <Route path="/ranking" element={<Ranking />} />
       <Route path="/lancamentos" element={<Lancamentos />} /> 
       <Route path="/perfil" element={<Perfil />} />
       {/* <Route path="/avaliacoes" element={<Avaliacoes />} /> */}
