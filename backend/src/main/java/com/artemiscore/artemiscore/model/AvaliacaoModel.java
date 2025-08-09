@@ -46,6 +46,7 @@ public class AvaliacaoModel {
     @Column
     private String comentario;
 
-    @Column
-    private LocalDateTime data_avaliacao;
+    @Column(name = "data_avaliacao")
+private LocalDateTime dataAvaliacao;
+
 }
