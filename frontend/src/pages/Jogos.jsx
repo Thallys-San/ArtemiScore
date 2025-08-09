@@ -4,6 +4,8 @@ import Footer from "../components/layout/Footer";
 import GameCard from "../components/cards/GameCard";
 import GameFilter from "../components/layout/GameFilter"; // 🔧
 import "../style.css";
+import HamsterLoading from "../components/commom/HamsterLoading";
+import "../components/layout/css/HamsterLoading.css"
 
 const LIMIT_PER_REQUEST = 20;
 
@@ -115,7 +117,11 @@ const buildQuery = () => {
                 <GameCard key={jogo.id} jogo={jogo} />
               ))}
             </div>
-            {loading && <div>Carregando...</div>}
+            {loading && (
+                <div className="container-loading">
+                  <HamsterLoading />
+                </div>
+            )}
             <div ref={sentinelRef} style={{ height: "1px" }} />
           </div>
         </section>
