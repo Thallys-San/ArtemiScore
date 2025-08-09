@@ -7,6 +7,7 @@ import Jogos from "../pages/Jogos";
 import Lancamentos from "../pages/Lancamentos";
 import Perfil from "../pages/Perfil";
 import Ranking from "../pages/Ranking";
+import RecuperarSenha from "../pages/RecuperarSenha"
 
 const App = () => {
   return (
@@ -19,6 +20,7 @@ const App = () => {
       <Route path="/ranking" element={<Ranking />} />
       <Route path="/lancamentos" element={<Lancamentos />} /> 
       <Route path="/perfil" element={<Perfil />} />
+      <Route path="/recuperarsenha" element={<RecuperarSenha />} />
       {/* <Route path="/avaliacoes" element={<Avaliacoes />} /> */}
       {/* <Route path="/favoritos" element={<Favoritos />} /> */}
       {/* <Route path="/configuracoes" element={<Configuracoes />} /> */}
