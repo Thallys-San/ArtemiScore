@@ -4,6 +4,8 @@ import Footer from "../components/layout/Footer";
 import ReleaseCard from "../components/cards/ReleaseCard";
 import GameFilter from "../components/layout/GameFilter";
 import "../style.css";
+import HamsterLoading from "../components/commom/HamsterLoading";
+import "../components/layout/css/HamsterLoading.css"
 
 const LIMIT_PER_REQUEST = 20;
 
@@ -127,7 +129,11 @@ const JogosUpcoming = () => {
                   <ReleaseCard key={jogo.id} jogo={jogo} />
                 ))}
               </div>
-              {loading && <div>Carregando...</div>}
+              {loading && (
+                <div className="container-loading">
+                  <HamsterLoading />
+                </div>
+            )}
 
               {!loading && !hasMore && upcomingGames.length > 0 && (
                 <div style={{ textAlign: "center", padding: "1rem", color: "#888" }}>
