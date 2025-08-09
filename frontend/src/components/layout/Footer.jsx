@@ -9,8 +9,10 @@ const Footer = () => (
         <div className="footer-brand">
           <h1>AtermiScore</h1>
           <p>
-            A plataforma definitiva para avaliação e descoberta de jogos.<br />
-            Conecte-se com outros jogadores e compartilhe suas opiniões.
+            A plataforma definitiva para avaliação completa e descoberta de jogos. <br />
+            Explore recomendações baseadas no seu gosto e no feedback da comunidade. <br />
+            Conecte-se com outros jogadores ao redor do mundo para trocar experiências, <br />
+            compartilhar opiniões honestas e encontrar os melhores títulos para você.
           </p>
         </div>
 
