@@ -3,8 +3,12 @@ import axios from "axios";
 import "../components/layout/css/Perfil.css";
 import Header from "../components/layout/Header";
 import { Link } from "react-router-dom";
-import ProfilePicture from "../components/commom/ProfilePicture";
+import AvatarDisplay, {
+  DEFAULT_PROFILE_PIC,
+} from "../components/commom/AvatarDisplay";
 import { AuthContext } from "../components/AuthContext";
+import HamsterLoading from "../components/commom/HamsterLoading";
+import "../components/layout/css/HamsterLoading.css";
 
 function Perfil() {
   const { token } = useContext(AuthContext);
@@ -25,11 +29,14 @@ function Perfil() {
         setLoading(true);
         setError(null);
 
-        const response = await axios.get("http://localhost:8080/api/usuarios/me", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        const response = await axios.get(
+          "http://localhost:8080/api/usuarios/me",
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
 
         setPerfil(response.data);
       } catch (err) {
@@ -40,26 +47,135 @@ function Perfil() {
       }
     };
 
+    
     fetchPerfil();
+    
   }, [token]);
 
-  if (loading) return <div className="loading">Carregando perfil...</div>;
-  if (error) return <div className="error">{error}</div>;
+  if (loading)
+    return (
+      <div className="loading-container">
+        <HamsterLoading />
+      </div>
+    );
+  if (error) return <div className="error-message">{error}</div>;
   if (!perfil) return <div className="no-data">Nenhum dado disponível</div>;
+if (!perfil) return <div>Nenhum dado disponível</div>;
 
+// Ajuste manual da data:
+const [year, month, day] = perfil.data_criacao.split("-");
+const dataCriacao = new Date(year, month - 1, day);
+
+const dataCriacaoFormatada = dataCriacao.toLocaleDateString("pt-BR", {
+  day: "2-digit",
+  month: "long",
+  year: "numeric",
+});
   return (
     <>
       <Header />
       <div className="container-perfil">
         <div className="card-perfil">
-          <ProfilePicture src={perfil.fotoPerfilUrl} alt={perfil.nome || "Foto do usuário"} />
+          <AvatarDisplay
+            src={perfil.foto_perfil || DEFAULT_PROFILE_PIC}
+            alt={perfil.nome}
+            className="avatar-display"
+          />
           <div className="informacoes-usuario">
             <h1 className="titulo">{perfil.nome || "Usuário"}</h1>
-            <p className="bio">{perfil.bio || "Adicione uma bio"}</p>
+            <p className="bio">
+              {perfil.bio || "Este usuário ainda não adicionou uma biografia."}
+            </p>
+
+            <div className="metadados">
+              <div className="metadado-item">
+                <i className="ri-calendar-line"></i>
+                <span>Membro desde: {dataCriacaoFormatada}</span>
+              </div>
+            </div>
+
+            <div className="botoes-acao">
+              <Link to="/editar-perfil" className="botao-perfil botao-primario">
+                <i className="ri-edit-line"></i> Editar Perfil
+              </Link>
+              <button className="botao-perfil botao-secundario">
+                <i className="ri-share-line"></i> Compartilhar
+              </button>
+            </div>
           </div>
         </div>
 
-        {/* Outros cards (estatísticas, avaliações, etc) aqui */}
+        {/* Seção de Preferências */}
+        {/* Seção Combinada de Preferências e Plataformas */}
+        <div className="secoes-combinadas">
+          {/* Seção de Preferências de Jogos */}
+          <div className="secao-perfil">
+            <h2 className="titulo-secao">
+              <i className="ri-gamepad-line"></i> Preferências de Jogos
+            </h2>
+
+            {perfil.preferencias_jogos?.length > 0 ? (
+              <div className="tags-container">
+                {perfil.preferencias_jogos.map((preferencia, index) => (
+                  <span key={index} className="tag-preferencia">
+                    {preferencia}
+                  </span>
+                ))}
+              </div>
+            ) : (
+              <p className="sem-conteudo">Nenhuma preferência cadastrada.</p>
+            )}
+          </div>
+
+          {/* Seção de Plataformas */}
+          <div className="secao-perfil">
+            <h2 className="titulo-secao">
+              <i className="ri-computer-line"></i> Plataformas Utilizadas
+            </h2>
+
+            {perfil.plataformas_utilizadas?.length > 0 ? (
+              <div className="plataformas-container">
+                {perfil.plataformas_utilizadas.map((plataforma, index) => (
+                  <div key={index} className="plataforma-item">
+                    <i className="ri-checkbox-circle-line"></i>
+                    <span>{plataforma}</span>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <p className="sem-conteudo">Nenhuma plataforma cadastrada.</p>
+            )}
+          </div>
+        </div>
+
+        {/* Seção de Estatísticas */}
+        <div className="secao-perfil">
+          <h2 className="titulo-secao">
+            <i className="ri-bar-chart-line"></i> Estatísticas
+          </h2>
+          <div className="estatisticas">
+            <div className="estatistica-item">
+              <div className="estatistica-valor">...</div>
+              <div className="estatistica-label">Jogos Avaliados</div>
+            </div>
+            <div className="estatistica-item">
+              <div className="estatistica-valor">...</div>
+              <div className="estatistica-label">Horas Jogadas</div>
+            </div>
+            <div className="estatistica-item">
+              <div className="estatistica-valor">...</div>
+              <div className="estatistica-label">Média de Avaliações</div>
+            </div>
+          </div>
+        </div>
+
+        {/* Seção de Jogos Favoritos */}
+        <div className="secao-perfil">
+          <h2 className="titulo-secao">
+            <i className="ri-heart-line"></i> Jogos Favoritos
+          </h2>
+          <p className="sem-conteudo">Nenhum jogo favorito adicionado ainda.</p>
+        </div>
       </div>
     </>
   );
