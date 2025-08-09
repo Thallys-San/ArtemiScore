@@ -23,6 +23,10 @@ const HeroBanner = () => {
     </div>);
   }
 
+  const cleanDescription = topGame.description
+  ? topGame.description.replace(/<[^>]*>/g, "")
+  : "Sem descrição disponível.";
+
   return (
     <section className="hero-banner">
       <div className="hero-slide active">
@@ -52,8 +56,9 @@ const HeroBanner = () => {
               </span>
             </div>
             <p className="hero-description">
-              {topGame.description?.substring(0, 200) ||
-                "Sem descrição disponível."}
+              {cleanDescription.length > 200
+                ? cleanDescription.substring(0, 200) + "..."
+                : cleanDescription}
             </p>
             <div className="hero-buttons">
               <button className="hero-button primary-button">
