@@ -46,15 +46,46 @@ const Login = () => {
 
       navigate("/home");
     } catch (error) {
-      console.error("Erro no login:", error);
-      if (error.code === "auth/user-not-found") {
-        navigate("/RecuperarSenha", { state: { email } });
-      } else if (error.code === "auth/wrong-password") {
-        setLoginError("Senha incorreta.");
-      } else {
-        setLoginError("Erro ao fazer login. Tente novamente.");
-      }
+    console.error("Erro no login:", error);
+    
+    let errorMessage = "Erro ao fazer login. Tente novamente.";
+    let errorType = "general";
+    
+    switch (error.code) {
+      case "auth/invalid-credential":
+        errorMessage = "Credenciais inválidas. Verifique seu email e senha.";
+        errorType = "credentials";
+        break;
+      case "auth/invalid-email":
+        errorMessage = "Email inválido. Por favor, insira um email válido.";
+        errorType = "email";
+        break;
+      case "auth/user-disabled":
+        errorMessage = "Esta conta foi desativada. Entre em contato com o suporte.";
+        errorType = "account";
+        break;
+      case "auth/user-not-found":
+        errorMessage = "Nenhuma conta encontrada com este email.";
+        errorType = "email";
+        break;
+      case "auth/wrong-password":
+        errorMessage = "Senha incorreta. Tente novamente ou redefina sua senha.";
+        errorType = "password";
+        break;
+      case "auth/too-many-requests":
+        errorMessage = "Muitas tentativas falhas. Tente novamente mais tarde.";
+        errorType = "account";
+        break;
+      case "auth/network-request-failed":
+        errorMessage = "Problema de conexão. Verifique sua internet.";
+        errorType = "network";
+        break;
+      default:
+        errorMessage = error.message || "Erro desconhecido ao fazer login.";
     }
+
+    setLoginError({ message: errorMessage, type: errorType });
+  }
   };
 
   const handleGoogleLogin = async () => {
@@ -123,6 +154,26 @@ const Login = () => {
           <p>Entre na sua conta para continuar sua jornada</p>
         </div>
 
+        {/* Mensagem de erro geral */}
+        {loginError.message && (
+          <div className={`error-message ${loginError.type}`}>
+            {loginError.message}
+            {loginError.type === "verification" && (
+              <button 
+                onClick={() => navigate("/send-verification")} 
+                className="resend-verification"
+              >
+                Reenviar email de verificação
+              </button>
+            )}
+            {loginError.type === "email" && !email && (
+              <Link to="/cadastro" className="register-link-inline">
+                Criar uma conta
+              </Link>
+            )}
+          </div>
+        )}
+        
         <form className="login-form" onSubmit={handleSubmit}>
           <div className="form-group email-group">
             <label htmlFor="email" className="form-label">
