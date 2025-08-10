@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import "../components/layout/css/Login.css";
-import { sendPasswordResetEmail, fetchSignInMethodsForEmail } from "firebase/auth";
+import { sendPasswordResetEmail } from "firebase/auth";
 import { auth } from "../components/firebase";
 
 const RecuperarSenha = () => {
@@ -32,33 +32,26 @@ const RecuperarSenha = () => {
     }
 
     try {
-      // Verifica se o email está cadastrado (tem método de login)
-      const methods = await fetchSignInMethodsForEmail(auth, cleanEmail);
-      if (!methods || methods.length === 0) {
-        setIsError(true);
-        setMessage("Este e-mail não está cadastrado.");
-        setIsLoading(false);
-        return;
-      }
-
-      // Se email existe, envia email de recuperação
       await sendPasswordResetEmail(auth, cleanEmail);
-      setMessage(`E-mail de recuperação enviado para ${cleanEmail}. Verifique sua caixa de entrada.`);
+      setMessage(`Se existir uma conta para ${cleanEmail}, enviamos um e-mail de recuperação. Verifique sua caixa de entrada.`);
       setIsError(false);
     } catch (error) {
       console.error("Erro ao enviar e-mail:", error);
-      let errorMessage = "Erro ao enviar e-mail de recuperação.";
 
-      if (error.code === "auth/invalid-email") {
-        errorMessage = "E-mail inválido.";
+      // Se o erro for de e-mail inexistente, mostra como se fosse sucesso
+      if (error.code === "auth/user-not-found") {
+        setMessage(`Se existir uma conta para ${cleanEmail}, enviamos um e-mail de recuperação. Verifique sua caixa de entrada.`);
+        setIsError(false);
+      } else if (error.code === "auth/invalid-email") {
+        setIsError(true);
+        setMessage("E-mail inválido.");
       } else if (error.code === "auth/too-many-requests") {
-        errorMessage = "Muitas tentativas. Tente novamente mais tarde.";
+        setIsError(true);
+        setMessage("Muitas tentativas. Tente novamente mais tarde.");
       } else {
-        errorMessage = `Erro: ${error.message}`;
+        setIsError(true);
+        setMessage(`Erro: ${error.message}`);
       }
-
-      setIsError(true);
-      setMessage(errorMessage);
     } finally {
       setIsLoading(false);
     }
