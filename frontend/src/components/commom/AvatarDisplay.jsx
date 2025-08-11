@@ -10,8 +10,8 @@ const AvatarDisplay = ({ src, alt, size = 'medium', className = '' }) => {
   const sizeMap = {
     small: '64px',
     medium: '128px',
-    large: '192px',
-    xlarge: '256px'
+    large: '180px',
+    xlarge: '320px'
   };
 
   const handleImageError = () => {
@@ -20,11 +20,11 @@ const AvatarDisplay = ({ src, alt, size = 'medium', className = '' }) => {
 
   return (
     <div 
-      className={`avatar-container ${className} ${size}`}
-      style={{
-        '--avatar-size': sizeMap[size] || sizeMap.medium
-      }}
-    >
+  className={`avatar-container ${className} large`}
+  style={{
+    '--avatar-size': sizeMap.large
+  }}
+>
       <img
         src={imageUrl}
         alt={alt || "Foto de perfil do usuário"}
