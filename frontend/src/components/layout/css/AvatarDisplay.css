@@ -41,6 +41,7 @@
 .avatar-container.small {
   --avatar-size: 64px;
   padding: 2px;
+  
 }
 
 .avatar-container.medium {
@@ -48,8 +49,8 @@
 }
 
 .avatar-container.large {
-  --avatar-size: 192px;
-  padding: 6px;
+  --avatar-size: 180px;
+  padding: 1px;
 }
 
 .avatar-container.xlarge {
