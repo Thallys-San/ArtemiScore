@@ -1,10 +1,18 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 
-const DEFAULT_PROFILE_PIC = "https://raw.githubusercontent.com/Thallys-San/ArtemiScore/main/profile_pic.png";
-
-function ProfilePicture({ onAvatarChange }) {
-  const [avatarPreview, setAvatarPreview] = useState(DEFAULT_PROFILE_PIC);
+function ProfilePicture({ onAvatarChange, initialAvatar }) {
+  const DEFAULT_PROFILE_PIC = "https://raw.githubusercontent.com/Thallys-San/ArtemiScore/main/profile_pic.png";
+  const [avatarPreview, setAvatarPreview] = useState(initialAvatar || DEFAULT_PROFILE_PIC);
   const fileInputRef = useRef(null);
+
+  // Atualiza avatarPreview caso initialAvatar mude
+  useEffect(() => {
+    if (initialAvatar) {
+      setAvatarPreview(initialAvatar);
+    } else {
+      setAvatarPreview(DEFAULT_PROFILE_PIC);
+    }
+  }, [initialAvatar]);
 
   const handleAvatarChange = (event) => {
     const file = event.target.files[0];
@@ -16,7 +24,7 @@ function ProfilePicture({ onAvatarChange }) {
 
     if (file.size > 2 * 1024 * 1024) {
       alert("Imagem maior que 2MB.");
-      fileInputRef.current.value = "";
+      if (fileInputRef.current) fileInputRef.current.value = "";
       setAvatarPreview(DEFAULT_PROFILE_PIC);
       onAvatarChange(DEFAULT_PROFILE_PIC);
       return;
@@ -77,7 +85,7 @@ function ProfilePicture({ onAvatarChange }) {
           ></div>
         </div>
         {isCustomAvatar && (
-         <button
+          <button
             type="button"
             onClick={handleReset}
             className="reset-avatar-button"
