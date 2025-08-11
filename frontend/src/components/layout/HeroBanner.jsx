@@ -4,39 +4,82 @@ import HamsterLoading from "../../components/commom/HamsterLoading";
 import "../../components/layout/css/HamsterLoading.css";
 import "./css/HeroBanner.css";
 
+import defaultImage1 from "../../assets/banners/banner-1.png";
+import defaultImage2 from "../../assets/banners/banner-2.png";
+import defaultImage3 from "../../assets/banners/banner-3.png";
+
 const HeroBanner = () => {
   const [games, setGames] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [isLoading, setIsLoading] = useState(true);
+
+  const defaultBanners = [
+    {
+      id: 1,
+      name: "Descubra novos jogos",
+      description: "Saiba mais sobre a sua próxima aventura!",
+      image: defaultImage1
+    },
+    {
+      id: 2,
+      name: "Compartilhe suas opiniões",
+      description: "Sua avaliação ajuda outros jogadores a fazerem escolhas melhores.",
+      image: defaultImage2
+    },
+    {
+      id: 3,
+      name: "Explore novos horizontes!",
+      description: "Encontre universos de novas possibilidades",
+      image: defaultImage3
+    }
+  ];
+
 
   useEffect(() => {
+    setIsLoading(true);
     fetch("http://localhost:8080/api/games/top-rated-monthly")
-      .then((res) => res.json())
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error("Erro na resposta da API");
+        }
+        return res.json();
+      })
       .then((data) => {
-        if (Array.isArray(data)) {
-          setGames(data.slice(0, 3)); // limita para 3 jogos
+        if (Array.isArray(data) && data.length > 0) {
+          // Combina os jogos reais com os banners padrão
+          const combined = [...data.slice(0, 3)];
+          
+          // Preenche com banners padrão se não houver jogos suficientes
+          while (combined.length < 3) {
+            combined.push(defaultBanners[combined.length]);
+          }
+          
+          setGames(combined);
         } else {
-          setGames([]);
+          // Se não houver jogos, usa os banners padrão
+          setGames(defaultBanners.slice(0, 3));
         }
       })
       .catch((err) => {
         console.error("Erro ao buscar jogos mais bem avaliados:", err);
-        setGames([]);
+        // Em caso de erro, usa os banners padrão
+        setGames(defaultBanners.slice(0, 3));
+      })
+      .finally(() => {
+        setIsLoading(false);
       });
   }, []);
 
   useEffect(() => {
-  if (games.length > 1) {
-    const interval = setInterval(() => {
-      setCurrentIndex((prev) => (prev + 1) % games.length);
-    }, 10000);
-    return () => clearInterval(interval);
-  }
-}, [games, currentIndex]);
+    if (games.length > 1) {
+      const interval = setInterval(() => {
+        setCurrentIndex((prev) => (prev + 1) % games.length);
+      }, 10000);
+      return () => clearInterval(interval);
+    }
+  }, [games, currentIndex]);
 
-
-
-  // Se não tiver jogos ou o índice atual for inválido
-  if (games.length === 0 || !games[currentIndex]) {
+  if (isLoading) {
     return (
       <div className="hero-banner loading">
         <HamsterLoading />
@@ -44,18 +87,21 @@ const HeroBanner = () => {
     );
   }
 
-  const topGame = games[currentIndex];
+  const currentItem = games[currentIndex];
 
   function decodeHtmlEntities(text) {
-  const textarea = document.createElement("textarea");
-  textarea.innerHTML = text;
-  return textarea.value;
-}
+    if (!text) return "Sem descrição disponível.";
+    const textarea = document.createElement("textarea");
+    textarea.innerHTML = text;
+    return textarea.value;
+  }
 
-const cleanDescription = topGame?.description
-  ? decodeHtmlEntities(topGame.description.replace(/<[^>]*>/g, ""))
-  : "Sem descrição disponível.";
+  const cleanDescription = currentItem?.description
+    ? decodeHtmlEntities(currentItem.description.replace(/<[^>]*>/g, ""))
+    : currentItem?.description || "Sem descrição disponível.";
 
+  // Verifica se é um banner padrão (que não tem mediaAvaliacao)
+  const isDefaultBanner = !currentItem.hasOwnProperty('mediaAvaliacao');
 
   return (
     <section className="hero-banner">
@@ -63,11 +109,12 @@ const cleanDescription = topGame?.description
         <div className="hero-background">
           <img
             src={
-              topGame?.background_image ||
-              topGame?.background_image_additional ||
+              currentItem?.background_image ||
+              currentItem?.background_image_additional ||
+              currentItem?.image ||
               "/default.jpg"
             }
-            alt={topGame?.name || "Jogo sem nome"}
+            alt={currentItem?.name || "Jogo sem nome"}
             className="hero-image"
           />
           <div className="hero-overlay"></div>
@@ -75,18 +122,22 @@ const cleanDescription = topGame?.description
 
         <div className="hero-container">
           <div className="hero-content">
-            <span className="hero-tag">MELHOR AVALIADO</span>
-            <h1 className="hero-title">{topGame?.name || "Título não disponível"}</h1>
+            <span className="hero-tag">
+              {isDefaultBanner ? "DESTAQUE" : "MELHOR AVALIADO"}
+            </span>
+            <h1 className="hero-title">{currentItem?.name || "Título não disponível"}</h1>
 
-            <div className="hero-rating">
-              <div className="star-rating">
-                <StarRating rating={topGame?.mediaAvaliacao ?? 0} />
+            {!isDefaultBanner && (
+              <div className="hero-rating">
+                <div className="star-rating">
+                  <StarRating rating={currentItem?.mediaAvaliacao ?? 0} />
+                </div>
+                <span className="rating-text">
+                  {(currentItem?.mediaAvaliacao ?? 0).toFixed(1)} (
+                  {currentItem?.totalAvaliacoes ?? 0} Avaliações)
+                </span>
               </div>
-              <span className="rating-text">
-                {(topGame?.mediaAvaliacao ?? 0).toFixed(1)} (
-                {topGame?.totalAvaliacoes ?? 0} Avaliações)
-              </span>
-            </div>
+            )}
 
             <p className="hero-description">
               {cleanDescription.length > 200
@@ -95,12 +146,21 @@ const cleanDescription = topGame?.description
             </p>
 
             <div className="hero-buttons">
-              <button className="hero-button primary-button">
-                <i className="ri-information-line"></i> Ver Detalhes
-              </button>
-              <button className="hero-button secondary-button">
-                <i className="ri-star-line"></i> Avaliar Agora
-              </button>
+              {!isDefaultBanner && (
+                <>
+                  <button className="hero-button primary-button">
+                    <i className="ri-information-line"></i> Ver Detalhes
+                  </button>
+                  <button className="hero-button secondary-button">
+                    <i className="ri-star-line"></i> Avaliar Agora
+                  </button>
+                </>
+              )}
+              {isDefaultBanner && (
+                <button className="hero-button primary-button">
+                  <i className="ri-gamepad-line"></i> Explorar Jogos
+                </button>
+              )}
             </div>
           </div>
         </div>
