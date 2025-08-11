@@ -1,731 +1,765 @@
-import React, { useState, useRef, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useRef } from "react";
+import "../components/layout/css/config.css";
+import { auth } from "../components/firebase";
+import {
+  getIdToken,
+  onAuthStateChanged,
+  EmailAuthProvider,
+  reauthenticateWithCredential,
+  updatePassword,
+  updateEmail, 
+  sendEmailVerification,
+} from "firebase/auth";
+import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
+import ProfilePicture from "../components/commom/ProfilePicture";
+import UpdateUserEmail from "../components/UpdateUserEmail";
 
-// Componente FieldError com ARIA (mantido como está)
-function FieldError({ error, id }) {
-    if (!error) return null;
-    return (
-        <div
-            id={`${id}-error`}
-            role="alert"
-            aria-live="polite"
-            style={{ color: 'var(--red)', fontSize: '0.9rem', marginTop: 4 }}
-        >
-            {error}
-        </div>
-    );
-}
+const ConfigScreen = () => {
+  const navigate = useNavigate();
+  const fileInputRef = useRef();
 
-// Componente de Notificação (mantido como está após a correção visual)
-function Notification({ message, type, onClose }) {
-    useEffect(() => {
-        if (!message) return;
+  // Estados do usuário
+  const [userData, setUserData] = useState({
+    username: "",
+    email: "",
+    bio: "",
+    profilePicture: "",
+    currentPassword: "",
+    newPassword: "",
+    confirmNewPassword: "",
+  });
 
-        const timer = setTimeout(() => {
-            onClose();
-        }, 3000);
-        return () => clearTimeout(timer);
-    }, [message, onClose]);
+  const [errors, setErrors] = useState({});
+  const [notification, setNotification] = useState({ message: "", type: "" });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showCurrentPassword, setShowCurrentPassword] = useState(false);
+  const [showNewPassword, setShowNewPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
-    if (!message) return null;
+  // Carregar dados do usuário
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, async (user) => {
+      if (!user) {
+        navigate("/login");
+        return;
+      }
 
-    const bgColor = type === 'success' ? 'var(--green)' : 'var(--red)';
-    const textColor = 'white';
+      try {
+        const idToken = await getIdToken(user);
+        const response = await fetch(`http://localhost:8080/api/usuarios/me`, {
+          headers: { Authorization: `Bearer ${idToken}` },
+        });
 
-    return (
-        <div
-            style={{
-                padding: '10px 20px',
-                borderRadius: '5px',
-                backgroundColor: bgColor,
-                color: textColor,
-                marginBottom: '20px',
-                display: 'flex',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-            }}
-            role="status"
-            aria-live="polite"
-        >
-            <span>{message}</span>
-            <button onClick={onClose} style={{ background: 'none', border: 'none', color: textColor, cursor: 'pointer', fontSize: '1.2em' }}>
-                &times;
+        if (!response.ok) throw new Error("Erro ao carregar dados do usuário");
+
+        const data = await response.json();
+        setUserData({
+          username: data.nome || "",
+          email: data.email || "",
+          bio: data.bio || "",
+          profilePicture: data.foto_perfil,
+          currentPassword: "",
+          newPassword: "",
+          confirmNewPassword: "",
+        });
+      } catch (error) {
+        console.error("Erro ao carregar dados:", error);
+        setNotification({
+          message: "Erro ao carregar dados do usuário",
+          type: "error",
+        });
+      }
+    });
+
+    return () => unsubscribe();
+  }, [navigate]);
+
+  const handlePasswordSubmit = async (e) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+
+    if (!validatePasswordForm()) {
+      setIsSubmitting(false);
+      return;
+    }
+
+    try {
+      const user = auth.currentUser;
+      if (!user) {
+        throw new Error("Usuário não autenticado");
+      }
+
+      // First reauthenticate the user
+      const credential = EmailAuthProvider.credential(
+        user.email,
+        userData.currentPassword
+      );
+      await reauthenticateWithCredential(user, credential);
+
+      // Then update the password
+      await updatePassword(user, userData.newPassword);
+
+      // Also update in your backend
+      const idToken = await getIdToken(user);
+      const response = await fetch(
+        `http://localhost:8080/api/usuarios/update-password`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${idToken}`,
+          },
+          body: JSON.stringify({
+            newPassword: userData.newPassword,
+          }),
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Erro ao atualizar senha no servidor");
+      }
+
+      // Clear password fields
+      setUserData({
+        ...userData,
+        currentPassword: "",
+        newPassword: "",
+        confirmNewPassword: "",
+      });
+
+      setNotification({
+        message: "Senha atualizada com sucesso!",
+        type: "success",
+      });
+    } catch (error) {
+      console.error("Erro ao atualizar senha:", error);
+      setNotification({
+        message:
+          error.message ||
+          "Erro ao atualizar senha. Verifique sua senha atual.",
+        type: "error",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const handleDeactivate = async () => {
+    if (
+      !window.confirm(
+        "Tem certeza que deseja desativar sua conta? Esta ação é irreversível."
+      )
+    ) {
+      return;
+    }
+
+    setIsSubmitting(true);
+
+    try {
+      const user = auth.currentUser;
+      const idToken = await getIdToken(user);
+
+      const response = await fetch(`http://localhost:8080/api/usuarios/me`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${idToken}`,
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error("Erro ao desativar conta");
+      }
+
+      // Sign out and redirect
+      await auth.signOut();
+      navigate("/");
+    } catch (error) {
+      console.error("Erro ao desativar conta:", error);
+      setNotification({
+        message: error.message || "Erro ao desativar conta",
+        type: "error",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  // Manipuladores de eventos
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setUserData({ ...userData, [name]: value });
+
+    // Limpa erros ao modificar o campo
+    if (errors[name]) {
+      setErrors({ ...errors, [name]: "" });
+    }
+  };
+
+  // Validações melhoradas (adaptadas do cadastro)
+  const validatePassword = (password) => {
+    if (password.length < 8) return "A senha deve ter pelo menos 8 caracteres";
+    if (!/[A-Z]/.test(password))
+      return "A senha deve conter ao menos uma letra maiúscula";
+    if (!/[0-9]/.test(password))
+      return "A senha deve conter ao menos um número";
+    if (!/[!@#$%^&*(),.?":{}|<>]/.test(password))
+      return "A senha deve conter ao menos um caractere especial";
+    return "";
+  };
+
+const validateAccountForm = () => {
+  const newErrors = {};
+  
+  if (!userData.username.trim()) {
+    newErrors.username = "Informe um nome de usuário";
+  }
+  
+  if (!userData.email.trim()) {
+    newErrors.email = "Informe um e-mail";
+  } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(userData.email)) {
+    newErrors.email = "Informe um e-mail válido";
+  }
+  
+  if (userData.bio.length > 300) {
+    newErrors.bio = "A bio deve ter no máximo 300 caracteres";
+  }
+  
+  // Mantém os erros de username/email em uso se existirem
+  if (errors.username) newErrors.username = errors.username;
+  if (errors.email) newErrors.email = errors.email;
+  
+  setErrors(newErrors);
+  return Object.keys(newErrors).length === 0;
+};
+
+  const validatePasswordForm = () => {
+    const newErrors = {};
+
+    if (!userData.currentPassword) {
+      newErrors.currentPassword = "Digite sua senha atual";
+    }
+
+    const passwordError = validatePassword(userData.newPassword);
+    if (passwordError) {
+      newErrors.newPassword = passwordError;
+    }
+
+    if (userData.newPassword !== userData.confirmNewPassword) {
+      newErrors.confirmNewPassword = "As senhas não coincidem";
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  // Verificação de nome de usuário e email em tempo real
+const handleBlur = async (e) => {
+  const { name, value } = e.target;
+  const newErrors = { ...errors };
+
+  try {
+    const user = auth.currentUser;
+    if (!user) return;
+
+    const idToken = await getIdToken(user);
+
+    if (name === "username" && value.trim()) {
+      const res = await fetch(
+        `http://localhost:8080/api/usuarios/check-username?username=${encodeURIComponent(value)}&currentUserId=${user.uid}`,
+        {
+          headers: { 
+            Authorization: `Bearer ${idToken}`,
+            'Content-Type': 'application/json'
+          }
+        }
+      );
+      
+      if (!res.ok) {
+        const errorData = await res.json();
+        throw new Error(errorData.message || "Erro na verificação de username");
+      }
+      
+      const data = await res.json();
+      
+      if (!data.available) {
+        newErrors.username = "Nome de usuário já está em uso";
+      } else {
+        delete newErrors.username;
+      }
+    }
+
+    if (name === "email" && value.trim()) {
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
+        newErrors.email = "Informe um e-mail válido";
+      } else {
+        const res = await fetch(
+          `http://localhost:8080/api/usuarios/check-email?email=${encodeURIComponent(value)}&currentUserId=${user.uid}`,
+          {
+            headers: { 
+              Authorization: `Bearer ${idToken}`,
+              'Content-Type': 'application/json'
+            }
+          }
+        );
+        
+        if (!res.ok) {
+          const errorData = await res.json();
+          throw new Error(errorData.message || "Erro na verificação de e-mail");
+        }
+        
+        const data = await res.json();
+        
+        if (!data.available) {
+          newErrors.email = "E-mail já está em uso";
+        } else {
+          delete newErrors.email;
+        }
+      }
+    }
+  } catch (err) {
+    console.error("Erro ao verificar:", err);
+    setNotification({
+      message: err.message || "Erro ao verificar disponibilidade",
+      type: "error"
+    });
+  } finally {
+    setErrors(newErrors);
+  }
+};
+
+  // Atualizar dados da conta
+const handleAccountSubmit = async (e) => {
+  e.preventDefault();
+  setIsSubmitting(true);
+
+  if (!validateAccountForm()) {
+    setIsSubmitting(false);
+    return;
+  }
+
+  try {
+    const user = auth.currentUser;
+    if (!user) {
+      throw new Error("Usuário não autenticado");
+    }
+
+    const emailChanged = userData.email !== user.email;
+    const idToken = await getIdToken(user);
+
+    // 1. Primeiro atualiza os dados no SEU backend (exceto email se tiver mudado)
+    const updateData = {
+      nome: userData.username,
+      bio: userData.bio,
+      foto_perfil: userData.profilePicture
+    };
+
+    // Só envia o email se NÃO tiver mudado (evita inconsistências)
+    if (!emailChanged) {
+      updateData.email = userData.email;
+    }
+
+    const response = await fetch(`http://localhost:8080/api/usuarios/me`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${idToken}`,
+      },
+      body: JSON.stringify(updateData),
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.message || "Erro ao atualizar dados");
+    }
+
+    // 2. Se o email foi alterado, inicia o processo especial
+    if (emailChanged) {
+      if (!user.emailVerified) {
+        throw {
+          code: 'auth/unverified-email',
+          message: "Verifique seu e-mail atual antes de alterá-lo"
+        };
+      }
+
+      // Reautentica o usuário
+      const credential = EmailAuthProvider.credential(
+        user.email,
+        userData.currentPassword
+      );
+      await reauthenticateWithCredential(user, credential);
+
+      // Usa o endpoint do seu backend para solicitar mudança de email
+      const changeEmailResponse = await fetch(`http://localhost:8080/api/usuarios/request-email-change`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${idToken}`,
+        },
+        body: JSON.stringify({
+          newEmail: userData.email
+        }),
+      });
+
+      if (!changeEmailResponse.ok) {
+        const errorData = await changeEmailResponse.json();
+        throw new Error(errorData.message || "Erro ao solicitar alteração de e-mail");
+      }
+
+      setNotification({
+        message: "Enviamos um link de confirmação para seu novo e-mail. Por favor, verifique sua caixa de entrada.",
+        type: "success",
+      });
+    } else {
+      setNotification({
+        message: "Dados atualizados com sucesso!",
+        type: "success",
+      });
+    }
+
+    // Limpa o campo de senha
+    setUserData(prev => ({...prev, currentPassword: ""}));
+
+  } catch (error) {
+    console.error("Erro ao atualizar:", error);
+    
+    let errorMessage = error.message;
+    if (error.code === 'auth/operation-not-allowed') {
+      errorMessage = "Complete a verificação do e-mail atual primeiro";
+    } else if (error.code === 'auth/requires-recent-login') {
+      errorMessage = "Sessão expirada. Por favor, faça login novamente";
+    }
+
+    setNotification({
+      message: errorMessage || "Erro ao atualizar dados",
+      type: "error",
+    });
+  } finally {
+    setIsSubmitting(false);
+  }
+};
+
+
+  // Função para determinar a classe do input baseado no estado de validação
+  const getInputClass = (fieldName) => {
+    if (errors[fieldName]) {
+      return "input-error";
+    }
+    if (userData[fieldName] && !errors[fieldName]) {
+      return "input-success";
+    }
+    return "";
+  };
+
+  return (
+    <div className="cadastro-container">
+      <div className="form-container">
+      {notification.message && (
+  <div className={`notification ${notification.type}`}>
+    {notification.message}
+    {notification.type === 'success' && notification.message.includes('Enviamos um link') && (
+      <button 
+        onClick={() => window.location.reload()}
+        className="notification-refresh"
+      >
+        Atualizar Página
+      </button>
+    )}
+    <button onClick={() => setNotification({ message: '', type: '' })}>
+      &times;
+    </button>
+  </div>
+)}
+        <h1 className="title">Configurações da Conta</h1>
+        <p className="subtitle">
+          Gerencie suas informações pessoais e preferências
+        </p>
+
+        {notification.message && (
+          <div className={`notification ${notification.type}`}>
+            {notification.message}
+            <button
+              onClick={() => setNotification({ message: "", type: "" })}
+              aria-label="Fechar notificação"
+            >
+              &times;
             </button>
-        </div>
-    );
-}
+          </div>
+        )}
 
-// AccountSection (mantido como está)
-function AccountSection({
-    username, setUsername,
-    email, setEmail,
-    bio, setBio,
-    profileImage,
-    fileInputRef, handleImageChange,
-    handleAccountSubmit,
-    errors = {},
-    isSubmitting,
-    setErrors,
-}) {
-    const onImageChange = (e) => {
-        handleImageChange(e);
-        setErrors(prev => ({ ...prev, profileImage: undefined }));
-    };
+        {/* Seção de Informações da Conta */}
+        <form onSubmit={handleAccountSubmit} className="form">
+          <fieldset>
+            <legend className="section-title">
+              <i className="ri-user-settings-line"></i> Informações Pessoais
+            </legend>
 
-    return (
-        <div className="settings-section">
-            <h2>
-                <i className="ri-user-settings-line" aria-hidden="true"></i> Configurações da Conta
-            </h2>
-            <form onSubmit={handleAccountSubmit} autoComplete="off" noValidate>
-                <div className="form-group">
-                    <label htmlFor="username">Nome de Usuário</label>
-                    <input
-                        id="username"
-                        type="text"
-                        value={username}
-                        onChange={e => {
-                            setUsername(e.target.value);
-                            setErrors(prev => ({ ...prev, username: undefined }));
-                        }}
-                        placeholder="Seu nome de usuário"
-                        autoComplete="username"
-                        aria-describedby={errors.username ? "username-error" : undefined}
-                        aria-invalid={!!errors.username}
-                        required
-                        maxLength={32}
-                    />
-                    <FieldError error={errors.username} id="username" />
-                </div>
-                <div className="form-group">
-                    <label htmlFor="email">Email</label>
-                    <input
-                        id="email"
-                        type="email"
-                        value={email}
-                        onChange={e => {
-                            setEmail(e.target.value);
-                            setErrors(prev => ({ ...prev, email: undefined }));
-                        }}
-                        placeholder="Seu email"
-                        autoComplete="email"
-                        aria-describedby={errors.email ? "email-error" : undefined}
-                        aria-invalid={!!errors.email}
-                        required
-                        maxLength={64}
-                    />
-                    <FieldError error={errors.email} id="email" />
-                </div>
-                <div className="form-group">
-                    <label htmlFor="bio">Bio</label>
-                    <textarea
-                        id="bio"
-                        value={bio}
-                        onChange={e => {
-                            setBio(e.target.value);
-                            setErrors(prev => ({ ...prev, bio: undefined }));
-                        }}
-                        placeholder="Fale um pouco sobre você..."
-                        aria-describedby={errors.bio ? "bio-error" : undefined}
-                        aria-invalid={!!errors.bio}
-                        required
-                        maxLength={200}
-                        rows={3}
-                    />
-                    <small style={{ display: 'block', textAlign: 'right', color: '#666' }}>
-                        {bio.length}/200 caracteres
-                    </small>
-                    <FieldError error={errors.bio} id="bio" />
-                </div>
-                <div className="profile-image-upload">
-                    <img
-                        src={profileImage || 'https://ui-avatars.com/api/?name=User&background=eee&color=555'}
-                        alt="Avatar do Usuário"
-                        aria-label="Pré-visualização da imagem de perfil"
-                        style={{ width: 80, height: 80, borderRadius: '50%', objectFit: 'cover', marginBottom: 8, border: '2px solid #eee' }}
-                    />
-                    <label htmlFor="profileImage" className="custom-file-upload" tabIndex={0} style={{ cursor: 'pointer', color: '#007bff' }}>
-                        <i className="ri-upload-cloud-line" aria-hidden="true" /> Alterar Imagem de Perfil
-                    </label>
-                    <input
-                        id="profileImage"
-                        type="file"
-                        accept="image/png, image/jpeg, image/webp"
-                        ref={fileInputRef}
-                        onChange={onImageChange}
-                        aria-label="Alterar imagem de perfil"
-                        style={{ display: 'none' }}
-                    />
-                    <small style={{ display: 'block', marginTop: 8, color: '#666' }}>
-                        Formatos suportados: PNG, JPEG, WebP (Máx. 2MB)
-                    </small>
-                    <FieldError error={errors.profileImage} id="profileImage" />
-                </div>
-                <div className="button-group">
-                    <button
-                        type="button"
-                        className="profile-btn secondary"
-                        onClick={() => {
-                            setUsername('');
-                            setEmail('');
-                            setBio('');
-                            setErrors({});
-                        }}
-                        disabled={isSubmitting}
-                    >
-                        Cancelar
-                    </button>
-                    <button
-                        type="submit"
-                        className="profile-btn"
-                        disabled={isSubmitting || !username.trim() || !email.trim() || !bio.trim()}
-                        style={{ opacity: (!username.trim() || !email.trim() || !bio.trim()) ? 0.6 : 1 }}
-                    >
-                        {isSubmitting ? 'Salvando...' : 'Salvar Alterações'}
-                    </button>
-                </div>
-            </form>
-        </div>
-    );
-}
-
-// PasswordSection (mantido como está)
-function PasswordSection({
-    currentPassword, setCurrentPassword,
-    newPassword, setNewPassword,
-    confirmNewPassword, setConfirmNewPassword,
-    handlePasswordSubmit,
-    errors = {},
-    isSubmitting,
-    setErrors,
-}) {
-    const calculatePasswordStrength = (password) => {
-        let strength = 0;
-        if (password.length > 0) strength++;
-        if (password.length >= 8) strength++;
-        if (/[A-Z]/.test(password)) strength++;
-        if (/[0-9]/.test(password)) strength++;
-        if (/[^A-Za-z0-9]/.test(password)) strength++;
-        return Math.min(strength, 5);
-    };
-
-    const passwordStrength = calculatePasswordStrength(newPassword);
-
-    const getPasswordStrengthColor = () => {
-        if (passwordStrength <= 2) return 'var(--red)';
-        if (passwordStrength === 3) return 'var(--orange)';
-        return 'var(--green)';
-    };
-
-    const getPasswordStrengthText = () => {
-        if (newPassword.length === 0) return '';
-        if (passwordStrength <= 2) return 'Fraca';
-        if (passwordStrength === 3) return 'Média';
-        if (passwordStrength === 4) return 'Forte';
-        return 'Muito forte';
-    };
-
-    return (
-        <div className="settings-section">
-            <h2>
-                <i className="ri-lock-line" aria-hidden="true"></i> Segurança e Senha
-            </h2>
-            <form onSubmit={handlePasswordSubmit} autoComplete="off" noValidate>
-                <div className="form-group">
-                    <label htmlFor="currentPassword">Senha Atual</label>
-                    <input
-                        id="currentPassword"
-                        type="password"
-                        value={currentPassword}
-                        onChange={e => {
-                            setCurrentPassword(e.target.value);
-                            setErrors(prev => ({ ...prev, currentPassword: undefined }));
-                        }}
-                        placeholder="Sua senha atual"
-                        autoComplete="current-password"
-                        aria-describedby={errors.currentPassword ? "currentPassword-error" : undefined}
-                        aria-invalid={!!errors.currentPassword}
-                        required
-                    />
-                    <FieldError error={errors.currentPassword} id="currentPassword" />
-                </div>
-                <div className="form-group">
-                    <label htmlFor="newPassword">Nova Senha</label>
-                    <input
-                        id="newPassword"
-                        type="password"
-                        value={newPassword}
-                        onChange={e => {
-                            setNewPassword(e.target.value);
-                            setErrors(prev => ({ ...prev, newPassword: undefined }));
-                        }}
-                        placeholder="Nova senha (mínimo 8 caracteres)"
-                        autoComplete="new-password"
-                        aria-describedby={errors.newPassword ? "newPassword-error" : undefined}
-                        aria-invalid={!!errors.newPassword}
-                        required
-                        minLength={8}
-                    />
-                    <div style={{ marginTop: 8 }}>
-                        <div style={{
-                            display: 'flex',
-                            gap: 4,
-                            marginBottom: 4
-                        }}>
-                            {[...Array(5)].map((_, i) => (
-                                <div
-                                    key={i}
-                                    style={{
-                                        height: 4,
-                                        flex: 1,
-                                        backgroundColor: i < passwordStrength ? getPasswordStrengthColor() : '#eee',
-                                        borderRadius: 2
-                                    }}
-                                />
-                            ))}
-                        </div>
-                        <small style={{ color: '#666' }}>
-                            {getPasswordStrengthText()}
-                        </small>
-                    </div>
-                    <FieldError error={errors.newPassword} id="newPassword" />
-                </div>
-                <div className="form-group">
-                    <label htmlFor="confirmNewPassword">Confirmar Nova Senha</label>
-                    <input
-                        id="confirmNewPassword"
-                        type="password"
-                        value={confirmNewPassword}
-                        onChange={e => {
-                            setConfirmNewPassword(e.target.value);
-                            setErrors(prev => ({ ...prev, confirmNewPassword: undefined }));
-                        }}
-                        placeholder="Confirme a nova senha"
-                        autoComplete="new-password"
-                        aria-describedby={errors.confirmNewPassword ? "confirmNewPassword-error" : undefined}
-                        aria-invalid={!!errors.confirmNewPassword}
-                        required
-                    />
-                    <FieldError error={errors.confirmNewPassword} id="confirmNewPassword" />
-                </div>
-                <div className="button-group">
-                    <button
-                        type="submit"
-                        className="profile-btn"
-                        disabled={isSubmitting}
-                    >
-                        {isSubmitting ? 'Alterando...' : 'Alterar Senha'}
-                    </button>
-                </div>
-            </form>
-        </div>
-    );
-}
-
-// NotificationSection (mantido como está)
-function NotificationSection({
-    emailNotifications, setEmailNotifications,
-    pushNotifications, setPushNotifications,
-    forumActivity, setForumActivity,
-    handleNotificationsSubmit,
-    isSubmitting
-}) {
-    return (
-        <div className="settings-section">
-            <h2>
-                <i className="ri-notification-3-line" aria-hidden="true"></i> Preferências de Notificação
-            </h2>
-            <form onSubmit={handleNotificationsSubmit}>
-                <div className="checkbox-group">
-                    <input
-                        type="checkbox"
-                        id="emailNotifications"
-                        checked={emailNotifications}
-                        onChange={e => setEmailNotifications(e.target.checked)}
-                        aria-describedby="emailNotificationsHelp"
-                    />
-                    <label htmlFor="emailNotifications">Receber notificações por email</label>
-                    <small id="emailNotificationsHelp" style={{ display: 'block', color: '#666', marginLeft: 24 }}>
-                        Receba atualizações importantes por email
-                    </small>
-                </div>
-                <div className="checkbox-group">
-                    <input
-                        type="checkbox"
-                        id="pushNotifications"
-                        checked={pushNotifications}
-                        onChange={e => setPushNotifications(e.target.checked)}
-                        aria-describedby="pushNotificationsHelp"
-                    />
-                    <label htmlFor="pushNotifications">Receber notificações push (no navegador)</label>
-                    <small id="pushNotificationsHelp" style={{ display: 'block', color: '#666', marginLeft: 24 }}>
-                        Permita notificações do navegador para receber atualizações em tempo real
-                    </small>
-                </div>
-                <div className="checkbox-group">
-                    <input
-                        type="checkbox"
-                        id="forumActivity"
-                        checked={forumActivity}
-                        onChange={e => setForumActivity(e.target.checked)}
-                        aria-describedby="forumActivityHelp"
-                    />
-                    <label htmlFor="forumActivity">Notificações de atividade no fórum</label>
-                    <small id="forumActivityHelp" style={{ display: 'block', color: '#666', marginLeft: 24 }}>
-                        Receba notificações quando houver respostas nos seus tópicos
-                    </small>
-                </div>
-                <div className="button-group">
-                    <button
-                        type="submit"
-                        className="profile-btn"
-                        disabled={isSubmitting}
-                    >
-                        {isSubmitting ? 'Salvando...' : 'Salvar Preferências'}
-                    </button>
-                </div>
-            </form>
-        </div>
-    );
-}
-
-// DangerSection (MELHORADO: Feedback de desativação)
-function DangerSection({ handleDeactivate, isSubmitting }) {
-    const [confirmText, setConfirmText] = useState('');
-    const [showDeactivateModal, setShowDeactivateModal] = useState(false);
-    const [deactivationError, setDeactivationError] = useState(''); // Novo estado para erro de desativação
-
-    const handleDeactivateClick = () => {
-        if (confirmText.trim().toLowerCase() === 'confirmar') {
-            setShowDeactivateModal(true);
-            setDeactivationError(''); // Limpa o erro ao abrir o modal
-        } else {
-            // Opcional: Feedback imediato se o texto não for 'CONFIRMAR'
-            // setDeactivationError('Por favor, digite "CONFIRMAR" corretamente.');
-        }
-    };
-
-    const confirmDeactivation = async () => {
-        setDeactivationError(''); // Limpa qualquer erro anterior
-        try {
-            await handleDeactivate(); // Chama a função do pai
-            setShowDeactivateModal(false); // Fecha o modal após sucesso
-        } catch (error) {
-            setDeactivationError('Erro ao desativar conta. Tente novamente.'); // Define um erro específico
-        }
-    };
-
-    return (
-        <div className="settings-section">
-            <h2>
-                <i className="ri-delete-bin-7-line" aria-hidden="true"></i> Gerenciamento da Conta
-            </h2>
-            <p className="danger-text">
-                Aqui você pode gerenciar sua conta, incluindo a opção de desativá-la.
-                <strong> Atenção: </strong>Esta ação é irreversível e removerá todos os seus dados.
-            </p>
-            <div className="form-group" style={{ marginTop: 16 }}>
-                <label htmlFor="confirmDeactivate">
-                    Digite <strong>"CONFIRMAR"</strong> para habilitar o botão de desativação
-                </label>
-                <input
-                    id="confirmDeactivate"
-                    type="text"
-                    value={confirmText}
-                    onChange={e => setConfirmText(e.target.value)}
-                    placeholder="Digite CONFIRMAR"
-                    style={{ marginBottom: 8 }}
-                    aria-describedby={deactivationError ? "deactivation-error" : undefined}
-                    aria-invalid={!!deactivationError}
-                />
-                {deactivationError && (
-                    <FieldError error={deactivationError} id="deactivation" />
-                )}
-            </div>
-            <div className="button-group">
-                <button
-                    type="button"
-                    onClick={handleDeactivateClick}
-                    className="profile-btn danger"
-                    disabled={confirmText.trim().toLowerCase() !== 'confirmar' || isSubmitting}
-                    aria-describedby="deactivateWarning"
-                >
-                    <i className="ri-close-circle-line" aria-hidden="true" /> Desativar Conta
-                </button>
-                <small id="deactivateWarning" style={{ color: 'var(--red)', display: 'block', marginTop: 8 }}>
-                    Esta ação não pode ser desfeita. Todos os seus dados serão permanentemente removidos.
-                </small>
-            </div>
-
-            {showDeactivateModal && (
-                <div className="modal-overlay"
-                    // Estilos do modal - idealmente em um arquivo CSS
-                    style={{
-                        position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
-                        backgroundColor: 'rgba(0,0,0,0.5)', display: 'flex', justifyContent: 'center', alignItems: 'center',
-                        zIndex: 1000
-                    }}>
-                    <div className="modal-content"
-                        // Estilos do conteúdo do modal - idealmente em um arquivo CSS
-                        style={{
-                            backgroundColor: 'white', padding: '30px', borderRadius: '8px', maxWidth: '500px',
-                            boxShadow: '0 4px 8px rgba(0,0,0,0.1)', textAlign: 'center'
-                        }}>
-                        <h3>Confirmar Desativação de Conta</h3>
-                        <p>Tem certeza absoluta que deseja desativar sua conta? Esta ação é irreversível e removerá todos os seus dados.</p>
-                        {isSubmitting && <p style={{ color: 'var(--blue)' }}>Processando desativação...</p>} {/* Feedback de loading no modal */}
-                        {deactivationError && <p style={{ color: 'var(--red)' }}>{deactivationError}</p>} {/* Erro dentro do modal */}
-                        <div style={{ display: 'flex', justifyContent: 'space-around', marginTop: '20px' }}>
-                            <button
-                                className="profile-btn secondary"
-                                onClick={() => {
-                                    setShowDeactivateModal(false);
-                                    setDeactivationError(''); // Limpa erro ao fechar
-                                }}
-                                disabled={isSubmitting}
-                            >
-                                Cancelar
-                            </button>
-                            <button
-                                className="profile-btn danger"
-                                onClick={confirmDeactivation}
-                                disabled={isSubmitting}
-                            >
-                                {isSubmitting ? 'Desativando...' : 'Sim, Desativar Minha Conta'}
-                            </button>
-                        </div>
-                    </div>
-                </div>
+            <ProfilePicture
+              initialAvatar={userData.profilePicture}
+              onAvatarChange={(newAvatar) =>
+                setUserData((prev) => ({
+                  ...prev,
+                  profilePicture: newAvatar,
+                }))
+              }
+            />
+            {errors.profilePicture && (
+              <p className="error-message">
+                <span className="error-icon">⚠</span>
+                {errors.profilePicture}
+              </p>
             )}
-        </div>
-    );
-}
 
-// Funções de Validação (mantidas como estão)
-const validateAccountForm = (username, email, bio) => {
-    let errors = {};
-    if (!username.trim()) errors.username = 'Digite o nome de usuário.';
-    if (!email.trim()) errors.email = 'Digite o email.';
-    if (email.trim() && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-        errors.email = 'Digite um email válido.';
-    }
-    if (!bio.trim()) errors.bio = 'Digite sua bio.';
-    if (bio.length > 200) errors.bio = 'A bio deve ter no máximo 200 caracteres.';
-    return errors;
-};
-
-const validatePasswordForm = (currentPassword, newPassword, confirmNewPassword) => {
-    let errors = {};
-    if (!currentPassword) errors.currentPassword = 'Digite a senha atual.';
-    if (!newPassword) errors.newPassword = 'Digite a nova senha.';
-    if (newPassword.length < 8) errors.newPassword = 'A senha deve ter pelo menos 8 caracteres.';
-    if (!confirmNewPassword) errors.confirmNewPassword = 'Confirme a nova senha.';
-    if (newPassword && confirmNewPassword && newPassword !== confirmNewPassword) {
-        errors.confirmNewPassword = 'As senhas não coincidem.';
-    }
-    return errors;
-};
-
-function ConfigScreen() {
-    const [username, setUsername] = useState('');
-    const [email, setEmail] = useState('');
-    const [bio, setBio] = useState('');
-    const [profileImage, setProfileImage] = useState('');
-    const [currentPassword, setCurrentPassword] = useState('');
-    const [newPassword, setNewPassword] = useState('');
-    const [confirmNewPassword, setConfirmNewPassword] = useState('');
-    const [emailNotifications, setEmailNotifications] = useState(true);
-    const [pushNotifications, setPushNotifications] = useState(true);
-    const [forumActivity, setForumActivity] = useState(false);
-
-    const [errors, setErrors] = useState({});
-    const [isSubmitting, setIsSubmitting] = useState(false);
-    const [notification, setNotification] = useState({ message: '', type: '' });
-
-    const fileInputRef = useRef();
-
-    // Carregar dados do usuário (simulação)
-    useEffect(() => {
-        const timer = setTimeout(() => {
-            setUsername('');
-            setEmail('');
-            setBio('');
-            setProfileImage('');
-        }, 500);
-        return () => clearTimeout(timer);
-    }, []);
-
-    const handleImageChange = useCallback((e) => {
-        const file = e.target.files[0];
-        if (!file) return;
-
-        if (file.size > 2 * 1024 * 1024) {
-            setErrors(prev => ({ ...prev, profileImage: 'O arquivo deve ter no máximo 2MB.' }));
-            return;
-        }
-        if (!['image/jpeg', 'image/png', 'image/webp'].includes(file.type)) {
-            setErrors(prev => ({ ...prev, profileImage: 'Formato de arquivo não suportado. Use JPEG, PNG ou WebP.' }));
-            return;
-        }
-
-        setErrors(prev => ({ ...prev, profileImage: undefined }));
-        const reader = new FileReader();
-        reader.onload = (ev) => setProfileImage(ev.target.result);
-        reader.readAsDataURL(file);
-    }, []);
-
-    const handleAccountSubmit = async (e) => {
-        e.preventDefault();
-        setIsSubmitting(true);
-        setErrors({});
-
-        const newErrors = validateAccountForm(username, email, bio);
-        if (Object.keys(newErrors).length > 0) {
-            setErrors(newErrors);
-            setIsSubmitting(false);
-            return;
-        }
-
-        try {
-            await new Promise(resolve => setTimeout(resolve, 1000));
-            setNotification({ message: 'Dados da conta salvos com sucesso!', type: 'success' });
-        } catch (error) {
-            setNotification({ message: 'Ocorreu um erro ao salvar os dados.', type: 'error' });
-        } finally {
-            setIsSubmitting(false);
-        }
-    };
-
-    const handlePasswordSubmit = async (e) => {
-        e.preventDefault();
-        setIsSubmitting(true);
-        setErrors({});
-
-        const newErrors = validatePasswordForm(currentPassword, newPassword, confirmNewPassword);
-        if (Object.keys(newErrors).length > 0) {
-            setErrors(newErrors);
-            setIsSubmitting(false);
-            return;
-        }
-
-        try {
-            await new Promise(resolve => setTimeout(resolve, 1000));
-            setNotification({ message: 'Senha alterada com sucesso!', type: 'success' });
-            setCurrentPassword('');
-            setNewPassword('');
-            setConfirmNewPassword('');
-        } catch (error) {
-            setNotification({ message: 'Ocorreu um erro ao alterar a senha.', type: 'error' });
-        } finally {
-            setIsSubmitting(false);
-        }
-    };
-
-    const handleNotificationsSubmit = async (e) => {
-        e.preventDefault();
-        setIsSubmitting(true);
-        try {
-            await new Promise(resolve => setTimeout(resolve, 800));
-            setNotification({ message: 'Preferências de notificação salvas com sucesso!', type: 'success' });
-        } catch (error) {
-            setNotification({ message: 'Ocorreu um erro ao salvar as preferências.', type: 'error' });
-        } finally {
-            setIsSubmitting(false);
-        }
-    };
-
-    const handleDeactivate = async () => {
-        setIsSubmitting(true);
-        try {
-            await new Promise(resolve => setTimeout(resolve, 1500));
-            // Simulação de erro: descomente a linha abaixo para testar o erro
-            // throw new Error('Simulando falha na desativação.');
-            setNotification({ message: 'Conta desativada com sucesso!', type: 'success' });
-            setTimeout(() => {
-                if (window.history.length > 1) {
-                    window.history.back();
-                } else {
-                    window.location.href = '/';
-                }
-            }, 1000);
-        } catch (error) {
-            setNotification({ message: 'Ocorreu um erro ao desativar a conta.', type: 'error' });
-            // Rejeita a promise para que o erro seja capturado em DangerSection
-            throw error;
-        } finally {
-            setIsSubmitting(false);
-        }
-    };
-
-    const handleBack = () => {
-        if (window.history.length > 1) {
-            window.history.back();
-        } else {
-            window.location.href = '/';
-        }
-    };
-
-    return (
-        <main>
-            <div className="settings-container">
-                <button
-                    type="button"
-                    className="profile-btn secondary"
-                    style={{ marginBottom: 24 }}
-                    onClick={handleBack}
-                >
-                    <i className="ri-arrow-left-line" aria-hidden="true" /> Voltar
-                </button>
-
-                <Notification
-                    message={notification.message}
-                    type={notification.type}
-                    onClose={() => setNotification({ message: '', type: '' })}
-                />
-
-                <AccountSection
-                    username={username}
-                    setUsername={setUsername}
-                    email={email}
-                    setEmail={setEmail}
-                    bio={bio}
-                    setBio={setBio}
-                    profileImage={profileImage}
-                    fileInputRef={fileInputRef}
-                    handleImageChange={handleImageChange}
-                    handleAccountSubmit={handleAccountSubmit}
-                    errors={errors}
-                    setErrors={setErrors}
-                    isSubmitting={isSubmitting}
-                />
-                <PasswordSection
-                    currentPassword={currentPassword}
-                    setCurrentPassword={setCurrentPassword}
-                    newPassword={newPassword}
-                    setNewPassword={setNewPassword}
-                    confirmNewPassword={confirmNewPassword}
-                    setConfirmNewPassword={setConfirmNewPassword}
-                    handlePasswordSubmit={handlePasswordSubmit}
-                    errors={errors}
-                    setErrors={setErrors}
-                    isSubmitting={isSubmitting}
-                />
-                <NotificationSection
-                    emailNotifications={emailNotifications}
-                    setEmailNotifications={setEmailNotifications}
-                    pushNotifications={setPushNotifications}
-                    setPushNotifications={setPushNotifications}
-                    forumActivity={forumActivity}
-                    setForumActivity={setForumActivity}
-                    handleNotificationsSubmit={handleNotificationsSubmit}
-                    isSubmitting={isSubmitting}
-                />
-                <DangerSection
-                    handleDeactivate={handleDeactivate}
-                    isSubmitting={isSubmitting}
-                />
+            <div className="input-group">
+              <label htmlFor="username">Nome de Usuário</label>
+              <input
+                type="text"
+                name="username"
+                id="username"
+                placeholder="Seu nome de usuário"
+                value={userData.username}
+                onChange={handleInputChange}
+                onBlur={handleBlur}
+                required
+                className={getInputClass("username")}
+              />
+              {errors.username && (
+                <p className="error-message">
+                  <span className="error-icon">⚠</span>
+                  {errors.username}
+                </p>
+              )}
             </div>
-        </main>
-    );
-}
+
+            <div className="input-group">
+              <label htmlFor="email">E-mail</label>
+              <input
+                type="email"
+                name="email"
+                id="email"
+                placeholder="seuemail@exemplo.com"
+                value={userData.email}
+                onChange={handleInputChange}
+                onBlur={handleBlur}
+                required
+                className={getInputClass("email")}
+              />
+              {errors.email && (
+                <p className="error-message">
+                  <span className="error-icon">⚠</span>
+                  {errors.email}
+                </p>
+              )}
+            </div>
+
+            {userData.email !== auth.currentUser?.email && (
+  <div className="input-group">
+    <label htmlFor="currentPassword">Senha Atual (requerida para alterar e-mail)</label>
+    <input
+      type="password"
+      name="currentPassword"
+      value={userData.currentPassword}
+      onChange={handleInputChange}
+      required
+    />
+  </div>
+)}
+
+            <div className="input-group">
+              <label htmlFor="bio">
+                Biografia{" "}
+                <span className="char-count">({userData.bio.length}/300)</span>
+              </label>
+              <textarea
+                name="bio"
+                id="bio"
+                rows="4"
+                placeholder="Conte um pouco sobre você..."
+                value={userData.bio}
+                onChange={handleInputChange}
+                maxLength="300"
+                className={getInputClass("bio")}
+              ></textarea>
+              {errors.bio && (
+                <p className="error-message">
+                  <span className="error-icon">⚠</span>
+                  {errors.bio}
+                </p>
+              )}
+            </div>
+
+            <div className="button-group">
+              <button
+                type="button"
+                className="sign secondary"
+                onClick={() => navigate("/perfil")}
+                disabled={isSubmitting}
+              >
+                Cancelar
+              </button>
+              <button type="submit" className="sign" disabled={isSubmitting}>
+                {isSubmitting ? "Salvando..." : "Salvar Alterações"}
+              </button>
+            </div>
+          </fieldset>
+        </form>
+
+        {/* Seção de Segurança */}
+        <form onSubmit={handlePasswordSubmit} className="form">
+          <fieldset>
+            <legend className="section-title">
+              <i className="ri-lock-line"></i> Segurança
+            </legend>
+
+            <div className="input-group">
+              <label htmlFor="currentPassword">Senha Atual</label>
+              <div className="password-input-container">
+                <input
+                  type={showCurrentPassword ? "text" : "password"}
+                  name="currentPassword"
+                  id="currentPassword"
+                  placeholder="Sua senha atual"
+                  value={userData.currentPassword}
+                  onChange={handleInputChange}
+                  className={getInputClass("currentPassword")}
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowCurrentPassword(!showCurrentPassword)}
+                  className="toggle-password"
+                  aria-label={
+                    showCurrentPassword ? "Ocultar senha" : "Mostrar senha"
+                  }
+                >
+                  <i
+                    className={`ri-eye${
+                      showCurrentPassword ? "" : "-off"
+                    }-line`}
+                  ></i>
+                </button>
+              </div>
+              {errors.currentPassword && (
+                <p className="error-message">
+                  <span className="error-icon">⚠</span>
+                  {errors.currentPassword}
+                </p>
+              )}
+            </div>
+
+            <div className="input-group">
+              <label htmlFor="newPassword">Nova Senha</label>
+              <div className="password-input-container">
+                <input
+                  type={showNewPassword ? "text" : "password"}
+                  name="newPassword"
+                  id="newPassword"
+                  placeholder="Mínimo 8 caracteres"
+                  value={userData.newPassword}
+                  onChange={handleInputChange}
+                  className={getInputClass("newPassword")}
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowNewPassword(!showNewPassword)}
+                  className="toggle-password"
+                  aria-label={
+                    showNewPassword ? "Ocultar senha" : "Mostrar senha"
+                  }
+                >
+                  <i
+                    className={`ri-eye${showNewPassword ? "" : "-off"}-line`}
+                  ></i>
+                </button>
+              </div>
+              <small className="form-text-hint">
+                Use 8 ou mais caracteres, no mínimo uma letra maiúscula, um
+                número e um caractere especial.
+              </small>
+              {errors.newPassword && (
+                <p className="error-message">
+                  <span className="error-icon">⚠</span>
+                  {errors.newPassword}
+                </p>
+              )}
+            </div>
+
+            <div className="input-group">
+              <label htmlFor="confirmNewPassword">Confirmar Nova Senha</label>
+              <div className="password-input-container">
+                <input
+                  type={showConfirmPassword ? "text" : "password"}
+                  name="confirmNewPassword"
+                  id="confirmNewPassword"
+                  placeholder="Repita a nova senha"
+                  value={userData.confirmNewPassword}
+                  onChange={handleInputChange}
+                  className={getInputClass("confirmNewPassword")}
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                  className="toggle-password"
+                  aria-label={
+                    showConfirmPassword ? "Ocultar senha" : "Mostrar senha"
+                  }
+                >
+                  <i
+                    className={`ri-eye${
+                      showConfirmPassword ? "" : "-off"
+                    }-line`}
+                  ></i>
+                </button>
+              </div>
+              {errors.confirmNewPassword && (
+                <p className="error-message">
+                  <span className="error-icon">⚠</span>
+                  {errors.confirmNewPassword}
+                </p>
+              )}
+            </div>
+
+            <div className="button-group">
+              <button type="submit" className="sign" disabled={isSubmitting}>
+                {isSubmitting ? "Atualizando..." : "Atualizar Senha"}
+              </button>
+            </div>
+          </fieldset>
+        </form>
+
+        {/* Seção de Desativação de Conta */}
+        <div className="form danger-section">
+          <fieldset>
+            <legend className="section-title">
+              <i className="ri-delete-bin-line"></i> Desativar Conta
+            </legend>
+
+            <p className="danger-text">
+              Ao desativar sua conta, todos os seus dados serão permanentemente
+              removidos.
+              <strong> Esta ação não pode ser desfeita.</strong>
+            </p>
+
+            <div className="button-group">
+              <button
+                type="button"
+                className="sign danger"
+                onClick={handleDeactivate}
+                disabled={isSubmitting}
+              >
+                {isSubmitting ? "Desativando..." : "Desativar Minha Conta"}
+              </button>
+            </div>
+          </fieldset>
+        </div>
+
+        <div className="back-link">
+          <Link to="/perfil" className="">
+            <i className="ri-arrow-left-line"></i> Voltar para o perfil
+          </Link>
+        </div>
+      </div>
+    </div>
+  );
+};
 
 export default ConfigScreen;
