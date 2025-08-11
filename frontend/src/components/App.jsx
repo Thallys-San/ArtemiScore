@@ -8,6 +8,7 @@ import Lancamentos from "../pages/Lancamentos";
 import Perfil from "../pages/Perfil";
 import Ranking from "../pages/Ranking";
 import RecuperarSenha from "../pages/RecuperarSenha"
+import ConfigScreen from "../pages/ConfigScreen";
 
 const App = () => {
   return (
@@ -23,7 +24,7 @@ const App = () => {
       <Route path="/recuperarsenha" element={<RecuperarSenha />} />
       {/* <Route path="/avaliacoes" element={<Avaliacoes />} /> */}
       {/* <Route path="/favoritos" element={<Favoritos />} /> */}
-      {/* <Route path="/configuracoes" element={<Configuracoes />} /> */}
+      <Route path="/configuracoes" element={<ConfigScreen />} />
       {/* <Route path="/logout" element={<Logout />} /> */}
     </Routes>
   );
