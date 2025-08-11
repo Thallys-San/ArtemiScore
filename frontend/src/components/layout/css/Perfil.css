@@ -1,50 +1,71 @@
-/* Estilos Gerais */
+/* ===== Estilos Gerais ===== */
 .container-perfil {
   max-width: 1200px;
   margin: 80px auto 40px;
   padding: 0 20px;
 }
 
-/* Card Principal do Perfil */
+/* ===== Card Principal do Perfil ===== */
 .card-perfil {
   background: rgba(30, 30, 36, 0.8);
   backdrop-filter: blur(10px);
   border-radius: 16px;
-  padding: 30px;
+  padding: 40px; /* Aumente o padding para melhor equilíbrio */
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 25px;
+  align-items: center;     /* Centraliza VERTICALMENTE */
+  justify-content: center; /* Centraliza HORIZONTALMENTE */
+  gap: 60px;              /* Reduza o gap para um espaçamento mais harmonioso */
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
   border: 1px solid rgba(87, 51, 239, 0.2);
   margin-bottom: 30px;
+  flex-wrap: wrap; /* Permite quebrar em telas pequenas */
+  text-align: center; /* Centraliza o texto (afeta .titulo, .bio, etc.) */
+  position: relative;
 }
+
 
 /* Avatar/Imagem do Perfil */
 .avatar-display {
-  width: 150px;
-  height: 150px;
+  width: 180px;
+  height: 180px;
   border-radius: 50%;
   object-fit: cover;
   border: 4px solid var(--primary);
   box-shadow: 0 0 20px rgba(87, 51, 239, 0.5);
+  transition: transform 0.3s ease, border-color 0.3s ease;
+  margin-right: auto; /* Empurra para a esquerda */
+  margin-left: 200px;
+}
+
+.avatar-display:hover {
+  transform: scale(1.03);
+  border-color: rgba(87, 51, 239, 0.3);
 }
 
 /* Informações do Usuário */
 .informacoes-usuario {
-  text-align: center;
-  width: 100%;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start; /* Alinha filhos à esquerda (substitui o 'left' inválido) */
+  margin: 0 auto; /* Centraliza o bloco horizontalmente */
+  margin-left: 10;
 }
 
 .titulo {
-  font-size: 2rem;
-  color: var(--white);
-  margin-bottom: 10px;
+  font-size: 3rem;
   font-weight: 700;
   background: linear-gradient(to right, var(--primary), var(--accent));
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
+  margin-bottom: 10px;
+}
+/* Alinha apenas o título à esquerda */
+.informacoes-usuario .titulo {
+  text-align: left; /* Sobrescreve o alinhamento centralizado */
+  width: 100%;     /* Garante que ocupe toda a largura do container */
+  margin-left: 0;  /* Remove margens indesejadas */
 }
 
 .bio {
@@ -52,17 +73,18 @@
   font-size: 1.1rem;
   line-height: 1.6;
   max-width: 600px;
-  margin: 0 auto 20px;
+  margin-bottom: 20px;
+  text-align: left;
 }
 
-/* Seções Adicionais */
+/* ===== Seções de Perfil ===== */
 .secao-perfil {
   background: rgba(30, 30, 36, 0.8);
   backdrop-filter: blur(10px);
   border-radius: 16px;
   padding: 25px;
-  margin-bottom: 25px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  height: 100%;
 }
 
 .titulo-secao {
@@ -74,12 +96,10 @@
   gap: 10px;
 }
 
-/* Botões de Ação */
+/* ===== Botões ===== */
 .botoes-acao {
-  display: flex;
-  gap: 15px;
-  justify-content: center;
-  margin-top: 25px;
+  margin-right: 0; /* Remove a margem que empurrava para a esquerda */
+  justify-content: center; /* Centraliza os botões */
 }
 
 .botao-perfil {
@@ -104,17 +124,8 @@
   box-shadow: 0 10px 20px rgba(87, 51, 239, 0.4);
 }
 
-.botao-secundario {
-  background: rgba(255, 255, 255, 0.1);
-  color: var(--white);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-}
 
-.botao-secundario:hover {
-  background: rgba(255, 255, 255, 0.2);
-}
-
-/* Estatísticas */
+/* ===== Estatísticas ===== */
 .estatisticas {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -141,41 +152,13 @@
   font-size: 0.9rem;
 }
 
-/* Responsividade */
-@media (max-width: 768px) {
-  .card-perfil {
-    flex-direction: column;
-    text-align: center;
-    padding: 25px 15px;
-  }
-
-  .avatar-display {
-    width: 120px;
-    height: 120px;
-  }
-
-  .titulo {
-    font-size: 1.8rem;
-  }
-
-  .botoes-acao {
-    flex-direction: column;
-    gap: 10px;
-  }
-
-  .botao-perfil {
-    width: 100%;
-    justify-content: center;
-  }
-}
-
-/* Metadados do usuário */
+/* ===== Metadados ===== */
 .metadados {
   display: flex;
   flex-wrap: wrap;
   gap: 15px;
   margin: 20px 0;
-  justify-content: center;
+  justify-content: left;
 }
 
 .metadado-item {
@@ -193,12 +176,11 @@
   color: var(--primary);
 }
 
-/* Tags de Preferências */
+/* ===== Tags de Preferências ===== */
 .tags-container {
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
-  margin-top: 15px;
 }
 
 .tag-preferencia {
@@ -206,11 +188,13 @@
   color: var(--primary);
   padding: 6px 15px;
   border-radius: 50px;
-  font-size: 0.8rem;
+  font-size: larger;
   border: 1px solid rgba(52, 6, 255, 0.3);
   transition: all 0.3s ease;
   font-weight: bold;
-  font-size:medium;
+  white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
 }
 
 .tag-preferencia:hover {
@@ -218,12 +202,11 @@
   transform: translateY(-2px);
 }
 
-/* Lista de Plataformas */
+/* ===== Plataformas ===== */
 .plataformas-container {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  display: flex;
+  flex-direction: column;
   gap: 12px;
-  margin-top: 15px;
 }
 
 .plataforma-item {
@@ -245,82 +228,53 @@
   color: var(--green);
 }
 
-/* Responsividade */
+/* ===== Layout Flexível ===== */
+.secoes-combinadas,
+.linha-dupla {
+  display: flex;
+  gap: 25px;
+  margin-bottom: 25px;
+  flex-wrap: wrap;
+}
+
+.secoes-combinadas .secao-perfil,
+.linha-dupla .secao-perfil {
+  flex: 1;
+  min-width: 280px;
+}
+
+/* ===== Responsividade ===== */
 @media (max-width: 768px) {
+  .card-perfil {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .informacoes-usuario {
+    text-align: center;
+  }
+
+  .avatar-display {
+    width: 120px;
+    height: 120px;
+  }
+
+  .titulo {
+    font-size: 1.8rem;
+  }
+
+  .botoes-acao {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .botao-perfil {
+    width: 100%;
+    justify-content: center;
+  }
+
   .metadados {
     flex-direction: column;
     align-items: center;
   }
-
-  .plataformas-container {
-    grid-template-columns: 1fr;
-  }
-}
-
-.profile-avatar-main {
-  margin-bottom: 20px;
-  border: 4px solid rgba(255, 255, 255, 0.1);
-}
-
-.profile-avatar-main:hover {
-  transform: scale(1.03);
-  border-color: rgba(87, 51, 239, 0.3);
-}
-
-/* Seções combinadas (Preferências e Plataformas) */
-.secoes-combinadas {
-  display: flex;
-  gap: 25px;
-  margin-bottom: 25px;
-}
-
-.secoes-combinadas .secao-perfil {
-  flex: 1;
-  min-width: 0; /* Permite que as seções encolham igualmente */
-}
-
-/* Ajustes para telas menores */
-@media (max-width: 768px) {
-  .secoes-combinadas {
-    flex-direction: column;
-  }
-}
-
-/* Ajustes para as seções individuais */
-.secao-perfil {
-  background: rgba(30, 30, 36, 0.8);
-  backdrop-filter: blur(10px);
-  border-radius: 16px;
-  padding: 25px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-  height: 100%; /* Garante que ambas tenham a mesma altura */
-}
-
-/* Ajuste para o container de tags */
-.tags-container {
-  display: flex;
-  flex-direction: row;
-  gap: 10px;
-}
-
-.tag-preferencia {
-  background: rgba(87, 51, 239, 0.15);
-  color: var(--primary);
-  padding: 6px 15px;
-  border-radius: 50px;
-  font-size: 0.8rem;
-  border: 1px solid rgba(52, 6, 255, 0.3);
-  transition: all 0.3s ease;
-  font-weight: bold;
-  font-size: larger;
-  white-space: nowrap; /* Impede que o texto quebre em várias linhas */
-  display: inline-flex; /* Melhor alinhamento */
-  align-items: center; /* Centraliza verticalmente */
-}
-
-/* Ajuste para a lista de plataformas */
-.plataformas-container {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
 }
