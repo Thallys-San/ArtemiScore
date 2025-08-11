@@ -13,7 +13,6 @@ import {
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import ProfilePicture from "../components/commom/ProfilePicture";
-import UpdateUserEmail from "../components/UpdateUserEmail";
 
 const ConfigScreen = () => {
   const navigate = useNavigate();
@@ -452,7 +451,7 @@ const handleAccountSubmit = async (e) => {
   };
 
   return (
-    <div className="cadastro-container">
+    <div className="config-container">
       <div className="form-container">
       {notification.message && (
   <div className={`notification ${notification.type}`}>
