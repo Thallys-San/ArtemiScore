@@ -7,7 +7,7 @@ const Footer = () => (
       <div className="footer-grid">
         {/* Coluna 1 - Brand */}
         <div className="footer-brand">
-          <h1>AtermiScore</h1>
+          <h1>ArtermiScore</h1>
           <p>
             A plataforma definitiva para avaliação completa e descoberta de jogos. <br />
             Explore recomendações baseadas no seu gosto e no feedback da comunidade. <br />
@@ -36,10 +36,10 @@ const Footer = () => (
         <div className="footer-contact">
           <h3 className="footer-title">CONTATO</h3>
           <div className="contact-info">
-            <p>São Paulo, SP, Brasil</p>
-            <p>contato@atermiscore.com</p>
-            <p>+55 11 98765-4321</p>
-            <p>+55 11 91234-5678</p>
+            <p>Minas Gerais, MG, Brasil</p>
+            <p>ArtemiScore@gmail.com</p>
+            <p>+55 31 98706-9133</p>
+            <p>+55 31 98263-5206</p>
           </div>
         </div>
       </div>
