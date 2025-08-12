@@ -1,27 +1,27 @@
 import React, { useState } from 'react';
-import './CreateReview.css';
+import '../components/layout/css/CreateReview.css';
 
-// StarRating component (unchanged from previous response)
+// StarRating component (adjusted slightly for accessibility and interaction)
 const StarRating = ({ rating, onRate }) => {
   const handleClick = (e, star) => {
     const rect = e.currentTarget.getBoundingClientRect();
     const clickX = e.clientX - rect.left;
     const isHalf = clickX < rect.width / 2;
     const value = isHalf ? star - 0.5 : star;
-    onRate(value);
+    onRate(Math.max(1, value)); // Impede notas menores que 1
   };
 
   const handleKeyDown = (e, star) => {
     if (e.key === 'ArrowLeft') {
       e.preventDefault();
-      onRate(Math.max(0.5, star - 0.5));
+      onRate(Math.max(1, star - 0.5)); // Mínimo 1
     } else if (e.key === 'ArrowRight') {
       e.preventDefault();
-      onRate(Math.min(5, star + 0.5));
+      onRate(Math.min(5, star + 0.5)); // Máximo 5
     } else if (e.key === 'Enter' || e.key === ' ') {
       e.preventDefault();
       const newRating = rating === star ? star - 0.5 : star;
-      onRate(newRating >= 0.5 ? newRating : star);
+      onRate(newRating >= 1 ? newRating : star); // Mínimo 1
     }
   };
 
@@ -31,9 +31,7 @@ const StarRating = ({ rating, onRate }) => {
         <button
           key={star}
           type="button"
-          className={`star-btn ${
-            rating >= star ? 'filled' : rating >= star - 0.5 ? 'half-filled' : ''
-          }`}
+          className={`star-btn ${rating >= star ? 'filled' : rating >= star - 0.5 ? 'half-filled' : ''}`}
           onClick={(e) => handleClick(e, star)}
           onKeyDown={(e) => handleKeyDown(e, star)}
           role="radio"
@@ -208,8 +206,8 @@ const CreateReview = () => {
                   }}
                   placeholder="Ex: 20"
                   aria-invalid={!!errors.playTime}
-                  step="any"  // Adicione esta linha
-                  className="no-spinner"  // Opcional: para estilização adicional
+                  step="any"
+                  className="no-spinner"
                 />
                 {errors.playTime && <span className="error">{errors.playTime}</span>}
               </div>
