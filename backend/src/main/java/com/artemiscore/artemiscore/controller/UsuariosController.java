@@ -5,6 +5,7 @@ package com.artemiscore.artemiscore.controller;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,6 +24,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.artemiscore.artemiscore.model.UsuariosModel;
 import com.artemiscore.artemiscore.service.UsuariosService;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthException;
 
 
 
@@ -79,13 +82,26 @@ public class UsuariosController {
     }
 
     // Verifica se o username já está em uso
-    @GetMapping("/check-username")
-    public ResponseEntity<Map<String,Boolean>> checkUsernameExists(@RequestParam String username){
-        boolean exists = service.usernameExists(username);
-        Map<String, Boolean> response = new HashMap<>();
-        response.put("exists", exists);
-        return ResponseEntity.ok(response);
+@GetMapping("/check-username")
+public ResponseEntity<Map<String, Boolean>> checkUsernameExists(
+        @RequestParam String username,
+        @RequestParam(required = false) String currentUserId) {
+
+    boolean exists = service.usernameExists(username);
+
+    // Se o username existir, mas pertence ao currentUserId, então não considera como ocupado
+    if (exists && currentUserId != null) {
+        Optional<UsuariosModel> user = service.buscarPorUid(currentUserId);
+        if (user.isPresent() && user.get().getNome().equalsIgnoreCase(username)) {
+            exists = false; // O username é do próprio usuário, liberar
+        }
     }
+
+    Map<String, Boolean> response = new HashMap<>();
+    response.put("exists", exists);
+    response.put("available", !exists); // Adicione esta linha para consistência
+    return ResponseEntity.ok(response);
+}
 
     @GetMapping("/me")
     public ResponseEntity<UsuariosModel> getUsuarioLogado (Authentication authentication){
@@ -98,4 +114,82 @@ public class UsuariosController {
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.status(HttpStatus.UNAUTHORIZED).build());
     }
+
+@PutMapping("/me")
+public ResponseEntity<UsuariosModel> editarUsuarioLogado(@RequestBody UsuariosModel usuariosModel, Authentication authentication){
+    if(authentication == null || !authentication.isAuthenticated()){
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+    }
+    
+    String uid = authentication.getPrincipal().toString();
+    return service.buscarPorUid(uid)
+        .map(usuarioExistente -> {
+            // Mantém a senha existente se não for fornecida
+            if(usuariosModel.getSenha() == null) {
+                usuariosModel.setSenha(usuarioExistente.getSenha());
+            }
+            
+            // Atualiza apenas os campos permitidos
+            usuarioExistente.setNome(usuariosModel.getNome());
+            usuarioExistente.setEmail(usuariosModel.getEmail());
+            usuarioExistente.setBio(usuariosModel.getBio());
+            usuarioExistente.setFoto_perfil(usuariosModel.getFoto_perfil());
+            usuarioExistente.setPreferencias_jogos(usuariosModel.getPreferencias_jogos());
+            usuarioExistente.setPlataformas_utilizadas(usuariosModel.getPlataformas_utilizadas());
+            
+            UsuariosModel atualizado = service.salvar(usuarioExistente);
+            return ResponseEntity.ok(atualizado);
+        })
+        .orElse(ResponseEntity.status(HttpStatus.UNAUTHORIZED).build());
+}
+
+@DeleteMapping("/me")
+public ResponseEntity<?> deletarUsuarioLogado(Authentication authentication) {
+    if (authentication == null || !authentication.isAuthenticated()) {
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+    }
+
+    String uid = authentication.getPrincipal().toString();
+
+    return service.buscarPorUid(uid)
+            .map(usuario -> {
+                // Remove do banco local
+                service.deletar(usuario.getId());
+
+                // Remove também do Firebase
+                try {
+                    FirebaseAuth.getInstance().deleteUser(uid);
+                } catch (FirebaseAuthException e) {
+                    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+                }
+
+                return ResponseEntity.noContent().build();
+            })
+            .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).build());
+}
+
+@PostMapping("/update-password")
+public ResponseEntity<?> updatePassword(
+    @RequestBody Map<String, String> request,
+    Authentication authentication) {
+    
+    if (authentication == null || !authentication.isAuthenticated()) {
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+    }
+
+    String uid = authentication.getPrincipal().toString();
+    String newPassword = request.get("newPassword");
+
+    if (newPassword == null || newPassword.trim().isEmpty()) {
+        return ResponseEntity.badRequest().body("Nova senha não pode ser vazia");
+    }
+
+    try {
+        service.atualizarSenhaPorUid(uid, newPassword);
+        return ResponseEntity.ok().build();
+    } catch (Exception e) {
+        return ResponseEntity.internalServerError().body("Erro ao atualizar senha");
+    }
+}
+
 }
