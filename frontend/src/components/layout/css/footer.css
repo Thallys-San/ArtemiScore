@@ -11,6 +11,7 @@ body {
   min-height: 100vh;
 }
 
+
 main.main-content {
   flex: 1; /* expande para ocupar o espaço entre header e footer */
 }
@@ -20,6 +21,7 @@ main.main-content {
   color: var(--lighter);
   padding: 60px 0 20px;
   font-family: 'Segoe UI', sans-serif;
+  
 }
 
 .footer .container {
