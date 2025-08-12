@@ -1,120 +1,140 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import Header from '../components/layout/Header';
 import Footer from '../components/layout/Footer';
-import GameCard from '../components/cards/GameCard';
+import LeaderboardCard from '../components/cards/LeaderboardCard';
 import GameFilter from '../components/layout/GameFilter';
+import HamsterLoading from '../components/commom/HamsterLoading';
 import '../components/layout/css/Ranking.css';
 
 const Ranking = () => {
   const [games, setGames] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [filters, setFilters] = useState({
     genre: 'all',
     platform: 'all',
     search: '',
   });
-  const [pagination, setPagination] = useState({
-    currentPage: 1,
-    totalPages: 1,
-    itemsPerPage: 6,  // Increased items per page for card view
-  });
+  const [page, setPage] = useState(1);
+  const [hasMore, setHasMore] = useState(true);
 
-  // Function to fetch data from your backend API
-  const fetchGames = async (page = 1) => {
+  // Refs para controlar a renderização do observer
+  const observer = useRef();
+
+  // Monta a query string com filtros e página
+  const buildQuery = () => {
+    const params = new URLSearchParams();
+    if (filters.genre && filters.genre !== 'all') params.append('genre', filters.genre);
+    if (filters.platform && filters.platform !== 'all') params.append('platform', filters.platform);
+    if (filters.search && filters.search.trim() !== '') params.append('search', filters.search.trim());
+    params.append('page', page);
+    params.append('limit', 6); // controle do tamanho da página na API
+    return params.toString();
+  };
+
+  // Função para carregar dados da API
+  const fetchGames = useCallback(async () => {
     try {
       setLoading(true);
       setError(null);
 
-      // Fetch games data from the API
-      const response = await fetch(`http://localhost:8080/api/games/top-rated-monthly?page=${page}`);
-      
-      // Check if the response is OK (status 200-299)
+      const queryString = buildQuery();
+      const response = await fetch(`http://localhost:8080/api/games/top-rated-monthly?${queryString}`);
+
       if (!response.ok) {
         throw new Error('Erro na resposta da API');
       }
-      
+
       const data = await response.json();
-      
-      // Filter games based on selected filters
-      const filteredGames = data.filter((game) => {
-        const matchGenre = filters.genre === 'all' || game.genre === filters.genre;
-        const matchPlatform = filters.platform === 'all' || game.platforms.includes(filters.platform);
-        const matchSearch = game.name.toLowerCase().includes(filters.search.toLowerCase());
-        return matchGenre && matchPlatform && matchSearch;
-      });
 
-      // Pagination logic
-      const { itemsPerPage } = pagination;
-      const totalPages = Math.ceil(filteredGames.length / itemsPerPage);
-      const startIndex = (page - 1) * itemsPerPage;
-      const paginatedGames = filteredGames.slice(startIndex, startIndex + itemsPerPage);
+      // Se página 1, substitui lista; se não, acumula
+      setGames(prev => (page === 1 ? data : [...prev, ...data]));
 
-      setGames(paginatedGames);
-      setPagination((prev) => ({ ...prev, currentPage: page, totalPages }));
+      setHasMore(data.length > 0); // se recebeu algo, tem mais para carregar
+
     } catch (err) {
       setError(`Erro ao carregar ranking. Tente novamente mais tarde. ${err.message}`);
-      setGames([]);
     } finally {
       setLoading(false);
     }
-  };
+  }, [filters, page]);
 
-  // Call fetchGames when the page loads
+  // Recarrega sempre que filtros ou página mudam
   useEffect(() => {
-    fetchGames(1);
+    fetchGames();
+  }, [fetchGames]);
+
+  // Quando filtros mudam, resetar paginação e lista
+  useEffect(() => {
+    setPage(1);
   }, [filters]);
 
-  const handlePageChange = (page) => {
-    if (page < 1 || page > pagination.totalPages) return;
-    fetchGames(page);
-  };
+  // Observer para infinite scroll
+  const lastGameElementRef = useCallback(node => {
+    if (loading) return;
+    if (observer.current) observer.current.disconnect();
 
-  const handleFilterChange = (e) => {
+    observer.current = new IntersectionObserver(entries => {
+      if (entries[0].isIntersecting && hasMore) {
+        setPage(prev => prev + 1);
+      }
+    });
+
+    if (node) observer.current.observe(node);
+  }, [loading, hasMore]);
+
+  // Controlador de filtro (passa para o estado)
+const handleFilterChange = (e) => {
+  if (!e) return;
+
+  if (e.target) {
+    // Evento DOM
     const { name, value } = e.target;
-    setFilters((prev) => ({ ...prev, [name]: value }));
-  };
+    setFilters(prev => ({ ...prev, [name]: value }));
+  } else if (e.name && e.value) {
+    // Objeto customizado
+    setFilters(prev => ({ ...prev, [e.name]: e.value }));
+  }
+};
+
+
 
   return (
     <>
       <Header />
-      <section className="ranking-section">
+      <section className="rk-section">
         <div className="container">
-          <h1>Ranking de Jogos</h1>
-          <p>Descubra os jogos mais bem avaliados pela comunidade. Filtros, ordenações e atualizações em tempo real.</p>
+          <div className="rk-container">
+            <div className="rk-controls">
+              <GameFilter filters={filters} onChange={handleFilterChange} />
+            </div>
 
-          <div className="ranking-controls">
-            <GameFilter filters={filters} onChange={handleFilterChange} />
+            <h1>Ranking</h1>
+
+            <div className="rk-cards-container">
+              {games.map((game, index) => {
+                if (index === games.length - 1) {
+                  return (
+                    <LeaderboardCard
+                      ref={lastGameElementRef}
+                      key={game.id}
+                      posicao={index + 1}
+                      jogo={game}
+                    />
+                  );
+                } else {
+                  return <LeaderboardCard key={game.id} posicao={index + 1} jogo={game} />;
+                }
+              })}
+              {loading && (
+                <div className="container-loading">
+                  <HamsterLoading />
+                </div>
+              )}
+              {!hasMore && !loading && <p style={{ textAlign: 'center', color: '#888' }}>Fim do ranking.</p>}
+              {error && <p style={{ color: 'red' }}>{error}</p>}
+            </div>
           </div>
-
-          {/* Displaying games as cards */}
-          <div className="game-cards-container">
-            {loading ? (
-              <p>Carregando jogos...</p>
-            ) : error ? (
-              <p>{error}</p>
-            ) : (
-              games.map((game) => <GameCard key={game.id} jogo={game} />)
-            )}
-          </div>
-
-          {/* Pagination */}
-          <div className="pagination">
-            <button
-              className={`page-item ${pagination.currentPage === 1 ? 'disabled' : ''}`}
-              onClick={() => handlePageChange(pagination.currentPage - 1)}
-            >
-              Anterior
-            </button>
-            <span>{pagination.currentPage} de {pagination.totalPages}</span>
-            <button
-              className={`page-item ${pagination.currentPage === pagination.totalPages ? 'disabled' : ''}`}
-              onClick={() => handlePageChange(pagination.currentPage + 1)}
-            >
-              Próximo
-            </button>
-          </div>
-
         </div>
       </section>
       <Footer />
