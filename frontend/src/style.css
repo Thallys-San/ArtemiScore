@@ -3,6 +3,7 @@
 *,
 *::before,
 *::after {
+  
   margin: 0;
   padding: 0;
   box-sizing: border-box;
@@ -56,10 +57,8 @@ body,
 
 /* Agora o conteúdo que rola (exemplo main-content) deve ter fundo sólido sem blur */
 .main-content {
-  padding-top: 73px;
-  background-color: var(
-    --dark-gray
-  ); /* cor sólida para "limpar" atrás do conteúdo */
+  flex: 1;
+  background-color: transparent ; /* cor sólida para "limpar" atrás do conteúdo */
   min-height: 100vh; /* garante altura para scroll */
   position: relative;
   z-index: 1; /* fica acima do fundo fixo */
@@ -93,6 +92,7 @@ html {
 }
 
 .container {
+  
   max-width: 1200px;
   margin: 0 auto;
   padding-left: 1rem;
