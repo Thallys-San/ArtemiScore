@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import "../components/layout/css/config.css";
+import "../components/layout/css/Config.css";
 import { auth } from "../components/firebase";
 import {
   getIdToken,
