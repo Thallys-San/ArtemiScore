@@ -30,19 +30,25 @@ public class UsuariosService {
         return repository.findById(id);
     }
 
-    public UsuariosModel salvar(UsuariosModel usuariosModel){
-        String senha=usuariosModel.getSenha();
-
-        if (usuariosModel.getData_criacao() == null) {
+public UsuariosModel salvar(UsuariosModel usuariosModel) {
+    // Se for um novo usuário (sem ID), seta a data de criação
+    if (usuariosModel.getId() == null && usuariosModel.getData_criacao() == null) {
         usuariosModel.setData_criacao(LocalDate.now());
     }
-        if (senha!= null && !senha.matches("^\\$2[abyx]\\$.{56}$")) {
-         // Hasheia a senha antes de salvar
-        String criptografia=passwordEncoder.encode(usuariosModel.getSenha());
-        usuariosModel.setSenha(criptografia);
-        }
-        return repository.save(usuariosModel);
+    
+    // Verifica se a senha precisa ser criptografada
+    if (usuariosModel.getSenha() != null && !isPasswordEncoded(usuariosModel.getSenha())) {
+        String senhaCriptografada = passwordEncoder.encode(usuariosModel.getSenha());
+        usuariosModel.setSenha(senhaCriptografada);
     }
+    
+    return repository.save(usuariosModel);
+}
+
+// Método auxiliar para verificar se a senha já está criptografada
+private boolean isPasswordEncoded(String password) {
+    return password.matches("^\\$2[abyx]\\$.{56}$");
+}
 
     public void deletar(Long id){
         repository.deleteById(id);
@@ -63,5 +69,19 @@ public class UsuariosService {
     public Optional<UsuariosModel> buscarPorUid(String uid) {
         return repository.findByUid(uid);
     }
+
+    public void atualizarSenha(Long usuarioId, String novaSenha) {
+    repository.findById(usuarioId).ifPresent(usuario -> {
+        usuario.setSenha(passwordEncoder.encode(novaSenha));
+        repository.save(usuario);
+    });
+}
+
+public void atualizarSenhaPorUid(String uid, String novaSenha) {
+    repository.findByUid(uid).ifPresent(usuario -> {
+        usuario.setSenha(passwordEncoder.encode(novaSenha));
+        repository.save(usuario);
+    });
+}
 
 }
