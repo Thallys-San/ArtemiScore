@@ -24,7 +24,9 @@ public class UsuariosModel {
     @Id
     private Long id;
 
+    @Column(name = "uid")
     private String uid;
+
 
     @Column(nullable=false)
     private String nome;
