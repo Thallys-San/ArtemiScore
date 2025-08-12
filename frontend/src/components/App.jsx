@@ -1,5 +1,7 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import Cadastro from "../pages/Cadastro";
 import HomePage from "../pages/HomePage";
 import Login from "../pages/Login";
@@ -12,6 +14,7 @@ import ConfigScreen from "../pages/ConfigScreen";
 
 const App = () => {
   return (
+    <>
     <Routes>
       <Route path="/" element={<HomePage />} />
       <Route path="/cadastro" element={<Cadastro />} />
@@ -27,6 +30,9 @@ const App = () => {
       <Route path="/configuracoes" element={<ConfigScreen />} />
       {/* <Route path="/logout" element={<Logout />} /> */}
     </Routes>
+     {/* Toasts visíveis globalmente */}
+      <ToastContainer position="top-right" autoClose={3000} />
+      </>
   );
 };
 
