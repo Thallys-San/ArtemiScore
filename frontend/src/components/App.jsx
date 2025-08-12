@@ -11,6 +11,7 @@ import Perfil from "../pages/Perfil";
 import Ranking from "../pages/Ranking";
 import RecuperarSenha from "../pages/RecuperarSenha"
 import ConfigScreen from "../pages/ConfigScreen";
+import DetalheJogo from '../pages/DetalheJogo';
 
 const App = () => {
   return (
@@ -28,6 +29,7 @@ const App = () => {
       {/* <Route path="/avaliacoes" element={<Avaliacoes />} /> */}
       {/* <Route path="/favoritos" element={<Favoritos />} /> */}
       <Route path="/configuracoes" element={<ConfigScreen />} />
+      <Route path="/jogos/:id" element={<DetalheJogo />} />
       {/* <Route path="/logout" element={<Logout />} /> */}
     </Routes>
      {/* Toasts visíveis globalmente */}

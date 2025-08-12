@@ -107,6 +107,13 @@
   padding: 1rem 0;
 }
 
+.game-card-link {
+  text-decoration: none; /* remove underline */
+  color: inherit;        /* mantém cor do texto */
+  display: block;        /* permite que o link envolva o bloco */
+}
+
+
 /* Responsividade igual ao ReleaseCard */
 @media (max-width: 768px) {
   .game-card {

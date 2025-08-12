@@ -83,3 +83,10 @@
   font-weight: bold;
   color: #c688ff; /* cor de destaque */
 }
+
+.leaderboard-card-link {
+  display: block;        /* para ocupar área toda */
+  text-decoration: none; /* remove underline */
+  color: inherit;        /* mantém cor do texto */
+}
+

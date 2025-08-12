@@ -1,8 +1,8 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import '../components/layout/css/GameDetails.css';
-import Header from '../components/layout/Header';
-import Footer from '../components/layout/Footer';
+import '../layout/css/GameDetails.css';
+import Header from './Header';
+import Footer from './Footer';
 
 const MetacriticTemplate = ({ gameData }) => {
   return (

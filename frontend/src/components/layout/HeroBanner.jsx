@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from 'react-router-dom';
 import StarRating from "../commom/StarRating";
 import HamsterLoading from "../../components/commom/HamsterLoading";
 import "../../components/layout/css/HamsterLoading.css";
@@ -12,7 +13,7 @@ const HeroBanner = () => {
   const [games, setGames] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
-
+  const navigate = useNavigate();
   const defaultBanners = [
     {
       id: 1,
@@ -157,7 +158,10 @@ const HeroBanner = () => {
                 </>
               )}
               {isDefaultBanner && (
-                <button className="hero-button primary-button">
+                <button 
+                  className="hero-button primary-button"
+                  onClick={() => navigate('/jogos')}
+                >
                   <i className="ri-gamepad-line"></i> Explorar Jogos
                 </button>
               )}
