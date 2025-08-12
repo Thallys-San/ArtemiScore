@@ -13,6 +13,7 @@ import RecuperarSenha from "../pages/RecuperarSenha"
 import ConfigScreen from "../pages/ConfigScreen";
 import DetalheJogo from '../pages/DetalheJogo';
 import PerfilOutroUsuario from "../pages/PerfilOutroUsuario";
+import JogosAvaliados from "../pages/JogosAvaliados";
 
 const App = () => {
   return (
@@ -26,6 +27,7 @@ const App = () => {
       <Route path="/ranking" element={<Ranking />} />
       <Route path="/lancamentos" element={<Lancamentos />} /> 
       <Route path="/perfil" element={<Perfil />} />
+      <Route path="/jogosAvaliados" element={<JogosAvaliados />} />
       <Route path="/perfil/:id" element={<PerfilOutroUsuario />} />
       <Route path="/recuperarsenha" element={<RecuperarSenha />} />
       {/* <Route path="/avaliacoes" element={<Avaliacoes />} /> */}
