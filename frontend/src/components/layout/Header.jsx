@@ -7,6 +7,7 @@ const Header = () => {
   const navigate = useNavigate();
   const location=useLocation();
   const [activeLink, setActiveLink]=useState("")
+  const [searchTerm, setSearchTerm] = useState("");
   const isLoggedIn = !!localStorage.getItem("token");
   const isActive = (linkName)=>{
     return activeLink===linkName
@@ -33,6 +34,19 @@ const Header = () => {
     navigate("/login")
   };
 
+
+
+const handleKeyDown = (e) => {
+  if (e.key === "Enter") {
+    const termo = searchTerm.trim();
+    if (termo !== "") {
+      navigate(`/jogos?search=${encodeURIComponent(termo)}`);
+    } else {
+      navigate("/jogos");
+    }
+  }
+};
+
   return (
     <header>
       <div className="container header-container">
@@ -55,7 +69,14 @@ const Header = () => {
           </div>
            <div className="header-right">
           <div className="search-bar">
-            <input type="text" placeholder="Buscar jogos..." className="search-input" />
+              <input
+                type="text"
+                placeholder="Buscar jogos..."
+                className="search-input"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                onKeyDown={handleKeyDown}
+              />
             <div className="search-icon">
               <i className="ri-search-line"></i>
             </div>

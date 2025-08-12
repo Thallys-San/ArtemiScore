@@ -108,9 +108,9 @@ const handleFilterChange = (e) => {
             <div className="rk-controls">
               <GameFilter filters={filters} onChange={handleFilterChange} />
             </div>
-
-            <h1>Ranking</h1>
-
+            
+            <h1 className='page-title'>Ranking</h1>
+           
             <div className="rk-cards-container">
               {games.map((game, index) => {
                 if (index === games.length - 1) {

@@ -123,7 +123,7 @@ const JogosUpcoming = () => {
         <section className="upcoming-releases">
           <div className="container">
             <div className="section-wrapper">
-              <h2 className="section-title">Próximos Lançamentos</h2>
+              <h2 className="page-title">Próximos Lançamentos</h2>
               <div className="releases-slider">
                 {upcomingGames.map(jogo => (
                   <ReleaseCard key={jogo.id} jogo={jogo} />

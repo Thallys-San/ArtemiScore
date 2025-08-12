@@ -99,6 +99,54 @@ html {
   padding-right: 1rem;
 }
 
+.page-title {
+  position: relative;
+  padding-top: 10px;
+  padding-bottom: 10px; /* espaço extra para a linha */
+  font-size: 2rem;
+  font-weight: bold;
+  color: #ffffff;
+  margin-bottom: 30px;
+  text-align: left;
+}
+
+.page-title::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 4px; /* distância da linha em relação à base da caixa */
+  width: 80px;
+  height: 4px;
+  background-color: var(--primary);
+  border-radius: 2px;
+}
+
+.section-title {
+  position: relative; /* garante que ::after seja relativo a ele */
+  padding-bottom: 20px; /* espaço para a linha */
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #ffffff;
+  margin-bottom: 10px;
+  text-align: left;
+}
+
+.section-title::after {
+  content: "";
+  position: absolute;
+  left: 2;
+  bottom: -4px;      /* força a linha ficar na base da caixa */
+  width: 60px;
+  height: 3px;
+  background-color: var(--primary);
+  border-radius: 2px;
+}
+
+
+
+
+
+
 :root {
   /* Cores principais */
   --dark-gray: #1a1a1a;
