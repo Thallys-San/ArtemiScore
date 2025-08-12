@@ -9,6 +9,8 @@ import {
   getIdToken,
   sendEmailVerification,
 } from "firebase/auth";
+import Preferences from "../components/commom/Preferences";
+import { toast } from "react-toastify";
 
 const Cadastro = () => {
   // Estados
@@ -23,25 +25,7 @@ const Cadastro = () => {
     preferredPlatforms: [],
   });
 
-  // Definindo os valores de gêneros e plataformas
-  const genres = [
-    "Ação",
-    "FPS",
-    "Battle royale",
-    "PVP",
-    "Super-herói",
-    "Aventura",
-    "RPG",
-    "Estratégia",
-    "Simulação",
-    "Indie",
-    "Esporte",
-    "Corrida",
-    "Luta",
-    "Terror",
-    "Puzzle",
-  ];
-  const platforms = ["PC", "PlayStation", "Xbox", "Nintendo Switch", "Mobile"];
+
 
   const [errors, setErrors] = useState({});
   const [charCount, setCharCount] = useState(0);
@@ -188,7 +172,7 @@ const Cadastro = () => {
     // Chama a validação
     const isValid = validateForm();
     if (!isValid) {
-      setGeneralError("Preencha todos os campos obrigatórios corretamente!");
+      toast.warning("Preencha todos os campos obrigatórios corretamente!");
       return; // Se não for válido, para a execução
     }
     try {
@@ -232,7 +216,7 @@ const Cadastro = () => {
         return;
       }
 
-      alert(
+      toast.success(
         "Cadastro realizado com sucesso! Verifique seu e-mail antes de fazer login."
       );
       navigate("/login");
@@ -405,104 +389,18 @@ const Cadastro = () => {
               ></textarea>
             </div>
 
-            {/* Campo de gêneros */}
-            <fieldset className="checkbox-fieldset">
-              <legend>
-                Gêneros Favoritos (selecione até 5)
-                <span className="select-selected-count">
-                  {formData.favoriteGenres.length}/5
-                </span>
-              </legend>
-
-              <div className="checkbox-container">
-                {genres.map((genre) => (
-                  <label className="checkbox-option" key={genre}>
-                    <input
-                      type="checkbox"
-                      value={genre}
-                      checked={formData.favoriteGenres.includes(genre)}
-                      onChange={(e) => {
-                        let newSelection = [...formData.favoriteGenres];
-                        if (e.target.checked) {
-                          if (newSelection.length < 5) {
-                            newSelection.push(genre);
-                            setGenreWarning(false);
-                          } else {
-                            setGenreWarning(true);
-                          }
-                        } else {
-                          newSelection = newSelection.filter(
-                            (g) => g !== genre
-                          );
-                          setGenreWarning(false);
-                        }
-                        setFormData({
-                          ...formData,
-                          favoriteGenres: newSelection,
-                        });
-                      }}
-                    />
-                    <span className="checkmark"></span>
-                    {genre}
-                  </label>
-                ))}
-              </div>
-
-              {genreWarning && (
-                <small className="warning-message">
-                  Você pode selecionar no máximo 5 gêneros.
-                </small>
-              )}
-            </fieldset>
-
-            <br />
-
-            {/* Campo de plataformas */}
-            <fieldset className="checkbox-fieldset">
-              <legend>Plataformas Preferidas (selecione até 3)</legend>
-              <span className="select-selected-count">
-                {formData.preferredPlatforms.length}/3
-              </span>
-
-              <div className="checkbox-container">
-                {platforms.map((platform) => (
-                  <label className="checkbox-option" key={platform}>
-                    <input
-                      type="checkbox"
-                      value={platform}
-                      checked={formData.preferredPlatforms.includes(platform)}
-                      onChange={(e) => {
-                        let newSelection = [...formData.preferredPlatforms];
-                        if (e.target.checked) {
-                          if (newSelection.length < 3) {
-                            newSelection.push(platform);
-                            setPlatformWarning(false);
-                          } else {
-                            setPlatformWarning(true);
-                          }
-                        } else {
-                          newSelection = newSelection.filter(
-                            (p) => p !== platform
-                          );
-                          setPlatformWarning(false);
-                        }
-                        setFormData({
-                          ...formData,
-                          preferredPlatforms: newSelection,
-                        });
-                      }}
-                    />
-                    <span className="checkmark"></span>
-                    {platform}
-                  </label>
-                ))}
-              </div>
-              {platformWarning && (
-                <small className="warning-message">
-                  Você pode selecionar no máximo 3 Plataformas.
-                </small>
-              )}
-            </fieldset>
+            {/* Campo de preferencias */}
+            <Preferences
+  favoriteGenres={formData.favoriteGenres}
+  setFavoriteGenres={(newGenres) =>
+    setFormData({ ...formData, favoriteGenres: newGenres })
+  }
+  preferredPlatforms={formData.preferredPlatforms}
+  setPreferredPlatforms={(newPlatforms) =>
+    setFormData({ ...formData, preferredPlatforms: newPlatforms })
+  }
+/>
+            
             {generalError && (
               <div id="generalErrorMessage">
                 <span className="error-icon">⚠</span>
