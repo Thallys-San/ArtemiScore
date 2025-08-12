@@ -109,9 +109,10 @@ const buildQuery = () => {
           onApply={handleApplyFilters}
           onReset={handleResetFilters}
         />
-
+        
         <section className="popular-games">
           <div className="container">
+            <h1 className="page-title">Jogos Populares</h1>
             <div className="games-grid">
               {games.map(jogo => (
                 <GameCard key={jogo.id} jogo={jogo} />
