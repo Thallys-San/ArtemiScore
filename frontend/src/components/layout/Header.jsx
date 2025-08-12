@@ -36,7 +36,7 @@ const Header = () => {
   return (
     <header>
       <div className="container header-container">
-        <div className="flex items-center">
+        <div className="header-left">
           <Link to="/" className="logo" aria-label="AtermiScore">
   <img 
     src="https://raw.githubusercontent.com/Thallys-San/ArtemiScore/main/ArtemiScoreLogo.png" 
@@ -53,7 +53,7 @@ const Header = () => {
             <Link to="/Lancamentos" className={`nav-link ${isActive("Lancamentos") ? "active" : ""}`}>Lançamentos</Link>
           </nav>
           </div>
-           <div className="flex items-center gap-4">
+           <div className="header-right">
           <div className="search-bar">
             <input type="text" placeholder="Buscar jogos..." className="search-input" />
             <div className="search-icon">
