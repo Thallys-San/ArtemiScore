@@ -150,10 +150,14 @@ const dataCriacaoFormatada = dataCriacao.toLocaleDateString("pt-BR", {
             <i className="ri-bar-chart-line"></i> Estatísticas
           </h2>
           <div className="estatisticas">
+
+            <Link to={"/jogosAvaliados"}>
             <div className="estatistica-item">
               <div className="estatistica-valor">...</div>
               <div className="estatistica-label">Jogos Avaliados</div>
             </div>
+            </Link>
+            
             <div className="estatistica-item">
               <div className="estatistica-valor">...</div>
               <div className="estatistica-label">Horas Jogadas</div>
