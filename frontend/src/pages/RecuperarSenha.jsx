@@ -60,23 +60,12 @@ const RecuperarSenha = () => {
   return (
     <section className="login-section">
       <div className="login-container">
-        <button
-          type="button"
-          onClick={() => navigate(-1)}
-          className="back-button"
-          style={{
-            background: "none",
-            border: "none",
-            color: "#5733ef",
-            cursor: "pointer",
-            fontWeight: "bold",
-            marginBottom: "10px",
-            fontSize: "1rem",
-          }}
-          aria-label="Voltar"
-          title="Voltar"
+          <button
+          onClick={() => navigate("/perfil")}
+          className="square-back-button"
+          aria-label="Voltar para o perfil"
         >
-          ← Voltar
+          <i className="ri-arrow-left-line"></i>
         </button>
 
         <div className="title-container">
