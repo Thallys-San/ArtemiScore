@@ -278,3 +278,34 @@
     align-items: center;
   }
 }
+
+/* Remove sublinhado padrão de todos os links */
+a {
+  text-decoration: none;
+  color: inherit; /* Mantém a cor do texto pai */
+  transition: all 0.2s ease; /* Transição suave para hover */
+}
+
+/* Efeito sutil para links em texto comum */
+a:hover {
+  opacity: 0.9; /* Redução sutil de opacidade */
+}
+
+/* Efeito para links em estatísticas */
+.estatistica-item a {
+  display: block; /* Faz o link ocupar todo o espaço do item */
+  width: 100%;
+  height: 100%;
+  padding: 20px; /* Mesmo padding do container */
+}
+
+.estatistica-item a:hover {
+  background-color: rgba(87, 51, 239, 0.05); /* Fundo muito sutil */
+  border-radius: 12px; /* Mesmo radius do container */
+}
+
+/* Efeito específico para o valor numérico */
+.estatistica-item a:hover .estatistica-valor {
+  color: var(--primary); /* Muda a cor do número */
+  transform: scale(1.02); /* Pequeno aumento */
+}
