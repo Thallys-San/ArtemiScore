@@ -111,7 +111,7 @@ const JogosFavoritosPopup = ({ isOpen, closeModal }) => {
         <div className="fixed inset-0 overflow-y-auto">
           <div className="flex min-h-full items-center justify-center p-4 text-center">
             <Transition.Child as={Fragment} {...transitionProps}>
-              <Dialog.Panel className="w-full max-w-2xl transform overflow-hidden rounded-2xl bg-gray-800 p-6 text-left align-middle shadow-xl transition-all">
+              <Dialog.Panel className="w-full max-w-2xl transform overflow-hidden rounded-2xl bg-gray-800 p-6 text-left align-middle shadow-xl transition-all border-roxo">
                 <Dialog.Title as="h3" className="text-lg font-medium leading-6 text-white">
                   Adicionar Jogos Favoritos
                 </Dialog.Title>
