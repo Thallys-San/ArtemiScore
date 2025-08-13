@@ -1,27 +1,28 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 import '../components/layout/css/CreateReview.css';
 
-// StarRating component (adjusted slightly for accessibility and interaction)
+// StarRating component
 const StarRating = ({ rating, onRate }) => {
   const handleClick = (e, star) => {
     const rect = e.currentTarget.getBoundingClientRect();
     const clickX = e.clientX - rect.left;
     const isHalf = clickX < rect.width / 2;
     const value = isHalf ? star - 0.5 : star;
-    onRate(Math.max(1, value)); // Impede notas menores que 1
+    onRate(Math.max(1, value));
   };
 
   const handleKeyDown = (e, star) => {
     if (e.key === 'ArrowLeft') {
       e.preventDefault();
-      onRate(Math.max(1, star - 0.5)); // Mínimo 1
+      onRate(Math.max(1, star - 0.5));
     } else if (e.key === 'ArrowRight') {
       e.preventDefault();
-      onRate(Math.min(5, star + 0.5)); // Máximo 5
+      onRate(Math.min(5, star + 0.5));
     } else if (e.key === 'Enter' || e.key === ' ') {
       e.preventDefault();
       const newRating = rating === star ? star - 0.5 : star;
-      onRate(newRating >= 1 ? newRating : star); // Mínimo 1
+      onRate(newRating >= 1 ? newRating : star);
     }
   };
 
@@ -31,13 +32,17 @@ const StarRating = ({ rating, onRate }) => {
         <button
           key={star}
           type="button"
-          className={`star-btn ${rating >= star ? 'filled' : rating >= star - 0.5 ? 'half-filled' : ''}`}
+          className={`star-btn ${
+            rating >= star ? 'filled' : rating >= star - 0.5 ? 'half-filled' : ''
+          }`}
           onClick={(e) => handleClick(e, star)}
           onKeyDown={(e) => handleKeyDown(e, star)}
           role="radio"
           aria-checked={rating === star || rating === star - 0.5}
           tabIndex={0}
-          aria-label={`Avaliar com ${rating === star - 0.5 ? star - 0.5 : star} estrela${star > 1 ? 's' : ''}`}
+          aria-label={`Avaliar com ${
+            rating === star - 0.5 ? star - 0.5 : star
+          } estrela${star > 1 ? 's' : ''}`}
         >
           ★
         </button>
@@ -46,7 +51,7 @@ const StarRating = ({ rating, onRate }) => {
   );
 };
 
-// SuccessState and LoadingSpinner components (unchanged)
+// Componentes auxiliares
 const SuccessState = ({ onReset }) => (
   <div className="success-state" role="status" aria-live="polite">
     <svg
@@ -75,8 +80,12 @@ const LoadingSpinner = () => (
   <span className="loader" aria-hidden="true"></span>
 );
 
-// Main CreateReview component
 const CreateReview = () => {
+  const { id: gameId } = useParams();
+  const [gameName, setGameName] = useState('');
+  const [loadingGame, setLoadingGame] = useState(true);
+  const [gameError, setGameError] = useState(null);
+
   const platforms = ['PC', 'PlayStation 5', 'Xbox Series X', 'Nintendo Switch', 'Outros'];
 
   const [rating, setRating] = useState(0);
@@ -87,8 +96,9 @@ const CreateReview = () => {
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [success, setSuccess] = useState(false);
+  const token = localStorage.getItem('token');
 
-  const usuario_id = 1; // Placeholder for authenticated user
+  const usuario_id = 1; // pegar do auth real depois
 
   const clearError = (field) => {
     setErrors((prev) => {
@@ -100,49 +110,53 @@ const CreateReview = () => {
 
   const validate = () => {
     const newErrors = {};
-
     if (rating <= 0) newErrors.rating = 'Por favor, avalie com 0.5 a 5 estrelas.';
     if (!title.trim()) newErrors.title = 'O título é obrigatório.';
-    else if (title.trim().length < 5)
-      newErrors.title = 'O título deve ter pelo menos 5 caracteres.';
+    else if (title.trim().length < 5) newErrors.title = 'O título deve ter pelo menos 5 caracteres.';
     if (!comment.trim()) newErrors.comment = 'O comentário é obrigatório.';
-    else if (comment.trim().length < 10)
-      newErrors.comment = 'O comentário deve ter pelo menos 10 caracteres.';
+    else if (comment.trim().length < 10) newErrors.comment = 'O comentário deve ter pelo menos 10 caracteres.';
     if (!platform) newErrors.platform = 'Selecione uma plataforma.';
     if (playTime && isNaN(playTime)) newErrors.playTime = 'O tempo de jogo deve ser um número.';
     else if (playTime && playTime < 0) newErrors.playTime = 'O tempo de jogo não pode ser negativo.';
-
-    console.log('Validation errors:', newErrors); // Debugging
     return newErrors;
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Form submitted with:', { rating, title, comment, platform, playTime }); // Debugging
-
     const newErrors = validate();
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
       return;
     }
-
     setIsSubmitting(true);
 
     try {
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 1200));
       const reviewData = {
         usuario_id,
+        jogo_id: gameId,
         nota: rating,
         tempoDeJogo: playTime ? parseInt(playTime, 10) : null,
         plataforma: platform,
-        comentario: title.trim() + ': ' + comment.trim(),
-        data_avaliacao: new Date().toISOString().split('T')[0],
+        comentario: `${title.trim()}: ${comment.trim()}`,
+        dataAvaliacao: new Date().toISOString(), // LocalDateTime ISO
       };
-      console.log('✅ Opinião enviada:', reviewData);
+
+      const response = await fetch('http://localhost:8080/avaliacoes', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(reviewData),
+      });
+
+      if (!response.ok) {
+        throw new Error(`Erro ${response.status} ao enviar avaliação`);
+      }
+
       setSuccess(true);
     } catch (error) {
-      console.error('Submission error:', error);
+      console.error(error);
       setErrors({ submit: 'Erro ao enviar a opinião. Tente novamente.' });
     } finally {
       setIsSubmitting(false);
@@ -159,12 +173,33 @@ const CreateReview = () => {
     setSuccess(false);
   };
 
+  useEffect(() => {
+    const fetchGameName = async () => {
+      try {
+        setLoadingGame(true);
+        setGameError(null);
+        const response = await fetch(`http://localhost:8080/games/${gameId}`);
+        if (!response.ok) throw new Error(`Erro ${response.status}`);
+        const gameData = await response.json();
+        setGameName(gameData.name || 'Nome do jogo não disponível');
+      } catch (error) {
+        setGameError('Erro ao carregar o nome do jogo');
+      } finally {
+        setLoadingGame(false);
+      }
+    };
+    if (gameId) fetchGameName();
+  }, [gameId]);
+
   return (
     <section className="create-review-section" aria-labelledby="review-title">
       <div className="container">
         <div className="review-card">
           <header className="review-header">
             <h2 id="review-title">Escreva sua Avaliação</h2>
+            {loadingGame && <p>Carregando nome do jogo...</p>}
+            {gameError && <p className="error">{gameError}</p>}
+            {!loadingGame && !gameError && <h3>Jogo: {gameName}</h3>}
             <p>Compartilhe sua experiência com a comunidade de jogadores</p>
           </header>
 
@@ -173,6 +208,7 @@ const CreateReview = () => {
           ) : (
             <form onSubmit={handleSubmit} className="review-form">
               {errors.submit && <span className="error form-error">{errors.submit}</span>}
+
               <div className="form-group">
                 <label htmlFor="platform">Plataforma</label>
                 <select
@@ -186,9 +222,7 @@ const CreateReview = () => {
                 >
                   <option value="">Escolha uma plataforma...</option>
                   {platforms.map((plat) => (
-                    <option key={plat} value={plat}>
-                      {plat}
-                    </option>
+                    <option key={plat} value={plat}>{plat}</option>
                   ))}
                 </select>
                 {errors.platform && <span className="error">{errors.platform}</span>}
@@ -214,13 +248,7 @@ const CreateReview = () => {
 
               <div className="form-group">
                 <label id="rating-label">Nota</label>
-                <StarRating
-                  rating={rating}
-                  onRate={(value) => {
-                    setRating(value);
-                    clearError('rating');
-                  }}
-                />
+                <StarRating rating={rating} onRate={(value) => { setRating(value); clearError('rating'); }} />
                 {errors.rating && <span className="error">{errors.rating}</span>}
               </div>
 
@@ -257,26 +285,11 @@ const CreateReview = () => {
               </div>
 
               <div className="form-actions">
-                <button
-                  type="button"
-                  onClick={handleReset}
-                  className="btn-secondary"
-                  disabled={isSubmitting}
-                >
+                <button type="button" onClick={handleReset} className="btn-secondary" disabled={isSubmitting}>
                   Cancelar
                 </button>
-                <button
-                  type="submit"
-                  className="btn-primary"
-                  disabled={isSubmitting}
-                >
-                  {isSubmitting ? (
-                    <>
-                      <LoadingSpinner /> Enviando...
-                    </>
-                  ) : (
-                    'Enviar Opinião'
-                  )}
+                <button type="submit" className="btn-primary" disabled={isSubmitting}>
+                  {isSubmitting ? (<><LoadingSpinner /> Enviando...</>) : 'Enviar Opinião'}
                 </button>
               </div>
             </form>
