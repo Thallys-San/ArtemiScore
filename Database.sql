@@ -3,7 +3,6 @@ use ArtemiScore;
 
 CREATE TABLE IF NOT EXISTS usuarios (
    id BIGINT AUTO_INCREMENT PRIMARY KEY,
-   uid VARCHAR(50) UNIQUE,
    nome VARCHAR(255) NOT NULL,
    email VARCHAR(255) UNIQUE NOT NULL,
    senha VARCHAR(255) NOT NULL,
@@ -11,7 +10,8 @@ CREATE TABLE IF NOT EXISTS usuarios (
    foto_perfil TEXT,
    data_criacao DATETIME DEFAULT CURRENT_TIMESTAMP,
    preferencias_jogos VARCHAR(800),
-   plataformas_utilizadas VARCHAR(800)
+   plataformas_utilizadas VARCHAR(800),
+   jogos_favoritos VARCHAR(500)
 );
 
 CREATE TABLE IF NOT EXISTS avaliacoes (
