@@ -272,10 +272,6 @@ const Login = () => {
           )}
 
           <div className="remember-forgot">
-            <div className="remember-me">
-              <input type="checkbox" id="remember" name="remember" />
-              <label htmlFor="remember">Lembrar-me</label>
-            </div>
 
             <button
               type="button"
@@ -304,23 +300,6 @@ const Login = () => {
           >
             {isLoading ? "Carregando..." : "Entrar"}
           </button>
-
-          <div className="social-login">
-            <p>Ou entre com</p>
-            <button
-              type="button"
-              className="google-btn"
-              onClick={handleGoogleLogin}
-            >
-              <img
-                src="https://github.com/Thallys-San/ArtemiScore/blob/main/download.png?raw=true"
-                alt="Google logo"
-                className="google-logo"
-              />
-              Entrar com Google
-            </button>
-          </div>
-
           <div className="register-link">
             <p>
               Não tem uma conta? <Link to="/cadastro">Crie agora</Link>
