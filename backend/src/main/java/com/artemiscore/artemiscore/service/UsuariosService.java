@@ -3,6 +3,7 @@ package com.artemiscore.artemiscore.service;
 
 
 import java.time.LocalDate;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -84,4 +85,44 @@ public void atualizarSenhaPorUid(String uid, String novaSenha) {
     });
 }
 
+public void adicionarJogoFavorito(String uid, Long jogoId) {
+    repository.findByUid(uid).ifPresent(usuario -> {
+        List<Long> favoritos = usuario.getJogosFavoritosList();
+        
+        if (!favoritos.contains(jogoId)) {
+            if (favoritos.size() >= 10) {
+                throw new IllegalArgumentException("Limite máximo de 10 jogos favoritos atingido");
+            }
+            favoritos.add(jogoId);
+            usuario.setJogosFavoritosList(favoritos);
+            repository.save(usuario);
+        }
+    });
+}
+
+public void removerJogoFavorito(String uid, Long jogoId) {
+    repository.findByUid(uid).ifPresent(usuario -> {
+        List<Long> favoritos = usuario.getJogosFavoritosList();
+        favoritos.remove(jogoId);
+        usuario.setJogosFavoritosList(favoritos);
+        repository.save(usuario);
+    });
+}
+
+public void atualizarJogosFavoritos(String uid, List<Long> jogosIds) {
+    if (jogosIds.size() > 10) {
+        throw new IllegalArgumentException("Máximo de 10 jogos favoritos permitidos");
+    }
+    
+    repository.findByUid(uid).ifPresent(usuario -> {
+        usuario.setJogosFavoritosList(jogosIds);
+        repository.save(usuario);
+    });
+}
+
+public List<Long> getJogosFavoritos(String uid) {
+    return repository.findByUid(uid)
+            .map(UsuariosModel::getJogosFavoritosList)
+            .orElse(Collections.emptyList());
+}
 }
