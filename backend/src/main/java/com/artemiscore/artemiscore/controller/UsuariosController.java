@@ -239,4 +239,12 @@ public ResponseEntity<?> removerFavoritoUsuarioLogado(
     }
 }
 
+@GetMapping("/id/{id}")
+public ResponseEntity<UsuariosModel> getUsuarioPorId(@PathVariable Long id) {
+    return service.listarId(id)
+            .map(ResponseEntity::ok)
+            .orElse(ResponseEntity.notFound().build());
+}
+
+
 }
