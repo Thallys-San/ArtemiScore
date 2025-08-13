@@ -204,11 +204,11 @@ useEffect(() => {
 
 
   return (
-    <section className="create-review-section" aria-labelledby="review-title">
+    <section className="create-review-section" aria-labelledby="title-create-review">
       <div className="container">
         <div className="review-card">
           <header className="review-header">
-            <h2 id="review-title">Escreva sua Avaliação</h2>
+            <h2 id="title-create-review">Escreva sua Avaliação</h2>
             {loadingGame && <p>Carregando nome do jogo...</p>}
             {gameError && <p className="error">{gameError}</p>}
             {!loadingGame && !gameError && <h3>Jogo: {gameName}</h3>}
