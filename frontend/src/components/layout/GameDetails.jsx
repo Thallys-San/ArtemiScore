@@ -4,41 +4,104 @@ import '../layout/css/GameDetails.css';
 import Header from './Header';
 import Footer from './Footer';
 
-const MetacriticTemplate = ({ gameData }) => {
+const GameDetails = ({ gameData }) => {
+  const navigate = useNavigate();
+
+  // Função auxiliar para formatar datas
+  const formatDate = (dateString) => {
+    if (!dateString) return 'Data desconhecida';
+    const date = new Date(dateString);
+    return date.toLocaleDateString('pt-BR', {
+      day: '2-digit',
+      month: 'long',
+      year: 'numeric'
+    });
+  };
+
+  // Compartilhamento simples (apenas copia URL)
+  const handleShare = () => {
+    if (navigator.share) {
+      navigator.share({
+        title: gameData?.name,
+        url: window.location.href
+      }).catch(() => {});
+    } else {
+      navigator.clipboard.writeText(window.location.href);
+      alert('Link copiado para a área de transferência!');
+    }
+  };
+
   return (
     <div className="metacritic-template">
       <Header />
       
       <div className="game-content-wrapper">
         {/* Game Hero Section */}
-        <div className="game-hero">
+        <div 
+          className="game-hero"
+          style={{ 
+            backgroundImage: gameData?.background_image 
+              ? `linear-gradient(to bottom, rgba(0, 0, 0, 0.3), var(--darker)), url(${gameData.background_image})`
+              : 'none'
+          }}
+        >
           <div className="game-hero-container">
             <div className="game-cover">
-              <img src={gameData?.background_image} alt={gameData?.name} />
+              <img 
+                src={gameData?.background_image || '/placeholder.jpg'} 
+                alt={`Capa de ${gameData?.name || 'Jogo'}`}
+                loading="lazy"
+                onError={(e) => {
+                  e.target.onerror = null;
+                  e.target.src = '/placeholder.jpg';
+                }}
+              />
             </div>
             <div className="game-info">
-              <h1 className="game-title">{gameData?.name}</h1>
-              {gameData?.name_original && <h2 className="game-original-title">{gameData.name_original}</h2>}
+              <div className="game-title-container">
+                <div>
+                  <h1 className="game-title">{gameData?.name || 'Jogo sem título'}</h1>
 
-              <div className="game-title">
-                <span className="game-title">{gameData?.metacriticScore || ""}</span>
-                <span className="game-title">Metacritic</span>
+                  {/* Exibe pontuação do usuário se existir */}
+                  {gameData?.userScore !== undefined && (
+                    <div className="user-score-display">
+                      <span>Nota dos usuários: {gameData.userScore.toFixed(1)}/5</span>
+                      <span> ({gameData.totalAvaliacoes} avaliações)</span>
+                    </div>
+                  )}
+
+                  <button
+                    className="rate-now-button"
+                    onClick={() => navigate(`/game/${gameData?.id}/rate`)}
+                    aria-label="Avaliar este jogo agora"
+                  >
+                    Avaliar Agora
+                  </button>
+                </div>
+                <button 
+                  className="share-button" 
+                  onClick={handleShare}
+                  aria-label="Compartilhar este jogo"
+                >
+                  <i className="icon-share"></i> Compartilhar
+                </button>
               </div>
 
-              <div className="game-description">
-                <p className="game-description-text">{gameData?.description_raw || 'No description available.'}</p>
-              </div>
-
-              <div className="userscore-box">
-                <div className="userscore-header">SCORE</div>
-                <div className="userscore-value">{gameData?.userScore || '—'}</div>
-                <div className="review-count">Reviews: {gameData?.totalAvaliacoes || '—'}</div>
-              </div>
-
-              <div className="game-platforms">
-                {gameData?.platforms?.map((platform, index) => (
-                  <span key={index} className="platform-tag">{platform.platform.name}</span>
-                ))}
+              <div className="game-meta">
+                <div className="game-platforms">
+                  {gameData?.platforms?.length > 0
+                    ? gameData.platforms.map((platform, index) => (
+                        <span key={index} className="platform-tag">
+                          {platform.platform.name}
+                        </span>
+                      ))
+                    : <span className="platform-tag">Nenhuma plataforma listada</span>}
+                </div>
+                
+                <div className="game-release-date">
+                  <span className="release-label">Lançamento:</span>
+                  <span>{formatDate(gameData?.released)}</span>
+                </div>
               </div>
             </div>
           </div>
@@ -46,151 +109,95 @@ const MetacriticTemplate = ({ gameData }) => {
 
         <div className="game-content-container">
           <main className="game-main-content">
-            {/* Summary Section */}
-            {gameData?.description && (
-              <section className="summary-section">
-                <h2 className="section-title">Summary</h2>
-                <p className="game-summary">{gameData.description}</p>
-              </section>
-            )}
-            
-            {/* Description Section */}
-            {gameData?.description_raw && (
-              <section className="description-section">
-                <h2 className="section-title">Description</h2>
-                <p className="game-description">{gameData.description_raw}</p>
-              </section>
-            )}
-
-            {/* User Reviews Section */}
-            <section className="user-reviews-section">
-              <div className="section-header">
-                <h2 className="section-title">Reviews</h2>
-                {gameData?.avaliacoes?.length > 0 && (
-                  <div className="section-summary">
-                    <span className="review-count">{gameData.avaliacoes.length} Reviews</span>
-                  </div>
-                )}
-              </div>
-
-              {gameData?.avaliacoes?.length > 0 ? (
-                <div className="user-reviews-grid">
-                  {gameData.avaliacoes.map((review, index) => (
-                    <div key={index} className="user-review-card">
-                      <div className="user-review-header">
-                        <div className={`user-score ${review.score >= 9 ? "positive" : review.score >= 7 ? "mixed" : "negative"}`}>
-                          {review.score}
-                        </div>
-                        <div className="user-name">{review.username}</div>
-                        <div className="review-date">{review.date}</div>
-                      </div>
-                      <div className="user-review-text">"{review.text}"</div>
-                    </div>
-                  ))}
+            <section className="details-section">
+              <h2 className="section-title">Sobre o Jogo</h2>
+              {gameData?.description_raw && (
+                <div className="detail-block">
+                  <p className="game-description">{gameData.description_raw}</p>
                 </div>
-              ) : (
-                <p>No reviews yet. Be the first to review!</p>
               )}
             </section>
-
-            {/* Media Section */}
-            {(gameData?.screenshots?.length > 0 || gameData?.clip) && (
-              <section className="media-section">
-                <h2 className="section-title">Media</h2>
-                
-                {/* Screenshots */}
-                {gameData?.screenshots && (
-                  <div className="screenshots-container">
-                    <h3>Screenshots</h3>
-                    <div className="screenshots-grid">
-                      {gameData.screenshots.map((screenshot, index) => (
-                        <div key={index} className="screenshot-item">
-                          <img 
-                            src={screenshot} 
-                            alt={`${gameData.name} screenshot ${index + 1}`} 
-                          />
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                )}
-                
-                {/* Trailers */}
-                {gameData?.clip && (
-                  <div className="trailers-container">
-                    <h3>Trailers</h3>
-                    <div className="trailers-grid">
-                      <div className="trailer-item">
-                        <div className="trailer-thumbnail">
-                          <img 
-                            src={gameData.clip.thumbnail} 
-                            alt={`${gameData.name} trailer`} 
-                          />
-                          <div className="play-icon">▶</div>
-                        </div>
-                        <div className="trailer-title">{gameData.clip.title}</div>
-                      </div>
-                    </div>
-                  </div>
-                )}
-              </section>
-            )}
           </main>
 
-          {/* Sidebar */}
           <aside className="game-sidebar">
-            {/* Details Card */}
-            <div className="sidebar-card">
-              <h3 className="sidebar-title">Details</h3>
-              <ul className="details-list">
+            <div className="sidebar-card quick-facts">
+              <h3 className="sidebar-title">Fatos Rápidos</h3>
+              <ul className="facts-list">
                 <li>
-                  <span className="label">Release Date:</span>
-                  <span className="detail-value">{gameData?.released || 'TBD'}</span>
+                  <span className="fact-label">Data de Lançamento</span>
+                  <span className="fact-value">{formatDate(gameData?.released)}</span>
                 </li>
                 <li>
-                  <span className="label">Developer:</span>
-                  <span className="detail-value">{gameData?.developers?.map(dev => dev.name).join(", ") || 'Unknown'}</span>
+                  <span className="fact-label">Desenvolvedor</span>
+                  <span className="fact-value">
+                    {gameData?.developers?.map(dev => dev.name).join(", ") || 'Desconhecido'}
+                  </span>
                 </li>
                 <li>
-                  <span className="label">Publisher:</span>
-                  <span className="detail-value">{gameData?.publishers?.map(pub => pub.name).join(", ") || 'Unknown'}</span>
+                  <span className="fact-label">Publicador</span>
+                  <span className="fact-value">
+                    {gameData?.publishers?.map(pub => pub.name).join(", ") || 'Desconhecido'}
+                  </span>
                 </li>
                 <li>
-                  <span className="label">Genres:</span>
-                  <span className="detail-value">
+                  <span className="fact-label">Gênero</span>
+                  <span className="fact-value">
                     {gameData?.genres?.map(genre => genre.name).join(", ") || 'N/A'}
                   </span>
                 </li>
                 {gameData?.esrb_rating && (
                   <li>
-                    <span className="label">Rating:</span>
-                    <span className="detail-value">{gameData.esrb_rating}</span>
+                    <span className="fact-label">Classificação</span>
+                    <span className="fact-value">{gameData.esrb_rating}</span>
                   </li>
                 )}
               </ul>
             </div>
             
-            {/* Tags Card */}
             {gameData?.tags?.length > 0 && (
-              <div className="sidebar-card">
+              <div className="sidebar-card tags-card">
                 <h3 className="sidebar-title">Tags</h3>
                 <div className="tags-container">
-                  {gameData.tags.map((tag, index) => (
-                    <span key={index} className="tag">{tag.name}</span>
+                  {gameData.tags.slice(0, 15).map((tag, index) => (
+                    <Link 
+                      key={index} 
+                      to={`/games?tag=${tag.id}`}
+                      className="tag"
+                    >
+                      {tag.name}
+                    </Link>
                   ))}
                 </div>
               </div>
             )}
 
-            {/* Where to Buy */}
             {gameData?.stores?.length > 0 && (
-              <div className="sidebar-card">
-                <h3 className="sidebar-title">Where to Buy</h3>
+              <div className="sidebar-card stores-card">
+                <h3 className="sidebar-title">Onde Comprar</h3>
                 <div className="stores-list">
                   {gameData.stores.map((store, index) => (
-                    <a key={index} href={store.url} className="store-item" target="_blank" rel="noopener noreferrer">
-                      <span className="store-name">{store.store.name}</span>
-                      <span className="store-price">{store.price || 'Check price'}</span>
+                    <a 
+                      key={index} 
+                      href={store.url} 
+                      className="store-item" 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                    >
+                      <span className="store-icon">
+                        {store.store?.name && (
+                          <img 
+                            src={`/store-icons/${store.store.name.toLowerCase()}.png`} 
+                            alt={store.store.name}
+                            onError={(e) => {
+                              e.target.style.display = 'none';
+                            }}
+                          />
+                        )}
+                      </span>
+                      <span className="store-name">{store.store?.name || 'Loja'}</span>
+                      {store.price && (
+                        <span className="store-price">{store.price}</span>
+                      )}
                     </a>
                   ))}
                 </div>
@@ -204,4 +211,4 @@ const MetacriticTemplate = ({ gameData }) => {
   );
 };
 
-export default MetacriticTemplate;
+export default GameDetails;
