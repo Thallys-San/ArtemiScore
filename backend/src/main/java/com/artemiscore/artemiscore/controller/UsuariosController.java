@@ -192,4 +192,51 @@ public ResponseEntity<?> updatePassword(
     }
 }
 
+
+    @GetMapping("/me/favoritos")
+public ResponseEntity<List<Long>> getFavoritosUsuarioLogado(Authentication authentication) {
+    if (authentication == null || !authentication.isAuthenticated()) {
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+    }
+
+    String uid = authentication.getPrincipal().toString();
+    return service.buscarPorUid(uid)
+            .map(usuario -> ResponseEntity.ok(usuario.getJogosFavoritosList()))
+            .orElse(ResponseEntity.status(HttpStatus.UNAUTHORIZED).build());
+}
+
+@PostMapping("/me/favoritos")
+public ResponseEntity<?> adicionarFavoritoUsuarioLogado(
+        @RequestParam Long jogoId,
+        Authentication authentication) {
+    if (authentication == null || !authentication.isAuthenticated()) {
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+    }
+
+    String uid = authentication.getPrincipal().toString();
+    try {
+        service.adicionarJogoFavorito(uid, jogoId);
+        return ResponseEntity.ok().build();
+    } catch (Exception e) {
+        return ResponseEntity.badRequest().body(e.getMessage());
+    }
+}
+
+@DeleteMapping("/me/favoritos/{jogoId}")
+public ResponseEntity<?> removerFavoritoUsuarioLogado(
+        @PathVariable Long jogoId,
+        Authentication authentication) {
+    if (authentication == null || !authentication.isAuthenticated()) {
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+    }
+
+    String uid = authentication.getPrincipal().toString();
+    try {
+        service.removerJogoFavorito(uid, jogoId);
+        return ResponseEntity.ok().build();
+    } catch (Exception e) {
+        return ResponseEntity.badRequest().body(e.getMessage());
+    }
+}
+
 }
