@@ -96,10 +96,7 @@ const handleKeyDown = (e) => {
                     <div className="dropdown-icon"><i className="ri-star-line"></i></div>
                     <span>Minhas Avaliações</span>
                   </Link>
-                  <Link to="/jogosfavoritos" className="dropdown-item">
-                    <div className="dropdown-icon"><i className="ri-heart-line"></i></div>
-                    <span>Jogos Favoritos</span>
-                  </Link>
+                  
                   <Link to="/configuracoes" className="dropdown-item">
                     <div className="dropdown-icon"><i className="ri-settings-3-line"></i></div>
                     <span>Configurações</span>
