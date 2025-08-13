@@ -37,9 +37,7 @@ const Footer = () => (
           <h3 className="footer-title">CONTATO</h3>
           <div className="contact-info">
             <p>Minas Gerais, MG, Brasil</p>
-            <p>ArtemiScore@gmail.com</p>
-            <p>+55 31 98706-9133</p>
-            <p>+55 31 98263-5206</p>
+            <p>artemiscore67@gmail.com</p>
           </div>
         </div>
       </div>
