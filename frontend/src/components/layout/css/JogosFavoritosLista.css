@@ -1,0 +1,92 @@
+.jogos-favoritos-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 1.2rem;
+  margin-top: 1rem;
+}
+
+.jogo-favorito-card {
+  background: var(--card-bg);
+  border-radius: 8px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.jogo-favorito-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.jogo-favorito-imagem {
+  width: 100%;
+  height: 120px;
+  object-fit: cover;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.jogo-favorito-info {
+  padding: 0.8rem;
+}
+
+.jogo-favorito-info h4 {
+  margin: 0;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.jogo-favorito-metadata {
+  display: flex;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+  margin-top: 0.5rem;
+  align-items: center;
+}
+
+.jogo-genero-tag {
+  background: var(--tag-bg);
+  color: var(--tag-text);
+  padding: 0.2rem 0.5rem;
+  border-radius: 12px;
+  font-size: 0.7rem;
+  font-weight: 500;
+}
+
+.metacritic-score {
+  font-size: 0.75rem;
+  font-weight: bold;
+  padding: 0.15rem 0.4rem;
+  border-radius: 4px;
+  margin-left: auto;
+}
+
+.metacritic-score.high {
+  background-color: #66cc33;
+  color: white;
+}
+
+.metacritic-score.medium {
+  background-color: #ffcc33;
+  color: #333;
+}
+
+.metacritic-score.low {
+  background-color: #ff0000;
+  color: white;
+}
+
+.loading-container-small {
+  text-align: center;
+  padding: 1.5rem;
+  color: var(--text-secondary);
+}
+
+.error-message-small {
+  color: var(--error-color);
+  text-align: center;
+  padding: 1rem;
+}
