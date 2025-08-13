@@ -39,14 +39,6 @@ const GameCard = ({ jogo }) => (
             );
           })}
         </div>
-
-        <div className="game-tags">
-          {jogo.tags?.slice(0, 5).map(tag => (
-            <span key={tag.id} className="tag">
-              {tag.name}
-            </span>
-          ))}
-        </div>
       </div>
     </div>
   </Link>
