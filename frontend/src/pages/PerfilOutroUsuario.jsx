@@ -12,22 +12,20 @@ function PerfilOutroUsuario() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  useEffect(() => {
-    const fetchPerfil = async () => {
-      try {
-        setLoading(true);
-        const response = await axios.get(`http://localhost:8080/api/usuarios/${id}`);
-        setPerfil(response.data);
-      } catch (err) {
-        console.error("Erro ao carregar o perfil:", err);
-        setError("Não foi possível carregar o perfil.");
-      } finally {
-        setLoading(false);
-      }
-    };
+useEffect(() => {
+  const fetchPerfil = async () => {
+    try {
+      const response = await axios.get(`http://localhost:8080/api/usuarios/${id}`);
 
-    fetchPerfil();
-  }, [id]);
+      setPerfil(response.data);
+    } catch (err) {
+      setError("Não foi possível carregar o perfil.");
+    } finally {
+      setLoading(false);
+    }
+  };
+  fetchPerfil();
+}, [id]);
 
   if (loading) return <HamsterLoading />;
   if (error) return <div className="error-message">{error}</div>;
