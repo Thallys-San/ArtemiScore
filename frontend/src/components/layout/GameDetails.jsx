@@ -4,7 +4,7 @@ import '../layout/css/GameDetails.css';
 import Header from './Header';
 import Footer from './Footer';
 
-const GameDetails = ({ gameData }) => {
+const MetacriticTemplate = ({ gameData }) => {
   const navigate = useNavigate();
 
   // Função auxiliar para formatar datas
@@ -70,13 +70,13 @@ const GameDetails = ({ gameData }) => {
                     </div>
                   )}
 
-                  <button
+                  <Link
+                    to={`/reviews/create/${gameData?.id}`}
                     className="rate-now-button"
-                    onClick={() => navigate(`/game/${gameData?.id}/rate`)}
                     aria-label="Avaliar este jogo agora"
                   >
                     Avaliar Agora
-                  </button>
+                  </Link>
                 </div>
                 <button 
                   className="share-button" 
@@ -211,4 +211,4 @@ const GameDetails = ({ gameData }) => {
   );
 };
 
-export default GameDetails;
+export default MetacriticTemplate;
