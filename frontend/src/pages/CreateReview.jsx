@@ -173,23 +173,35 @@ const CreateReview = () => {
     setSuccess(false);
   };
 
-  useEffect(() => {
-    const fetchGameName = async () => {
-      try {
-        setLoadingGame(true);
-        setGameError(null);
-        const response = await fetch(`http://localhost:8080/games/${gameId}`);
-        if (!response.ok) throw new Error(`Erro ${response.status}`);
-        const gameData = await response.json();
-        setGameName(gameData.name || 'Nome do jogo não disponível');
-      } catch (error) {
-        setGameError('Erro ao carregar o nome do jogo');
-      } finally {
-        setLoadingGame(false);
+useEffect(() => {
+  const fetchGameName = async () => {
+    try {
+      setLoadingGame(true);
+      setGameError(null);
+
+      const response = await fetch(`http://localhost:8080/api/games/${gameId}`);
+      if (!response.ok) {
+        throw new Error(`Erro na API (${response.status})`);
       }
-    };
-    if (gameId) fetchGameName();
-  }, [gameId]);
+
+      const gameData = await response.json();
+      
+      // Ajustar conforme o nome real da propriedade no seu backend
+      setGameName(gameData.name || gameData.nome || 'Nome do jogo não disponível');
+
+    } catch (error) {
+      console.error(error);
+      setGameError('Erro ao carregar o nome do jogo');
+    } finally {
+      setLoadingGame(false);
+    }
+  };
+
+  if (gameId) {
+    fetchGameName();
+  }
+}, [gameId]);
+
 
   return (
     <section className="create-review-section" aria-labelledby="review-title">
