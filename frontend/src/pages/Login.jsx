@@ -74,11 +74,7 @@ const Login = () => {
     }
 
     try {
-      const userCredential = await signInWithEmailAndPassword(
-        auth,
-        email,
-        password
-      );
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
 
       // Verificar se o e-mail foi confirmado
@@ -197,9 +193,7 @@ const Login = () => {
 
         <form className="login-form" onSubmit={handleSubmit}>
           <div className="form-group email-group">
-            <label htmlFor="email" className="form-label">
-              E-mail
-            </label>
+            <label htmlFor="email" className="form-label">E-mail</label>
             <input
               ref={emailInputRef}
               type="email"
@@ -219,17 +213,11 @@ const Login = () => {
               autoCorrect="off"
               spellCheck="false"
             />
-            {emailError && (
-              <p className="error-message" style={{ color: "red", marginTop: "5px" }}>
-                {emailError}
-              </p>
-            )}
+            {emailError && <p className="error-message" style={{ color: "red", marginTop: "5px" }}>{emailError}</p>}
           </div>
 
           <div className="form-group">
-            <label htmlFor="password" className="form-label">
-              Senha
-            </label>
+            <label htmlFor="password" className="form-label">Senha</label>
             <div className="password-container">
               <input
                 type={showPassword ? "text" : "password"}
@@ -255,43 +243,30 @@ const Login = () => {
           </div>
 
           {loginError && (
-            <div className="error-message" style={{ 
-              color: verificationSent ? "green" : "red", 
-              margin: "10px 0",
-              display: "flex",
-              flexDirection: "column",
-              gap: "5px"
-            }}>
+            <div className="error-message" style={{ color: verificationSent ? "green" : "red", margin: "10px 0" }}>
               <p>{loginError}</p>
-              {verificationSent && (
-                <p style={{ color: "#5733ef", fontWeight: "bold" }}>
-                  E-mail de verificação enviado com sucesso!
-                </p>
-              )}
+              {verificationSent && <p style={{ color: "#5733ef", fontWeight: "bold" }}>E-mail de verificação enviado com sucesso!</p>}
             </div>
           )}
 
-          <div className="remember-forgot">
-
-            <button
-              type="button"
-              onClick={handlePasswordReset}
-              className="link-button"
-              style={{
-                background: "none",
-                border: "none",
-                color: "#5733ef",
-                cursor: "pointer",
-                textDecoration: "underline",
-                padding: 0,
-                fontSize: "1rem",
-              }}
-              aria-label="Redefinir senha"
-              title="Redefinir senha"
-            >
-              Redefinir agora
-            </button>
-          </div>
+          <button
+            type="button"
+            onClick={handlePasswordReset}
+            className="link-button"
+            style={{
+              background: "none",
+              border: "none",
+              color: "#5733ef",
+              cursor: "pointer",
+              textDecoration: "underline",
+              padding: 0,
+              fontSize: "1rem",
+            }}
+            aria-label="Redefinir senha"
+            title="Redefinir senha"
+          >
+            Redefinir agora
+          </button>
 
           <button
             type="submit"
@@ -300,6 +275,7 @@ const Login = () => {
           >
             {isLoading ? "Carregando..." : "Entrar"}
           </button>
+
           <div className="register-link">
             <p>
               Não tem uma conta? <Link to="/cadastro">Crie agora</Link>
