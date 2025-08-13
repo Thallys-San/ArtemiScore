@@ -1,8 +1,7 @@
 // AuthContext.jsx
 import React, { createContext, useState, useEffect } from "react";
 import { onIdTokenChanged, signOut } from "firebase/auth";
-import { auth, provider } from "./firebase"; // ajustando o caminho conforme a localização real
-
+import { auth } from "./firebase"; 
 
 export const AuthContext = createContext();
 
@@ -10,22 +9,29 @@ export const AuthProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [token, setToken] = useState(null);
   const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true); // evita renderização antes de saber se há login
 
   useEffect(() => {
     // Recupera do localStorage se já havia login salvo
     const savedToken = localStorage.getItem("token");
-    const savedUser = JSON.parse(localStorage.getItem("user"));
+    const savedUser = localStorage.getItem("user");
 
     if (savedToken && savedUser) {
-      setIsAuthenticated(true);
-      setToken(savedToken);
-      setUser(savedUser);
+      try {
+        setIsAuthenticated(true);
+        setToken(savedToken);
+        setUser(JSON.parse(savedUser));
+      } catch {
+        // Se der erro no parse, limpa
+        localStorage.removeItem("token");
+        localStorage.removeItem("user");
+      }
     }
 
     // Listener para atualização automática do token
     const unsubscribe = onIdTokenChanged(auth, async (firebaseUser) => {
       if (firebaseUser) {
-        const newToken = await firebaseUser.getIdToken();
+        const newToken = await firebaseUser.getIdToken(true); // força refresh do token
         const userData = {
           uid: firebaseUser.uid,
           email: firebaseUser.email,
@@ -47,6 +53,7 @@ export const AuthProvider = ({ children }) => {
         localStorage.removeItem("token");
         localStorage.removeItem("user");
       }
+      setLoading(false);
     });
 
     return () => unsubscribe();
@@ -71,7 +78,7 @@ export const AuthProvider = ({ children }) => {
 
   return (
     <AuthContext.Provider value={{ isAuthenticated, token, user, login, logout }}>
-      {children}
+      {!loading && children}
     </AuthContext.Provider>
   );
 };
