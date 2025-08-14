@@ -14,7 +14,7 @@ import ConfigScreen from "../pages/ConfigScreen";
 import DetalheJogo from '../pages/DetalheJogo';
 import PerfilOutroUsuario from "../pages/PerfilOutroUsuario";
 import JogosAvaliados from "../pages/JogosAvaliados";
-import CreateReview from "../pages/CreateReview";
+import ReviewCreate from "../pages/CreateReview";
 
 const App = () => {
   return (
@@ -35,7 +35,7 @@ const App = () => {
       {/* <Route path="/favoritos" element={<Favoritos />} /> */}
       <Route path="/configuracoes" element={<ConfigScreen />} />
       <Route path="/jogos/:id" element={<DetalheJogo />} />
-      <Route path="/reviews/create/:id" element={<CreateReview />} />
+      <Route path="/reviews/create/:id" element={<ReviewCreate />} />
       {/* <Route path="/logout" element={<Logout />} /> */}
     </Routes>
      {/* Toasts visíveis globalmente */}
