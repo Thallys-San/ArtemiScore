@@ -29,7 +29,7 @@ const App = () => {
       <Route path="/lancamentos" element={<Lancamentos />} /> 
       <Route path="/perfil" element={<Perfil />} />
       <Route path="/jogosAvaliados" element={<JogosAvaliados />} />
-      <Route path="/perfil/:id" element={<PerfilOutroUsuario />} />
+      <Route path="/perfil/:uid" element={<PerfilOutroUsuario />} />
       <Route path="/recuperarsenha" element={<RecuperarSenha />} />
       {/* <Route path="/avaliacoes" element={<Avaliacoes />} /> */}
       {/* <Route path="/favoritos" element={<Favoritos />} /> */}
