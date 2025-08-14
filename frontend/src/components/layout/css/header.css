@@ -9,33 +9,7 @@
 }
 
 /* VARIÁVEIS GLOBAIS - Define cores, gradientes e efeitos reutilizáveis */
-:root {
-    /* Cores principais */
-    --primary: #5733ef;          /* Cor primária roxa */
-    --primary-dark: #4625c9;     /* Versão mais escura da primária */
-    --accent: #c688ff;           /* Cor de destaque */
-    
-    /* Tons de cinza e cores neutras */
-    --dark: #0f0f13;            /* Fundo escuro */
-    --darker: #0a0a0d;          /* Fundo mais escuro */
-    --gray: #1e1e24;            /* Cinza escuro */
-    --gray-light: #2a2a35;       /* Cinza médio */
-    --light-gray: #6d6d7a;       /* Cinza claro */
-    --white: #ffffff;           /* Branco puro */
-    --lighter: #e1e1e1;         /* Branco acinzentado */
-    
-    /* Cores de status */
-    --yellow: #fdcb6e;          /* Amarelo para avisos */
-    --green: #00cc96;           /* Verde para sucesso */
-    --red: #ff6b6b;            /* Vermelho para erros */
-    
-    /* Efeitos visuais */
-    --gradient-primary: linear-gradient(45deg, var(--primary), var(--accent)); /* Gradiente principal */
-    --transition: all 0.3s ease;           /* Transição rápida */
-    --transition-slow: all 0.5s ease;      /* Transição lenta */
-    --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.3); /* Sombra grande */
-    --glow: 0 0 15px rgba(135, 90, 255, 0.5);  /* Efeito de brilho */
-}
+
 
 /* ESTILOS GERAIS DO BODY */
 body {
