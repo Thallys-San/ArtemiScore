@@ -31,9 +31,6 @@ public class AvaliacaoController {
     private AvaliacaoService service;
 
     @Autowired
-    private AvaliacaoRepository avaliacaoRepository;
-    
-    @Autowired
     private UsuariosRepository usuariosRepository;
 
     // ✅ Buscar todas as avaliações
@@ -69,16 +66,7 @@ public class AvaliacaoController {
         return ResponseEntity.ok(avaliacoes);
     }
 
-@GetMapping("/usuario/{usuarioId}/horas")
-public ResponseEntity<Long> getTotalHorasPorUsuario(@PathVariable Long usuarioId) {
-    Long totalHoras = avaliacaoRepository.getTotalHorasPorUsuario(usuarioId);
 
-    if (totalHoras == null) {
-        totalHoras = 0L;
-    }
-
-    return ResponseEntity.ok(totalHoras);
-}
     
     // ✅ Criar uma nova avaliação
     @PostMapping
@@ -139,6 +127,25 @@ public ResponseEntity<List<AvaliacaoModel>> getMeusJogos() {
     }
 }
 
+// ✅ Buscar avaliações de outro usuário pelo UID do Firebase
+@GetMapping("/usuario/uid/{uid}")
+public ResponseEntity<List<AvaliacaoModel>> buscarPorUsuarioUid(@PathVariable String uid) {
+    try {
+        UsuariosModel usuario = usuariosRepository.findByUid(uid)
+                .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+
+        List<AvaliacaoModel> avaliacoes = service.listarPorUsuario(usuario.getId());
+
+        if (avaliacoes.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+
+        return ResponseEntity.ok(avaliacoes);
+
+    } catch (Exception e) {
+        return ResponseEntity.status(404).body(null);
+    }
+}
 
 
 }
