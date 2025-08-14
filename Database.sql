@@ -22,7 +22,8 @@ CREATE TABLE IF NOT EXISTS avaliacoes (
 	nota DOUBLE NOT NULL,
 	comentario TEXT,
 	tempoDeJogo INT,
-	plataforma CHAR(255) NOT NULL,
+	plataforma VARCHAR(255) NOT NULL,
 	data_avaliacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-	FOREIGN KEY(usuario_id) REFERENCES usuarios(id)
+	FOREIGN KEY(usuario_id) REFERENCES usuarios(id),
+    CONSTRAINT unique_usuario_jogo_plataforma UNIQUE (usuario_id, jogo_id, plataforma)
 );
