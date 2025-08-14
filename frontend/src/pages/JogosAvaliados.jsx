@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import axios from "axios";
-import { Link, useParams  } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import Header from "../components/layout/Header";
 import Footer from "../components/layout/Footer";
 import GameCard from "../components/cards/GameCard";
@@ -10,7 +10,7 @@ import "../components/layout/css/HamsterLoading.css";
 import "../style.css";
 
 const JogosAvaliados = () => {
-  const { token, logout } = useContext(AuthContext);
+  const { token, logout, uid: myUid } = useContext(AuthContext); // uid do usuário logado
   const [games, setGames] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -29,19 +29,19 @@ const JogosAvaliados = () => {
         setLoading(true);
         setError(null);
 
-        // URL depende se estamos vendo nosso próprio perfil ou outro usuário
-        const url = uid 
-          ? `http://localhost:8080/avaliacoes/usuario/uid/${uid}` 
+        const url = uid
+          ? `http://localhost:8080/avaliacoes/usuario/uid/${uid}`
           : "http://localhost:8080/avaliacoes/meus-jogos";
 
-        const response = await axios.get(url, { headers: { Authorization: `Bearer ${token}` } });
+        const response = await axios.get(url, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
         const avaliacoes = response.data || [];
 
         const totalAvaliados = avaliacoes.length;
         const somaNotas = avaliacoes.reduce((acc, a) => acc + a.nota, 0);
         const mediaAvaliacao = totalAvaliados > 0 ? somaNotas / totalAvaliados : 0;
 
-        // Busca detalhes completos de cada jogo
         const jogosComDados = await Promise.all(
           avaliacoes.map(async (av) => {
             const res = await fetch(`http://localhost:8080/api/games/${av.jogo_id}`);
@@ -49,14 +49,14 @@ const JogosAvaliados = () => {
             return {
               ...gameData,
               mediaAvaliacao: av.nota,
-              dataAvaliacao: av.dataAvaliacao
+              dataAvaliacao: av.dataAvaliacao,
+              avaliacaoId: av.id, // salva o id da avaliação para exclusão
             };
           })
         );
 
         setGames(jogosComDados);
         setStats({ totalAvaliados, mediaAvaliacao });
-
       } catch (err) {
         console.error("Erro ao carregar jogos avaliados:", err);
         if (err.response?.status === 401) logout();
@@ -68,6 +68,26 @@ const JogosAvaliados = () => {
 
     fetchRatedGames();
   }, [token, logout, uid]);
+
+  const handleDelete = async (avaliacaoId) => {
+    if (!window.confirm("Tem certeza que deseja excluir esta avaliação?")) return;
+
+    try {
+      await axios.delete(`http://localhost:8080/avaliacoes/${avaliacaoId}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      // Atualiza a lista local e as estatísticas
+      setGames((prev) => prev.filter((g) => g.avaliacaoId !== avaliacaoId));
+      setStats((prev) => ({
+        ...prev,
+        totalAvaliados: prev.totalAvaliados - 1,
+      }));
+    } catch (err) {
+      console.error("Erro ao excluir avaliação:", err);
+      alert("Não foi possível excluir a avaliação.");
+    }
+  };
 
   if (loading) return <div className="loading-container"><HamsterLoading /></div>;
   if (error) return <div className="error-message">{error}</div>;
@@ -97,8 +117,20 @@ const JogosAvaliados = () => {
             {/* Lista de jogos */}
             {games.length > 0 ? (
               <div className="games-grid">
-                {games.map(jogo => (
-                  <GameCard key={jogo.id} jogo={jogo} />
+                {games.map((jogo) => (
+                  <div key={jogo.id} className="game-card-wrapper">
+                    <GameCard jogo={jogo} />
+
+                    {/* Botão de excluir só aparece para o usuário logado */}
+                    {(!uid || uid === myUid) && (
+                      <button
+                        className="btn-excluir"
+                        onClick={() => handleDelete(jogo.avaliacaoId)}
+                      >
+                        Excluir
+                      </button>
+                    )}
+                  </div>
                 ))}
               </div>
             ) : (
