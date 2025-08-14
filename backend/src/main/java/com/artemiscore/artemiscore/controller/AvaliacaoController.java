@@ -11,15 +11,12 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-
 import org.springframework.web.bind.annotation.RestController;
 
 import com.artemiscore.artemiscore.model.AvaliacaoModel;
 import com.artemiscore.artemiscore.model.UsuariosModel;
-import com.artemiscore.artemiscore.repository.AvaliacaoRepository;
 import com.artemiscore.artemiscore.repository.UsuariosRepository;
 import com.artemiscore.artemiscore.service.AvaliacaoService;
 
@@ -32,10 +29,6 @@ public class AvaliacaoController {
 
     @Autowired
     private AvaliacaoService service;
-
-    @Autowired
-    private AvaliacaoRepository avaliacaoRepository; // nome igual ao usado no método
-
 
     @Autowired
     private UsuariosRepository usuariosRepository;
@@ -73,17 +66,8 @@ public class AvaliacaoController {
         return ResponseEntity.ok(avaliacoes);
     }
 
-@GetMapping("/usuario/{usuarioId}/horas")
-public ResponseEntity<Long> getTotalHorasPorUsuario(@PathVariable Long usuarioId) {
-    Long totalHoras = avaliacaoRepository.getTotalHorasPorUsuario(usuarioId);
 
-    if (totalHoras == null) {
-        totalHoras = 0L;
-    }
-
-    return ResponseEntity.ok(totalHoras);
-}
-
+    
     // ✅ Criar uma nova avaliação
     @PostMapping
     public ResponseEntity<?> criar(@Valid @RequestBody AvaliacaoModel avaliacaoModel) {
@@ -116,4 +100,33 @@ public ResponseEntity<Long> getTotalHorasPorUsuario(@PathVariable Long usuarioId
         service.deletar(id);
         return ResponseEntity.noContent().build();
     }
+
+@GetMapping("/meus-jogos")
+public ResponseEntity<List<AvaliacaoModel>> getMeusJogos() {
+    try {
+        // Pega o UID do usuário logado pelo token
+        String uid = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        // Busca o usuário no banco pelo UID
+        UsuariosModel usuario = usuariosRepository.findByUid(uid)
+                .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+
+        Long usuarioId = usuario.getId();
+
+        // Busca todas as avaliações do usuário pelo ID interno
+        List<AvaliacaoModel> avaliacoes = service.listarPorUsuario(usuarioId);
+
+        if (avaliacoes.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+
+        return ResponseEntity.ok(avaliacoes);
+
+    } catch (Exception e) {
+        return ResponseEntity.status(401).body(null);
+    }
+}
+
+
+
 }
