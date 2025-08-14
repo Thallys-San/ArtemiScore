@@ -59,6 +59,7 @@
   background-clip: text;
   color: transparent;
   margin-bottom: 10px;
+  color: var(--primary);
 }
 /* Alinha apenas o título à esquerda */
 .informacoes-usuario .titulo {
@@ -93,6 +94,7 @@
   display: flex;
   align-items: center;
   gap: 10px;
+
 }
 
 /* ===== Botões ===== */
@@ -113,7 +115,7 @@
 }
 
 .botao-primario {
-  background: var(--gradient-primary);
+  background: var(--primary);
   color: white;
   border: none;
 }
@@ -384,7 +386,7 @@ a:hover {
 
 /* Efeito de onda ao clicar */
 .add-favorite-button::after {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   left: 0;
@@ -403,7 +405,6 @@ a:hover {
 
 /* Tooltip */
 .add-favorite-button::before {
-
   top: -40px;
   left: 50%;
   transform: translateX(-50%);
