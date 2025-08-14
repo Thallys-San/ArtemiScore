@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import '../components/layout/css/CreateReview.css';
 
 // StarRating component
@@ -83,10 +83,9 @@ const LoadingSpinner = () => (
 const CreateReview = () => {
   const { id: gameId } = useParams();
   const [gameName, setGameName] = useState('');
+  const [platforms, setPlatforms] = useState([]);
   const [loadingGame, setLoadingGame] = useState(true);
   const [gameError, setGameError] = useState(null);
-
-  const platforms = ['PC', 'PlayStation 5', 'Xbox Series X', 'Nintendo Switch', 'Outros'];
 
   const [rating, setRating] = useState(0);
   const [title, setTitle] = useState('');
@@ -98,7 +97,12 @@ const CreateReview = () => {
   const [success, setSuccess] = useState(false);
   const token = localStorage.getItem('token');
 
-  const usuario_id = 1; // pegar do auth real depois
+  const navigate = useNavigate();
+
+
+const handleCancel = () => {
+  navigate(`/jogos/${gameId}`); // rota da tela GameDetails
+};
 
   const clearError = (field) => {
     setErrors((prev) => {
@@ -132,14 +136,14 @@ const CreateReview = () => {
 
     try {
       const reviewData = {
-        usuario_id,
         jogo_id: gameId,
         nota: rating,
         tempoDeJogo: playTime ? parseInt(playTime, 10) : null,
         plataforma: platform,
         comentario: `${title.trim()}: ${comment.trim()}`,
-        dataAvaliacao: new Date().toISOString(), // LocalDateTime ISO
+        dataAvaliacao: new Date().toISOString(),
       };
+
 
       const response = await fetch('http://localhost:8080/avaliacoes', {
         method: 'POST',
@@ -173,35 +177,36 @@ const CreateReview = () => {
     setSuccess(false);
   };
 
-useEffect(() => {
-  const fetchGameName = async () => {
-    try {
-      setLoadingGame(true);
-      setGameError(null);
+  useEffect(() => {
+    const fetchGameData = async () => {
+      try {
+        setLoadingGame(true);
+        setGameError(null);
 
-      const response = await fetch(`http://localhost:8080/api/games/${gameId}`);
-      if (!response.ok) {
-        throw new Error(`Erro na API (${response.status})`);
+        const response = await fetch(`http://localhost:8080/api/games/${gameId}`);
+        if (!response.ok) throw new Error(`Erro na API (${response.status})`);
+
+        const gameData = await response.json();
+
+        setGameName(gameData.name || gameData.nome || 'Nome do jogo não disponível');
+
+        if (gameData.platforms && gameData.platforms.length > 0) {
+          const platformNames = gameData.platforms.map(p => p.platform.name);
+          setPlatforms(platformNames);
+        } else {
+          setPlatforms(['Outros']);
+        }
+
+      } catch (error) {
+        console.error(error);
+        setGameError('Erro ao carregar o jogo');
+      } finally {
+        setLoadingGame(false);
       }
+    };
 
-      const gameData = await response.json();
-      
-      // Ajustar conforme o nome real da propriedade no seu backend
-      setGameName(gameData.name || gameData.nome || 'Nome do jogo não disponível');
-
-    } catch (error) {
-      console.error(error);
-      setGameError('Erro ao carregar o nome do jogo');
-    } finally {
-      setLoadingGame(false);
-    }
-  };
-
-  if (gameId) {
-    fetchGameName();
-  }
-}, [gameId]);
-
+    if (gameId) fetchGameData();
+  }, [gameId]);
 
   return (
     <section className="create-review-section" aria-labelledby="title-create-review">
@@ -212,7 +217,7 @@ useEffect(() => {
             {loadingGame && <p>Carregando nome do jogo...</p>}
             {gameError && <p className="error">{gameError}</p>}
             {!loadingGame && !gameError && <h3>Jogo: {gameName}</h3>}
-            <p>Compartilhe sua experiência com a comunidade de jogadores</p>
+            
           </header>
 
           {success ? (
@@ -297,7 +302,12 @@ useEffect(() => {
               </div>
 
               <div className="form-actions">
-                <button type="button" onClick={handleReset} className="btn-secondary" disabled={isSubmitting}>
+                <button
+                  type="button"
+                  onClick={handleCancel}
+                  className="btn-secondary"
+                  disabled={isSubmitting}
+                >
                   Cancelar
                 </button>
                 <button type="submit" className="btn-primary" disabled={isSubmitting}>
