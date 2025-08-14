@@ -46,6 +46,8 @@ public class SecurityConfiguration {
             .authorizeHttpRequests(auth -> auth
                 // Permite POST para cadastro público
                 .requestMatchers(HttpMethod.POST, "/api/usuarios").permitAll()
+                        .requestMatchers("/avaliacoes/meus-jogos").authenticated()
+
 
                 // Libera outras rotas públicas necessárias
                 .requestMatchers(
@@ -53,7 +55,6 @@ public class SecurityConfiguration {
                     "/css/**",
                     "/js/**",
                     "/api/games/**",
-                    "/avaliacoes/**",
                     "/error",
                     "/favicon.ico",
                     "/api/usuarios/**"
@@ -90,5 +91,3 @@ public class SecurityConfiguration {
         return source;
     }
 }
-
-
