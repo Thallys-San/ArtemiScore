@@ -11,12 +11,14 @@
 
 /* Game Hero Section */
 .game-hero {
+  padding-top: 12px;
   padding: 2rem 0;
   position: relative;
-  background-color: var(--dark); /* Fallback */
+  background-color: transparent; /* Fallback */
   background-size: cover;
   background-position: center;
   padding-top: var(--header-height, 100px); /* Dynamic header height */
+  
 }
 
 .game-hero::before {
@@ -42,8 +44,9 @@
 
 .game-cover {
   width: 100%;
-  max-width: 320px;
-  aspect-ratio: 16 / 9; /* Proporção 16:9 */
+  max-width: 500px;
+  height: 347px;
+  aspect-ratio: 16 / 9;
   flex-shrink: 0;
   border-radius: 8px;
   overflow: hidden;
@@ -58,11 +61,16 @@
 }
 
 .game-cover img {
+  display: block; /* remove espaço fantasma de elemento inline */
   width: 100%;
-  height: 100%;
-  object-fit: cover;
+  height: 100%; /* preenche todo o container */
+  object-fit:cover; /* corta para caber */
+  object-position: center; /* centraliza corte */
   transition: transform 0.3s ease;
 }
+
+
+
 
 .game-info {
   flex-grow: 1;
@@ -92,69 +100,100 @@
   font-weight: 400;
 }
 
-/* Star Rating Styles */
-.star-rating-container {
+.game-rating {
   display: flex;
-  align-items: top flex-start;
-  gap: 1rem;
-  margin-top: 0.5rem;
-}
-
-.average-rating {
-  display: flex;
+  flex-direction:column;
   align-items: center;
-  gap: 0.3rem;
+  gap: 0rem;
 }
 
+.game-rating > *:not(:last-child) {
+  margin-bottom: 0.6rem; /* só adiciona espaço abaixo dos elementos, exceto o último */
+}
+
+
+
+.rating-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2.0rem;
+  margin: 0;
+}
+
+
+/* Estilo do container principal de avaliação */
+.rating-caixa {
+  font-size: 1rem;
+  display: flex;               /* Flex para organizar em coluna */
+  flex-direction: row;      /* Coloca estrelas em cima, texto embaixo */
+  align-items: center;         /* Centraliza tudo horizontalmente */
+  gap: 2.55rem;                  /* Espaço entre estrelas e o texto */
+  margin: 0.5rem 0;
+}
+
+/* Container das estrelas */
+.star-container {
+  display: inline-flex;
+  position: relative;
+  font-size: 0; /* Remove espaços entre estrelas inline */
+}
+
+/* Estilo base das estrelas */
 .star {
-  font-size: 3.0rem;
-  color: var(--gray-light);
+  font-size: 4.0rem;
+  gap: 2.0rem;
+  color: #555; /* Cor das estrelas vazias */
   cursor: pointer;
-  transition: color 0.2s ease;
+  transition: all 0.2s ease;
+  padding: 0 0.1rem; /* Espaçamento mínimo entre estrelas */
+  line-height: 1;
+  position: relative;
 }
 
+/* Estrelas preenchidas */
 .star.filled {
-  color: #fdcb6e;
+  color: #ffd700; /* Amarelo ouro para estrelas cheias */
 }
 
-.rating-value {
-  font-size: 2.0rem;
-  color: var(--gray-light);
+/* Efeito hover */
+.star:hover,
+.star.hovered {
+  transform: scale(1.2);
 }
 
-.no-rating {
-  font-size: 3.0rem;
-  color: var(--gray-light);
-  font-style: italic;
+/* Meia estrela */
+.star.half-filled::before {
+  content: '★';
+  position: absolute;
+  left: 0;
+  width: 150%;
+  overflow: hidden;
+  color: #ffd700;
 }
 
-.user-star-rating {
-  display: flex;
-  gap: 1.5rem;
+/* Texto de avaliação */
+.media-avaliacao {
+  font-size: 1rem;
+  font-weight: bold;
+  color: #fff;
+  margin-left: 0.5rem;
 }
 
-.user-star-rating {
-  display: flex;
-  gap: 1.5rem;
-}
-
+/* Botão de avaliação */
 .rate-now-button {
+  margin-left: 1rem;
   background-color: var(--primary);
+  color: white;
   border: none;
-  color: var(--white);
   padding: 0.5rem 1rem;
   border-radius: 4px;
   cursor: pointer;
-  font-weight: 600;
   transition: all 0.2s ease;
-  gap: 1.5rem;
 }
 
-.rate-now-button:hover,
-.rate-now-button:focus {
+.rate-now-button:hover {
   background-color: var(--primary-dark);
-  outline: 2px solid var(--primary);
-  outline-offset: 2px;
 }
 
 .share-button {
@@ -250,6 +289,7 @@
 .game-description {
   margin-bottom: 2rem;
   max-width: 800px;
+  margin: 24px;
 }
 
 .game-description-text {
@@ -272,12 +312,12 @@
 }
 
 .platform-tag {
-  background-color: rgba(0, 178, 255, 0.1);
-  border: 1px solid var(--primary);
+  background-color: var(--primary);
+  border: 3px solid var(--primary-dark);
   padding: 0.3rem 0.8rem;
   border-radius: 4px;
   font-size: 0.8rem;
-  color: var(--primary);
+  color: var(--white);
 }
 
 .game-release-date {
@@ -293,11 +333,13 @@
 
 /* Main Content Layout */
 .game-content-container {
+  background: rgba(0, 0, 0, 0.7);
   max-width: 1200px;
   margin: 2rem auto;
   padding: 0 20px;
   display: flex;
   gap: 2rem;
+  border-radius: 8px;
 }
 
 .game-main-content {
@@ -318,6 +360,7 @@
   color: var(--light);
   position: relative;
   padding-bottom: 0.5rem;
+  margin: 24px;
 }
 
 .section-title::after {
@@ -689,7 +732,7 @@
 }
 
 .sidebar-title {
-  font-size: 1.2rem;
+  font-size: 24px;
   font-weight: 700;
   margin-bottom: 1.5rem;
   color: var(--light);
@@ -735,8 +778,8 @@
 }
 
 .tag {
-  background-color: var(--dark);
-  border: 1px solid var(--gray);
+  background-color: var(--primary);
+  border: 3px solid var(--primary-dark);
   padding: 0.4rem 0.8rem;
   border-radius: 20px;
   font-size: 0.8rem;
@@ -763,7 +806,8 @@
   display: flex;
   align-items: center;
   padding: 0.8rem;
-  background-color: var(--dark);
+  background-color: var(--primary);
+  border: 3px solid var(--primary-dark);
   border-radius: 6px;
   transition: background-color 0.2s;
   text-decoration: none;
@@ -772,7 +816,7 @@
 
 .store-item:hover,
 .store-item:focus {
-  background-color: var(--dark-light);
+  background-color: var(--primary-dark);
   outline: 2px solid var(--primary);
   outline-offset: 2px;
 }
@@ -836,6 +880,10 @@
   background-size: 200% 100%;
   animation: shimmer 1.5s infinite;
 }
+
+
+
+
 
 @keyframes shimmer {
   0% { background-position: 200% 0; }
