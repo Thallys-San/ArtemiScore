@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.artemiscore.artemiscore.model.AvaliacaoModel;
 import com.artemiscore.artemiscore.model.UsuariosModel;
+import com.artemiscore.artemiscore.repository.AvaliacaoRepository;
 import com.artemiscore.artemiscore.repository.UsuariosRepository;
 import com.artemiscore.artemiscore.service.AvaliacaoService;
 
@@ -29,6 +30,9 @@ public class AvaliacaoController {
 
     @Autowired
     private AvaliacaoService service;
+
+    @Autowired
+    private AvaliacaoRepository avaliacaoRepository;
 
     @Autowired
     private UsuariosRepository usuariosRepository;
