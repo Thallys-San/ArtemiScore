@@ -1,0 +1,173 @@
+/* src/components/css/Review.css */
+
+/* Container geral das reviews */
+.reviews-section {
+  margin: 2rem 0;
+  padding: 0 1rem;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: var(--white);
+}
+
+/* Header da seção */
+.section-header {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1rem;
+}
+
+.section-title {
+  font-size: 1.8rem;
+  margin-bottom: 0.5rem;
+  color: var(--white);
+}
+
+.section-summary {
+  font-size: 0.9rem;
+  color: var(--white);
+}
+
+/* Grid de reviews */
+.user-reviews-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1rem;
+}
+
+/* Card de cada review */
+.user-review-card {
+  background-color: var(--dark-gray);
+  border-radius: 12px;
+  padding: 1rem;
+  box-shadow: var(--shadow-md, 0 4px 12px rgba(0,0,0,0.3));
+  display: flex;
+  flex-direction: column;
+  transition: var(--card-transition, transform 0.3s ease, box-shadow 0.3s ease);
+}
+
+.user-review-card:hover {
+  transform: scale(1.02);
+  box-shadow: var(--shadow-lg, 0 6px 18px rgba(0,0,0,0.4));
+}
+
+/* Header do usuário na review */
+.user-review-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.8rem;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+/* Link do perfil */
+.user-profile-link {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  text-decoration: none;
+  color: var(--primary);
+  transition: color 0.2s ease;
+}
+
+.user-profile-link:hover {
+  color: var(--primary-hover);
+}
+
+.user-avatar {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--primary);
+  transition: transform 0.3s ease;
+}
+
+.user-profile-link:hover .user-avatar {
+  transform: scale(1.1);
+}
+
+/* Nome do usuário */
+.user-name {
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+/* Nota do usuário */
+.user-score {
+  font-weight: bold;
+  font-size: 1rem;
+  padding: 0.3rem 0.6rem;
+  border-radius: 8px;
+  min-width: 35px;
+  text-align: center;
+  color: var(--white);
+  flex-shrink: 0;
+}
+
+/* Cores das notas */
+.user-score.positive {
+  background-color: var(--green, #4caf50);
+}
+
+.user-score.mixed {
+  background-color: var(--orange, #ff9800);
+}
+
+.user-score.negative {
+  background-color: var(--red, #f44336);
+}
+
+/* Data da review */
+.review-date {
+  font-size: 0.8rem;
+  color: var(--white);
+  opacity: 0.7;
+}
+
+/* Texto da review */
+.user-review-text {
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: var(--white);
+  opacity: 0.85;
+  margin-top: 0.5rem;
+}
+
+/* Botão Ler mais */
+.view-all-reviews {
+  margin-top: 1rem;
+  padding: 0.7rem 1.4rem;
+  border: none;
+  background-color: var(--primary);
+  color: var(--white);
+  font-weight: 600;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.view-all-reviews:hover {
+  background-color: var(--primary-hover);
+  transform: scale(1.05);
+}
+
+/* Mensagem sem reviews */
+.no-reviews-message {
+  font-size: 1rem;
+  color: var(--white);
+  opacity: 0.7;
+  text-align: center;
+  margin-top: 1rem;
+}
+
+/* Responsividade */
+@media (max-width: 600px) {
+  .user-review-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .user-score {
+    margin-top: 0.3rem;
+  }
+}
