@@ -92,7 +92,7 @@ const handleKeyDown = (e) => {
                     <div className="dropdown-icon"><i className="ri-user-3-line"></i></div>
                     <span>Meu Perfil</span>
                   </Link>
-                  <Link to="/minhasavaliacoes" className="dropdown-item">
+                  <Link to="/jogosAvaliados" className="dropdown-item">
                     <div className="dropdown-icon"><i className="ri-star-line"></i></div>
                     <span>Minhas Avaliações</span>
                   </Link>
