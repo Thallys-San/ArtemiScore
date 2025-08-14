@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,6 +18,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.artemiscore.artemiscore.model.AvaliacaoModel;
+import com.artemiscore.artemiscore.model.UsuariosModel;
+import com.artemiscore.artemiscore.repository.UsuariosRepository;
 import com.artemiscore.artemiscore.service.AvaliacaoService;
 
 import jakarta.validation.Valid;
@@ -28,6 +31,9 @@ public class AvaliacaoController {
 
     @Autowired
     private AvaliacaoService service;
+
+    @Autowired
+    private UsuariosRepository usuariosRepository;
 
     // ✅ Buscar todas as avaliações
     @GetMapping
@@ -66,20 +72,25 @@ public class AvaliacaoController {
     
     // ✅ Criar uma nova avaliação
     @PostMapping
-    public ResponseEntity<AvaliacaoModel> criar(@Valid @RequestBody AvaliacaoModel avaliacaoModel) {
-        AvaliacaoModel novaAvaliacao = service.salvar(avaliacaoModel);
-        return ResponseEntity.ok(novaAvaliacao);
-    }
+    public ResponseEntity<?> criar(@Valid @RequestBody AvaliacaoModel avaliacaoModel) {
+        try {
+            // Pega o UID do Firebase do usuário logado
+            String uid = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-    // ✅ Atualizar uma avaliação existente
-    @PutMapping("/{id}")
-    public ResponseEntity<AvaliacaoModel> editar(@PathVariable Long id, @Valid @RequestBody AvaliacaoModel avaliacaoModel) {
-        if (!service.listarId(id).isPresent()) {
-            return ResponseEntity.notFound().build();
+            // Busca o usuário no banco
+            UsuariosModel usuario = usuariosRepository.findByUid(uid)
+                    .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+
+            // Preenche o usuario_id
+            avaliacaoModel.setUsuario_id(usuario.getId());
+
+            // Salva a avaliação
+            AvaliacaoModel novaAvaliacao = service.salvar(avaliacaoModel);
+            return ResponseEntity.ok(novaAvaliacao);
+
+        } catch (Exception e) {
+            return ResponseEntity.status(401).body(e.getMessage());
         }
-        avaliacaoModel.setId(id);
-        AvaliacaoModel atualizada = service.salvar(avaliacaoModel);
-        return ResponseEntity.ok(atualizada);
     }
 
     // ✅ Deletar uma avaliação
