@@ -23,30 +23,39 @@ const DetalheJogo = () => {
 
         // Mapear ou ajustar dados para o formato esperado por MetacriticTemplate
         const mappedData = {
-          id: data.id,
-          name: data.name,
-          background_image: data.background_image,
-          description: data.description,
-          description_raw: data.description_raw,
-          metacriticScore: data.metacritic,
-          userScore: data.rating,
-          totalAvaliacoes: data.reviews_count,
-          platforms: data.platforms,
-          developers: data.developers,
-          publishers: data.publishers,
-          genres: data.genres,
-          esrb_rating: data.esrb_rating?.name,
-          avaliacoes: [], // aqui você pode mapear avaliações se sua API disponibilizar
-          screenshots: data.short_screenshots?.map(s => s.image) || [],
-          clip: data.clip,
-          released: data.released,
-          tags: data.tags,
-          stores: data.stores?.map(s => ({
-            store: s.store,
-            url: s.url,
-            price: null // RAWG não traz preço, mas você pode incluir se tiver outra fonte
-          })),
-        };
+  id: data.id,
+  name: data.name,
+  background_image: data.background_image,
+  description: data.description,
+  description_raw: data.description_raw,
+  metacriticScore: data.metacritic,
+  mediaAvaliacao: data.mediaAvaliacao,
+  totalAvaliacoes: data.totalAvaliacoes,
+  platforms: data.platforms,
+  developers: data.developers,
+  publishers: data.publishers,
+  genres: data.genres,
+  esrb_rating: data.esrb_rating?.name,
+  avaliacoes: data.avaliacoes?.map(av => ({
+    id: av.id,
+    usuario_id: av.usuario_id,
+    comentario: av.comentario,
+    nota: av.nota,
+    dataAvaliacao: av.dataAvaliacao,
+    plataforma: av.plataforma,
+    tempoDeJogo: av.tempoDeJogo
+  })) || [],
+  screenshots: data.short_screenshots?.map(s => s.image) || [],
+  clip: data.clip,
+  released: data.released,
+  tags: data.tags,
+  stores: data.stores?.map(s => ({
+    store: s.store,
+    url: s.url,
+    price: null
+  })),
+};
+
 
         setGameData(mappedData);
       } catch (err) {
