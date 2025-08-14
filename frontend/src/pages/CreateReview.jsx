@@ -1,28 +1,29 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import '../components/layout/css/CreateReview.css';
 
-// StarRating component
+// Componente de avaliação por estrelas
 const StarRating = ({ rating, onRate }) => {
   const handleClick = (e, star) => {
     const rect = e.currentTarget.getBoundingClientRect();
     const clickX = e.clientX - rect.left;
     const isHalf = clickX < rect.width / 2;
     const value = isHalf ? star - 0.5 : star;
-    onRate(Math.max(1, value));
+    onRate(Math.max(0.5, value));
   };
 
   const handleKeyDown = (e, star) => {
     if (e.key === 'ArrowLeft') {
       e.preventDefault();
-      onRate(Math.max(1, star - 0.5));
+      onRate(Math.max(0.5, star - 0.5));
     } else if (e.key === 'ArrowRight') {
       e.preventDefault();
       onRate(Math.min(5, star + 0.5));
     } else if (e.key === 'Enter' || e.key === ' ') {
       e.preventDefault();
       const newRating = rating === star ? star - 0.5 : star;
-      onRate(newRating >= 1 ? newRating : star);
+      onRate(newRating >= 0.5 ? newRating : star);
     }
   };
 
@@ -32,17 +33,13 @@ const StarRating = ({ rating, onRate }) => {
         <button
           key={star}
           type="button"
-          className={`star-btn ${
-            rating >= star ? 'filled' : rating >= star - 0.5 ? 'half-filled' : ''
-          }`}
+          className={`star-btn ${rating >= star ? 'filled' : rating >= star - 0.5 ? 'half-filled' : ''}`}
           onClick={(e) => handleClick(e, star)}
           onKeyDown={(e) => handleKeyDown(e, star)}
           role="radio"
           aria-checked={rating === star || rating === star - 0.5}
           tabIndex={0}
-          aria-label={`Avaliar com ${
-            rating === star - 0.5 ? star - 0.5 : star
-          } estrela${star > 1 ? 's' : ''}`}
+          aria-label={`Avaliar com ${rating === star - 0.5 ? star - 0.5 : star} estrela${star > 1 ? 's' : ''}`}
         >
           ★
         </button>
@@ -51,7 +48,7 @@ const StarRating = ({ rating, onRate }) => {
   );
 };
 
-// Componentes auxiliares
+// Estado de sucesso
 const SuccessState = ({ onReset }) => (
   <div className="success-state" role="status" aria-live="polite">
     <svg
@@ -76,14 +73,14 @@ const SuccessState = ({ onReset }) => (
   </div>
 );
 
-const LoadingSpinner = () => (
-  <span className="loader" aria-hidden="true"></span>
-);
+const LoadingSpinner = () => <span className="loader" aria-hidden="true"></span>;
 
 const CreateReview = () => {
   const { id: gameId } = useParams();
-  const [gameName, setGameName] = useState('');
-  const [platforms, setPlatforms] = useState([]);
+  const navigate = useNavigate();
+  const token = localStorage.getItem('token');
+
+  const [gameData, setGameData] = useState(null);
   const [loadingGame, setLoadingGame] = useState(true);
   const [gameError, setGameError] = useState(null);
 
@@ -92,20 +89,16 @@ const CreateReview = () => {
   const [comment, setComment] = useState('');
   const [platform, setPlatform] = useState('');
   const [playTime, setPlayTime] = useState('');
-  const [errors, setErrors] = useState({});
+
+  const [validationErrors, setValidationErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [success, setSuccess] = useState(false);
-  const token = localStorage.getItem('token');
 
-  const navigate = useNavigate();
-
-
-const handleCancel = () => {
-  navigate(`/jogos/${gameId}`); // rota da tela GameDetails
-};
+  // Navegar para detalhes do jogo
+  const handleCancel = () => navigate(`/jogos/${gameId}`);
 
   const clearError = (field) => {
-    setErrors((prev) => {
+    setValidationErrors((prev) => {
       const updated = { ...prev };
       delete updated[field];
       return updated;
@@ -113,37 +106,37 @@ const handleCancel = () => {
   };
 
   const validate = () => {
-    const newErrors = {};
-    if (rating <= 0) newErrors.rating = 'Por favor, avalie com 0.5 a 5 estrelas.';
-    if (!title.trim()) newErrors.title = 'O título é obrigatório.';
-    else if (title.trim().length < 5) newErrors.title = 'O título deve ter pelo menos 5 caracteres.';
-    if (!comment.trim()) newErrors.comment = 'O comentário é obrigatório.';
-    else if (comment.trim().length < 10) newErrors.comment = 'O comentário deve ter pelo menos 10 caracteres.';
-    if (!platform) newErrors.platform = 'Selecione uma plataforma.';
-    if (playTime && isNaN(playTime)) newErrors.playTime = 'O tempo de jogo deve ser um número.';
-    else if (playTime && playTime < 0) newErrors.playTime = 'O tempo de jogo não pode ser negativo.';
-    return newErrors;
+    const errors = {};
+    if (rating <= 0) errors.rating = 'Por favor, avalie com 0.5 a 5 estrelas.';
+    if (!title.trim()) errors.title = 'O título é obrigatório.';
+    else if (title.trim().length < 5) errors.title = 'O título deve ter pelo menos 5 caracteres.';
+    if (!comment.trim()) errors.comment = 'O comentário é obrigatório.';
+    else if (comment.trim().length < 10) errors.comment = 'O comentário deve ter pelo menos 10 caracteres.';
+    if (!platform) errors.platform = 'Selecione uma plataforma.';
+    if (playTime && (isNaN(playTime) || playTime < 0)) errors.playTime = 'Tempo de jogo inválido.';
+    return errors;
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const newErrors = validate();
-    if (Object.keys(newErrors).length > 0) {
-      setErrors(newErrors);
+    const errors = validate();
+    if (Object.keys(errors).length > 0) {
+      setValidationErrors(errors);
+      Object.values(errors).forEach((msg) => toast.error(msg));
       return;
     }
-    setIsSubmitting(true);
 
+    setIsSubmitting(true);
     try {
       const reviewData = {
         jogo_id: gameId,
         nota: rating,
         tempoDeJogo: playTime ? parseInt(playTime, 10) : null,
         plataforma: platform,
-        comentario: `${title.trim()}: ${comment.trim()}`,
+        titulo: title.trim(),
+        comentario: comment.trim(),
         dataAvaliacao: new Date().toISOString(),
       };
-
 
       const response = await fetch('http://localhost:8080/avaliacoes', {
         method: 'POST',
@@ -155,13 +148,19 @@ const handleCancel = () => {
       });
 
       if (!response.ok) {
-        throw new Error(`Erro ${response.status} ao enviar avaliação`);
+        const errorData = await response.json();
+        if (errorData.message?.includes('unique_usuario_jogo_plataforma')) {
+          toast.error('Você já avaliou este jogo nesta plataforma!');
+        } else {
+          toast.error(`Erro ${response.status} ao enviar avaliação`);
+        }
+        throw new Error(errorData.message || 'Erro ao enviar avaliação');
       }
 
+      toast.success('Avaliação enviada com sucesso!');
       setSuccess(true);
     } catch (error) {
       console.error(error);
-      setErrors({ submit: 'Erro ao enviar a opinião. Tente novamente.' });
     } finally {
       setIsSubmitting(false);
     }
@@ -173,7 +172,7 @@ const handleCancel = () => {
     setComment('');
     setPlatform('');
     setPlayTime('');
-    setErrors({});
+    setValidationErrors({});
     setSuccess(false);
   };
 
@@ -186,20 +185,12 @@ const handleCancel = () => {
         const response = await fetch(`http://localhost:8080/api/games/${gameId}`);
         if (!response.ok) throw new Error(`Erro na API (${response.status})`);
 
-        const gameData = await response.json();
-
-        setGameName(gameData.name || gameData.nome || 'Nome do jogo não disponível');
-
-        if (gameData.platforms && gameData.platforms.length > 0) {
-          const platformNames = gameData.platforms.map(p => p.platform.name);
-          setPlatforms(platformNames);
-        } else {
-          setPlatforms(['Outros']);
-        }
-
+        const data = await response.json();
+        setGameData(data);
       } catch (error) {
         console.error(error);
         setGameError('Erro ao carregar o jogo');
+        toast.error('Erro ao carregar dados do jogo.');
       } finally {
         setLoadingGame(false);
       }
@@ -209,23 +200,28 @@ const handleCancel = () => {
   }, [gameId]);
 
   return (
-    <section className="create-review-section" aria-labelledby="title-create-review">
+    <section
+      className="create-review-section"
+      aria-labelledby="title-create-review"
+      style={{
+        backgroundImage: gameData?.background_image
+          ? `url(${gameData.background_image})`
+          : 'url("/assets/default-bg.png")',
+      }}
+    >
       <div className="container">
         <div className="review-card">
           <header className="review-header">
             <h2 id="title-create-review">Escreva sua Avaliação</h2>
             {loadingGame && <p>Carregando nome do jogo...</p>}
             {gameError && <p className="error">{gameError}</p>}
-            {!loadingGame && !gameError && <h3>Jogo: {gameName}</h3>}
-            
+            {!loadingGame && !gameError && <h3>Jogo: {gameData?.name || 'Nome não disponível'}</h3>}
           </header>
 
           {success ? (
             <SuccessState onReset={handleReset} />
           ) : (
             <form onSubmit={handleSubmit} className="review-form">
-              {errors.submit && <span className="error form-error">{errors.submit}</span>}
-
               <div className="form-group">
                 <label htmlFor="platform">Plataforma</label>
                 <select
@@ -235,14 +231,17 @@ const handleCancel = () => {
                     setPlatform(e.target.value);
                     clearError('platform');
                   }}
-                  aria-invalid={!!errors.platform}
+                  aria-invalid={!!validationErrors.platform}
                 >
                   <option value="">Escolha uma plataforma...</option>
-                  {platforms.map((plat) => (
-                    <option key={plat} value={plat}>{plat}</option>
-                  ))}
+                  {gameData?.platforms?.length > 0
+                    ? gameData.platforms.map((p) => (
+                        <option key={p.platform.id} value={p.platform.name}>
+                          {p.platform.name}
+                        </option>
+                      ))
+                    : null}
                 </select>
-                {errors.platform && <span className="error">{errors.platform}</span>}
               </div>
 
               <div className="form-group">
@@ -256,17 +255,14 @@ const handleCancel = () => {
                     clearError('playTime');
                   }}
                   placeholder="Ex: 20"
-                  aria-invalid={!!errors.playTime}
                   step="any"
                   className="no-spinner"
                 />
-                {errors.playTime && <span className="error">{errors.playTime}</span>}
               </div>
 
               <div className="form-group">
                 <label id="rating-label">Nota</label>
                 <StarRating rating={rating} onRate={(value) => { setRating(value); clearError('rating'); }} />
-                {errors.rating && <span className="error">{errors.rating}</span>}
               </div>
 
               <div className="form-group">
@@ -280,9 +276,7 @@ const handleCancel = () => {
                     clearError('title');
                   }}
                   placeholder="Ex: Ótima experiência!"
-                  aria-invalid={!!errors.title}
                 />
-                {errors.title && <span className="error">{errors.title}</span>}
               </div>
 
               <div className="form-group">
@@ -296,22 +290,15 @@ const handleCancel = () => {
                   }}
                   rows="6"
                   placeholder="Descreva sua experiência: gráficos, jogabilidade, história, trilha sonora, etc."
-                  aria-invalid={!!errors.comment}
                 />
-                {errors.comment && <span className="error">{errors.comment}</span>}
               </div>
 
               <div className="form-actions">
-                <button
-                  type="button"
-                  onClick={handleCancel}
-                  className="btn-secondary"
-                  disabled={isSubmitting}
-                >
-                  Cancelar
-                </button>
                 <button type="submit" className="btn-primary" disabled={isSubmitting}>
                   {isSubmitting ? (<><LoadingSpinner /> Enviando...</>) : 'Enviar Opinião'}
+                </button>
+                <button type="button" onClick={handleCancel} className="btn-secondary" disabled={isSubmitting}>
+                  Cancelar
                 </button>
               </div>
             </form>
