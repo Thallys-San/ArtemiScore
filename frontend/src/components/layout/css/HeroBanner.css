@@ -250,7 +250,7 @@
 /* Indicadores de slide (dots na parte inferior do hero) */
 .hero-indicators {
   position: absolute;
-  bottom: 1.5rem;
+  bottom: 1rem; /* reduzir para aproximar mais da base */
   left: 0;
   right: 0;
   display: flex;
@@ -260,10 +260,8 @@
 }
 
 .indicator {
-  all: unset; /* remove todo estilo padrão do button */
-  display: block; /* agora o width/height funciona certinho */
-  width: 14px;
-  height: 14px;
+  width: 12px;
+  height: 12px;
   border-radius: 50%;
   background: rgba(255,255,255,0.3);
   cursor: pointer;
@@ -275,22 +273,6 @@
   background: var(--primary);
   transform: scale(1.3);
   box-shadow: 0 0 10px var(--primary);
-}
-
-/* Efeito pulsar no ativo */
-.indicator.active {
-  animation: pulse-indicator 1.2s ease-in-out infinite;
-}
-
-@keyframes pulse-indicator {
-  0%, 100% {
-    transform: scale(1.4);
-    box-shadow: 0 0 12px var(--primary), 0 0 20px rgba(122, 95, 255, 0.6);
-  }
-  50% {
-    transform: scale(1.6);
-    box-shadow: 0 0 18px var(--primary), 0 0 28px rgba(122, 95, 255, 0.8);
-  }
 }
 
 @media (max-height: 700px) {
