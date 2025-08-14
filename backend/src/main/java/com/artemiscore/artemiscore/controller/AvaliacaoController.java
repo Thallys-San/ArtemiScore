@@ -66,7 +66,16 @@ public class AvaliacaoController {
         return ResponseEntity.ok(avaliacoes);
     }
 
+@GetMapping("/usuario/{usuarioId}/horas")
+public ResponseEntity<Long> getTotalHorasPorUsuario(@PathVariable Long usuarioId) {
+    Long totalHoras = avaliacaoRepository.getTotalHorasPorUsuario(usuarioId);
 
+    if (totalHoras == null) {
+        totalHoras = 0L;
+    }
+
+    return ResponseEntity.ok(totalHoras);
+}
     
     // ✅ Criar uma nova avaliação
     @PostMapping
