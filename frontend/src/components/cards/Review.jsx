@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import "./css/Review.css";
 
 const Review = ({ gameData }) => {
-  const [usuariosMap, setUsuariosMap] = useState({}); // { id: { nome, foto_perfil, uid } }
+  const [usuariosMap, setUsuariosMap] = useState({});
   const [loadingUsuarios, setLoadingUsuarios] = useState(false);
 
   useEffect(() => {
@@ -16,7 +16,6 @@ const Review = ({ gameData }) => {
       try {
         const ids = [...new Set(gameData.avaliacoes.map(a => a.usuario_id))];
 
-        // Pegar token do Firebase
         const auth = getAuth();
         const user = auth.currentUser;
         let token = null;
@@ -58,6 +57,21 @@ const Review = ({ gameData }) => {
 
     fetchUsuarios();
   }, [gameData]);
+
+  // Função para formatar plataforma corretamente
+  const formatPlataforma = (plataforma) => {
+    if (!plataforma) return "Plataforma não informada";
+
+    if (Array.isArray(plataforma)) {
+      return plataforma.map(p => (typeof p === "string" ? p : p.name || p)).join(", ");
+    }
+
+    if (typeof plataforma === "object") {
+      return plataforma.name || JSON.stringify(plataforma);
+    }
+
+    return String(plataforma);
+  };
 
   return (
     <div className="reviews-section">
@@ -101,6 +115,7 @@ const Review = ({ gameData }) => {
                     >
                       {review.nota}
                     </div>
+
                     <div className="review-date">
                       {new Date(review.dataAvaliacao).toLocaleDateString("pt-BR", {
                         day: "2-digit",
@@ -108,7 +123,13 @@ const Review = ({ gameData }) => {
                         year: "numeric",
                       })}
                     </div>
+
+                    {/* Plataforma tratada */}
+                    <div className="review-platforms">
+                      {formatPlataforma(review.plataforma)}
+                    </div>
                   </div>
+
                   <div className="user-review-text">{review.comentario}</div>
                 </div>
               );
