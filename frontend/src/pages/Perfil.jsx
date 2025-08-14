@@ -76,23 +76,26 @@ function Perfil() {
   }, [token]);
 
   // Buscar horas jogadas
-  useEffect(() => {
-    const fetchHorasJogadas = async () => {
-      if (!token || !perfil) return;
+useEffect(() => {
+  if (!token || !perfil) return;
 
-      try {
-        const response = await axios.get(
-          `http://localhost:8080/usuario/${perfil.id}/horas`,
-          { headers: { Authorization: `Bearer ${token}` } }
-        );
-        setHorasJogadas(response.data || 0);
-      } catch (err) {
-        console.error("Erro ao buscar horas jogadas:", err);
-      }
-    };
+  const fetchHorasJogadas = async () => {
+    try {
+      const response = await axios.get(
+        `http://localhost:8080/api/usuarios/${perfil.id}/horas`,
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      console.log("Horas recebidas:", response.data);
+      setHorasJogadas(response.data || 0);
+    } catch (err) {
+      console.error("Erro ao buscar horas jogadas:", err.response || err);
+    }
+  };
 
-    fetchHorasJogadas();
-  }, [token, perfil]);
+  fetchHorasJogadas();
+}, [token, perfil]);
+
+
 
   useEffect(() => {
     const fetchFavoritos = async () => {
