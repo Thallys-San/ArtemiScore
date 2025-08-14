@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.artemiscore.artemiscore.model.AvaliacaoModel;
 import com.artemiscore.artemiscore.model.UsuariosModel;
+import com.artemiscore.artemiscore.repository.AvaliacaoRepository;
 import com.artemiscore.artemiscore.repository.UsuariosRepository;
 import com.artemiscore.artemiscore.service.AvaliacaoService;
 
@@ -31,6 +32,10 @@ public class AvaliacaoController {
 
     @Autowired
     private AvaliacaoService service;
+
+    @Autowired
+    private AvaliacaoRepository avaliacaoRepository; // nome igual ao usado no método
+
 
     @Autowired
     private UsuariosRepository usuariosRepository;
@@ -68,8 +73,17 @@ public class AvaliacaoController {
         return ResponseEntity.ok(avaliacoes);
     }
 
+@GetMapping("/usuario/{usuarioId}/horas")
+public ResponseEntity<Long> getTotalHorasPorUsuario(@PathVariable Long usuarioId) {
+    Long totalHoras = avaliacaoRepository.getTotalHorasPorUsuario(usuarioId);
 
-    
+    if (totalHoras == null) {
+        totalHoras = 0L;
+    }
+
+    return ResponseEntity.ok(totalHoras);
+}
+
     // ✅ Criar uma nova avaliação
     @PostMapping
     public ResponseEntity<?> criar(@Valid @RequestBody AvaliacaoModel avaliacaoModel) {
