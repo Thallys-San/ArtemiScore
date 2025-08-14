@@ -1,92 +1,103 @@
+/* JogosFavoritosLista.css */
+
+/* Container principal - pode ser usado para aumentar a especificidade */
+.game-card-container .game-card {
+  min-height: auto; /* Remove altura fixa */
+  background-color: var(--card-bg, #1e1e24) !important; /* Usa variável ou cor alternativa */
+  border: 1px solid var(--border-color, #333) !important;
+}
+
+/* Versão compacta para a grid de favoritos */
+.jogos-favoritos-grid .game-card {
+  min-height: unset;
+  border-radius: 8px; /* Mais compacto que o original */
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2) !important;
+  transition: all 0.2s ease;
+}
+
+.jogos-favoritos-grid .game-card:hover {
+  transform: translateY(-2px) !important;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3) !important;
+  border-color: var(--primary, #5733ef) !important;
+}
+
+/* Imagem mais compacta */
+.jogos-favoritos-grid .game-img {
+  aspect-ratio: 3/4; /* Proporção diferente para favoritos */
+  height: 120px; /* Altura fixa menor */
+}
+
+/* Conteúdo mais compacto */
+.jogos-favoritos-grid .game-content {
+  padding: 0.8rem !important;
+  gap: 0.5rem !important;
+}
+
+/* Título menor */
+.jogos-favoritos-grid .game-title {
+  font-size: 0.9rem !important;
+  -webkit-line-clamp: 1; /* Apenas 1 linha */
+  line-height: 1.3;
+}
+
+/* Plataformas mais compactas */
+.jogos-favoritos-grid .platform-icons {
+  gap: 4px !important;
+  margin: 3px 0 !important;
+}
+
+.jogos-favoritos-grid .platform-icon {
+  width: 18px !important;
+  height: 18px !important;
+}
+
+/* Tags menores */
+.jogos-favoritos-grid .tag {
+  font-size: 10px !important;
+  padding: 2px 6px !important;
+  border-radius: 3px !important;
+}
+
+/* Rating mais compacto */
+.jogos-favoritos-grid .rating-box {
+  gap: 0.3rem !important;
+}
+
+.jogos-favoritos-grid .score {
+  font-size: 0.8rem !important;
+}
+
+/* Grid específica para favoritos */
 .jogos-favoritos-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-  gap: 1.2rem;
-  margin-top: 1rem;
+  display: grid !important;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)) !important;
+  gap: 1rem !important;
+  padding: 0.5rem 0 !important;
 }
 
-.jogo-favorito-card {
-  background: var(--card-bg);
-  border-radius: 8px;
-  overflow: hidden;
-  transition: all 0.3s ease;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+/* Media queries específicas para a versão compacta */
+@media (max-width: 768px) {
+  .jogos-favoritos-grid {
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)) !important;
+    gap: 0.8rem !important;
+  }
+  
+  .jogos-favoritos-grid .game-img {
+    height: 100px !important;
+  }
 }
 
-.jogo-favorito-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-}
-
-.jogo-favorito-imagem {
-  width: 100%;
-  height: 120px;
-  object-fit: cover;
-  border-bottom: 1px solid var(--border-color);
-}
-
-.jogo-favorito-info {
-  padding: 0.8rem;
-}
-
-.jogo-favorito-info h4 {
-  margin: 0;
-  font-size: 0.95rem;
-  font-weight: 500;
-  color: var(--text-primary);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.jogo-favorito-metadata {
-  display: flex;
-  gap: 0.4rem;
-  flex-wrap: wrap;
-  margin-top: 0.5rem;
-  align-items: center;
-}
-
-.jogo-genero-tag {
-  background: var(--tag-bg);
-  color: var(--tag-text);
-  padding: 0.2rem 0.5rem;
-  border-radius: 12px;
-  font-size: 0.7rem;
-  font-weight: 500;
-}
-
-.metacritic-score {
-  font-size: 0.75rem;
-  font-weight: bold;
-  padding: 0.15rem 0.4rem;
-  border-radius: 4px;
-  margin-left: auto;
-}
-
-.metacritic-score.high {
-  background-color: #66cc33;
-  color: white;
-}
-
-.metacritic-score.medium {
-  background-color: #ffcc33;
-  color: #333;
-}
-
-.metacritic-score.low {
-  background-color: #ff0000;
-  color: white;
-}
-
-.loading-container-small {
-  text-align: center;
-  padding: 1.5rem;
-  color: var(--text-secondary);
-}
-
-.error-message-small {
-  color: var(--error-color);
-  text-align: center;
-  padding: 1rem;
+@media (max-width: 480px) {
+  .jogos-favoritos-grid {
+    grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)) !important;
+    gap: 0.6rem !important;
+  }
+  
+  .jogos-favoritos-grid .game-content {
+    padding: 0.6rem !important;
+  }
+  
+  .jogos-favoritos-grid .game-title {
+    font-size: 0.8rem !important;
+  }
 }
