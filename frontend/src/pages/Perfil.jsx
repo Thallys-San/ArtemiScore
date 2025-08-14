@@ -76,6 +76,27 @@ function Perfil() {
     };
   }, [token, logout]);
 
+  const [totalAvaliados, setTotalAvaliados] = useState(0);
+
+useEffect(() => {
+  const fetchTotalAvaliados = async () => {
+    if (!token) return;
+
+    try {
+      const response = await axios.get(
+        "http://localhost:8080/avaliacoes/meus-jogos",
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+
+      setTotalAvaliados(response.data.length);
+    } catch (err) {
+      console.error("Erro ao buscar total de avaliações:", err);
+    }
+  };
+
+  fetchTotalAvaliados();
+}, [token]);
+
   useEffect(() => {
     const fetchFavoritos = async () => {
       if (!token || !perfil) return; // Só carrega favoritos se o perfil existir
@@ -203,11 +224,12 @@ function Perfil() {
             </h2>
             <div className="estatisticas">
               <Link to={"/jogosAvaliados"} className="link-destaque">
-                <div className="estatistica-item">
-                  <div className="estatistica-valor">...</div>
-                  <div className="estatistica-label">Jogos Avaliados</div>
-                </div>
-              </Link>
+  <div className="estatistica-item">
+    <div className="estatistica-valor">{totalAvaliados}</div>
+    <div className="estatistica-label">Jogos Avaliados</div>
+  </div>
+</Link>
+
 
               <div className="estatistica-item">
                 <div className="estatistica-valor">...</div>
