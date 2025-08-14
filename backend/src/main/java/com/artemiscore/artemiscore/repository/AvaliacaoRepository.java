@@ -39,5 +39,6 @@ public interface AvaliacaoRepository extends JpaRepository<AvaliacaoModel, Long>
        "ORDER BY media DESC")
 Page<Object[]> findTopRatedGamesInPeriod(LocalDateTime startDate, LocalDateTime endDate, Pageable pageable);
 
-
+@Query("SELECT SUM(a.tempoDeJogo) FROM AvaliacaoModel a WHERE a.usuario_id = :usuarioId")
+Long getTotalHorasPorUsuario(@Param("usuarioId") Long usuarioId);
 }
