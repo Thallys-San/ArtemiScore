@@ -34,12 +34,6 @@ const ReleaseCard = ({ jogo }) => {
           )}
         </div>
       </Link>
-
-      <div className="release-wishlist">
-        <button className="wishlist-button">
-          <i className="ri-heart-line"></i> Lista de Desejos
-        </button>
-      </div>
     </div>
   );
 };
