@@ -1,11 +1,13 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import '../layout/css/GameDetails.css';
 import Header from './Header';
 import Footer from './Footer';
+import Review from '../cards/Review';
 
 const MetacriticTemplate = ({ gameData }) => {
   const navigate = useNavigate();
+  const [hover, setHover] = useState(null); // controla hover nas estrelas
 
   // Função auxiliar para formatar datas
   const formatDate = (dateString) => {
@@ -30,6 +32,9 @@ const MetacriticTemplate = ({ gameData }) => {
       alert('Link copiado para a área de transferência!');
     }
   };
+
+  const handleStarHover = (index) => setHover(index);
+  const handleStarLeave = () => setHover(null);
 
   return (
     <div className="metacritic-template">
@@ -61,22 +66,49 @@ const MetacriticTemplate = ({ gameData }) => {
               <div className="game-title-container">
                 <div>
                   <h1 className="game-title">{gameData?.name || 'Jogo sem título'}</h1>
+                  <div className="game-rating">
+                    {/* Bloco com estrelas + nota */}
+                    {gameData?.mediaAvaliacao !== undefined && (
+                      <div className="rating-info">
+                        <div className="rating-caixa">
+                          {[1, 2, 3, 4, 5].map((star, i) => {
+                            const filledClass =
+                              gameData.mediaAvaliacao >= star
+                                ? 'filled'
+                                : gameData.mediaAvaliacao >= star - 0.5
+                                ? 'half-filled'
+                                : '';
+                            const hoverClass = hover !== null && i <= hover ? 'hovered' : '';
 
-                  {/* Exibe pontuação do usuário se existir */}
-                  {gameData?.userScore !== undefined && (
-                    <div className="user-score-display">
-                      <span>Nota dos usuários: {gameData.userScore.toFixed(1)}/5</span>
-                      <span> ({gameData.totalAvaliacoes} avaliações)</span>
-                    </div>
-                  )}
+                            return (
+                              <span
+                                key={star}
+                                className={`star ${filledClass} ${hoverClass}`}
+                                onMouseEnter={() => handleStarHover(i)}
+                                onMouseLeave={handleStarLeave}
+                              >
+                                ★
+                              </span>
+                            );
+                          })}
+                        </div>
 
-                  <Link
-                    to={`/reviews/create/${gameData?.id}`}
-                    className="rate-now-button"
-                    aria-label="Avaliar este jogo agora"
-                  >
-                    Avaliar Agora
-                  </Link>
+                        <div className="media-avaliacao">
+                          <span>{typeof gameData?.mediaAvaliacao === 'number' ? gameData.mediaAvaliacao.toFixed(1) : 'N/A'}</span>
+                          <span> ({gameData?.totalAvaliacoes || 0} avaliações)</span>
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Botão separado */}
+                    <Link
+                      to={`/reviews/create/${gameData?.id}`}
+                      className="rate-now-button"
+                      aria-label="Avaliar este jogo agora"
+                    >
+                      Avaliar Agora
+                    </Link>
+                  </div>
                 </div>
                 <button 
                   className="share-button" 
@@ -97,11 +129,6 @@ const MetacriticTemplate = ({ gameData }) => {
                       ))
                     : <span className="platform-tag">Nenhuma plataforma listada</span>}
                 </div>
-                
-                <div className="game-release-date">
-                  <span className="release-label">Lançamento:</span>
-                  <span>{formatDate(gameData?.released)}</span>
-                </div>
               </div>
             </div>
           </div>
@@ -109,16 +136,18 @@ const MetacriticTemplate = ({ gameData }) => {
 
         <div className="game-content-container">
           <main className="game-main-content">
-            <section className="details-section">
-              <h2 className="section-title">Sobre o Jogo</h2>
-              {gameData?.description_raw && (
-                <div className="detail-block">
-                  <p className="game-description">{gameData.description_raw}</p>
-                </div>
-              )}
-            </section>
-          </main>
+  <section className="details-section">
+    <h2 className="section-title">Sobre o Jogo</h2>
+    {gameData?.description_raw && (
+      <div className="detail-block">
+        <p className="game-description">{gameData.description_raw}</p>
+      </div>
+    )}
 
+    {gameData && <Review gameData={gameData} />}
+
+  </section>
+</main>
           <aside className="game-sidebar">
             <div className="sidebar-card quick-facts">
               <h3 className="sidebar-title">Fatos Rápidos</h3>
