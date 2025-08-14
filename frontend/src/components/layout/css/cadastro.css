@@ -1,17 +1,4 @@
-/* cadastro.css */
-:root {
-  --primary: #5733ef;
-  --primary-dark: #4625c9;
-  --accent: #c688ff;
-  --dark: #0f0f13;
-  --darker: #0a0a0d;
-  --gray: #1e1e24;
-  --gray-light: #2a2a35;
-  --light-gray: #6d6d7a;
-  --yellow: #fdcb6e;
-  --green: #00cc96;
-  --red: #ff6b6b;
-}
+
 
 * {
   margin: 0;
