@@ -35,7 +35,6 @@ const HeroBanner = () => {
     }
   ];
 
-
   useEffect(() => {
     setIsLoading(true);
     fetch("http://localhost:8080/api/games/top-rated-monthly")
@@ -47,23 +46,17 @@ const HeroBanner = () => {
       })
       .then((data) => {
         if (Array.isArray(data) && data.length > 0) {
-          // Combina os jogos reais com os banners padrão
           const combined = [...data.slice(0, 3)];
-          
-          // Preenche com banners padrão se não houver jogos suficientes
           while (combined.length < 3) {
             combined.push(defaultBanners[combined.length]);
           }
-          
           setGames(combined);
         } else {
-          // Se não houver jogos, usa os banners padrão
           setGames(defaultBanners.slice(0, 3));
         }
       })
       .catch((err) => {
         console.error("Erro ao buscar jogos mais bem avaliados:", err);
-        // Em caso de erro, usa os banners padrão
         setGames(defaultBanners.slice(0, 3));
       })
       .finally(() => {
@@ -78,7 +71,7 @@ const HeroBanner = () => {
       }, 10000);
       return () => clearInterval(interval);
     }
-  }, [games, currentIndex]);
+  }, [games]);
 
   if (isLoading) {
     return (
@@ -101,7 +94,6 @@ const HeroBanner = () => {
     ? decodeHtmlEntities(currentItem.description.replace(/<[^>]*>/g, ""))
     : currentItem?.description || "Sem descrição disponível.";
 
-  // Verifica se é um banner padrão (que não tem mediaAvaliacao)
   const isDefaultBanner = !currentItem.hasOwnProperty('mediaAvaliacao');
 
   return (
@@ -149,10 +141,16 @@ const HeroBanner = () => {
             <div className="hero-buttons">
               {!isDefaultBanner && (
                 <>
-                  <button className="hero-button primary-button">
+                  <button 
+                    className="hero-button primary-button"
+                    onClick={() => navigate(`/jogos/${currentItem.id}`)}
+                  >
                     <i className="ri-information-line"></i> Ver Detalhes
                   </button>
-                  <button className="hero-button secondary-button">
+                  <button 
+                    className="hero-button secondary-button"
+                    onClick={() => navigate(`/reviews/create/${currentItem.id}`)}
+                  >
                     <i className="ri-star-line"></i> Avaliar Agora
                   </button>
                 </>
