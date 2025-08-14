@@ -3,7 +3,9 @@ import axios from "axios";
 import "../components/layout/css/Perfil.css";
 import Header from "../components/layout/Header";
 import { Link } from "react-router-dom";
-import AvatarDisplay, { DEFAULT_PROFILE_PIC } from "../components/commom/AvatarDisplay";
+import AvatarDisplay, {
+  DEFAULT_PROFILE_PIC,
+} from "../components/commom/AvatarDisplay";
 import { AuthContext } from "../components/AuthContext";
 import HamsterLoading from "../components/commom/HamsterLoading";
 import "../components/layout/css/HamsterLoading.css";
@@ -11,58 +13,83 @@ import JogosFavoritosPopup from "../components/layout/JogosFavoritosPopUp";
 import JogosFavoritosLista from "../components/layout/JogosFavoritosLista";
 
 function Perfil() {
-  const { token, logout } = useContext(AuthContext);
+  const { token, logout } = useContext(AuthContext); // Adicione logout ao contexto
   const [perfil, setPerfil] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [jogosFavoritos, setJogosFavoritos] = useState([]);
   const [loadingFavoritos, setLoadingFavoritos] = useState(false);
-  const [totalAvaliados, setTotalAvaliados] = useState(0);
-  const [horasJogadas, setHorasJogadas] = useState(0);
 
-  // Fetch perfil do usuário
   useEffect(() => {
-    let isMounted = true;
+    let isMounted = true; // Para evitar memory leaks
 
     const fetchPerfil = async () => {
       if (!token) {
-        if (isMounted) setError("Usuário não autenticado");
-        setLoading(false);
+        if (isMounted) {
+          setError("Usuário não autenticado");
+          setLoading(false);
+        }
         return;
       }
 
       try {
-        setLoading(true);
-        setError(null);
+        if (isMounted) {
+          setLoading(true);
+          setError(null);
+        }
 
-        const response = await axios.get("http://localhost:8080/api/usuarios/me", {
-          headers: { Authorization: `Bearer ${token}` },
-        });
+        const response = await axios.get(
+          "http://localhost:8080/api/usuarios/me",
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
 
-        if (isMounted) setPerfil(response.data);
+        if (isMounted) {
+          setPerfil(response.data);
+        }
       } catch (err) {
         console.error("Erro ao carregar o perfil:", err);
-        if (err.response?.status === 401) logout();
-        if (isMounted) setError(err.response?.data?.message || "Erro ao carregar os dados do perfil");
+
+        // Se for erro 401 (não autorizado), faz logout
+        if (err.response?.status === 401) {
+          logout();
+        }
+
+        if (isMounted) {
+          setError(
+            err.response?.data?.message || "Erro ao carregar os dados do perfil"
+          );
+        }
       } finally {
-        if (isMounted) setLoading(false);
+        if (isMounted) {
+          setLoading(false);
+        }
       }
     };
 
     fetchPerfil();
-    return () => { isMounted = false; };
+
+    return () => {
+      isMounted = false; // Cleanup
+    };
   }, [token, logout]);
 
-  // Fetch total de jogos avaliados
-  useEffect(() => {
-    if (!token) return;
+  const [totalAvaliados, setTotalAvaliados] = useState(0);
 
+  useEffect(() => {
     const fetchTotalAvaliados = async () => {
+      if (!token) return;
+
       try {
-        const response = await axios.get("http://localhost:8080/avaliacoes/meus-jogos", {
-          headers: { Authorization: `Bearer ${token}` },
-        });
+        const response = await axios.get(
+          "http://localhost:8080/avaliacoes/meus-jogos",
+          { headers: { Authorization: `Bearer ${token}` } }
+        );
+
         setTotalAvaliados(response.data.length);
       } catch (err) {
         console.error("Erro ao buscar total de avaliações:", err);
@@ -72,35 +99,20 @@ function Perfil() {
     fetchTotalAvaliados();
   }, [token]);
 
-  // Fetch total de horas jogadas
   useEffect(() => {
-    if (!token || !perfil?.id) return;
-
-    const fetchHorasJogadas = async () => {
-      try {
-        const response = await axios.get(
-          `http://localhost:8080/avaliacoes/usuario/${perfil.id}/horas`,
-          { headers: { Authorization: `Bearer ${token}` } }
-        );
-        setHorasJogadas(response.data);
-      } catch (err) {
-        console.error("Erro ao buscar horas jogadas:", err);
-      }
-    };
-
-    fetchHorasJogadas();
-  }, [token, perfil]);
-
-  // Fetch jogos favoritos
-  useEffect(() => {
-    if (!token || !perfil) return;
-
     const fetchFavoritos = async () => {
+      if (!token || !perfil) return; // Só carrega favoritos se o perfil existir
+
       try {
         setLoadingFavoritos(true);
-        const response = await axios.get(`http://localhost:8080/api/usuarios/me/favoritos`, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
+        const response = await axios.get(
+          "http://localhost:8080/api/usuarios/me/favoritos",
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
         setJogosFavoritos(response.data);
       } catch (err) {
         console.error("Erro ao carregar favoritos:", err);
@@ -112,23 +124,30 @@ function Perfil() {
     fetchFavoritos();
   }, [token, isPopupOpen, perfil]);
 
-  if (loading) return <div className="loading-container"><HamsterLoading /></div>;
+  if (loading)
+    return (
+      <div className="loading-container">
+        <HamsterLoading />
+      </div>
+    );
   if (error) return <div className="error-message">{error}</div>;
   if (!perfil) return <div className="no-data">Nenhum dado disponível</div>;
+  if (!perfil) return <div>Nenhum dado disponível</div>;
 
-  // Ajuste manual da data
+  // Ajuste manual da data:
   const [year, month, day] = perfil.data_criacao.split("-");
   const dataCriacao = new Date(year, month - 1, day);
+
   const dataCriacaoFormatada = dataCriacao.toLocaleDateString("pt-BR", {
     day: "2-digit",
     month: "long",
     year: "numeric",
   });
-
   return (
     <>
       <Header />
       <div className="container-perfil">
+        {/* Card principal com avatar e infos lado a lado */}
         <div className="card-perfil">
           <AvatarDisplay
             src={perfil.foto_perfil || DEFAULT_PROFILE_PIC}
@@ -156,6 +175,7 @@ function Perfil() {
           </div>
         </div>
 
+        {/* Linha com preferências e plataformas */}
         <div className="linha-dupla">
           <div className="secao-perfil">
             <h2 className="titulo-secao">
@@ -198,6 +218,7 @@ function Perfil() {
           userId={perfil}
         />
 
+        {/* Linha com estatísticas e jogos favoritos */}
         <div className="linha-dupla">
           <div className="secao-perfil">
             <h2 className="titulo-secao">
@@ -212,7 +233,7 @@ function Perfil() {
               </Link>
 
               <div className="estatistica-item">
-                <div className="estatistica-valor">{horasJogadas}</div>
+                <div className="estatistica-valor">...</div>
                 <div className="estatistica-label">Horas Jogadas</div>
               </div>
             </div>
