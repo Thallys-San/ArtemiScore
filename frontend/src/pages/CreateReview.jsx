@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import '../components/layout/css/CreateReview.css';
+import HamsterLoading from '../components/commom/HamsterLoading';
 
 // Componente de avaliação por estrelas
 const StarRating = ({ rating, onRate }) => {
@@ -295,7 +296,7 @@ const CreateReview = () => {
 
               <div className="form-actions">
                 <button type="submit" className="btn-primary" disabled={isSubmitting}>
-                  {isSubmitting ? (<><LoadingSpinner /> Enviando...</>) : 'Enviar Opinião'}
+                  {isSubmitting ? (<><HamsterLoading /> Enviando...</>) : 'Enviar Opinião'}
                 </button>
                 <button type="button" onClick={handleCancel} className="btn-secondary" disabled={isSubmitting}>
                   Cancelar
